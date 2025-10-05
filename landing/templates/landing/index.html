@@ -168,115 +168,113 @@
         </div>
     </section>
     
-    <!-- Register Section -->
-    <section class="register-section" id="register">
-        <div class="container">
-            <h2 class="animate-on-scroll">¡Regístrate!</h2>
-            <p class="animate-on-scroll">
-                Únete al movimiento de transformación del Colegio de Médicos.<br>
-                Tu participación es fundamental para el cambio.
-            </p>
+<!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
+<section class="register-section" id="register">
+    <div class="container">
+        <div class="register-wrapper">
+            <div class="register-header">
+                <div class="header-badge">Registro</div>
+                
+                <div class="title-section">
+                    <div class="title-main">¡Iniciemos la</div>
+                    <div class="title-script">renovación!</div>
+                    
+                    <div class="doctor-name">
+                        <span class="doctor-prefix">Dr.</span><br>
+                        <span class="doctor-surname">Méndez<span class="doctor-lastname">Sexto</span></span>
+                    </div>
+                    
+                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+                </div>
+            </div>
             
-            <!-- Formulario de Registro Integrado -->
-            <div class="registration-form-container animate-on-scroll">
-                {% if registration_form %}
-                <form id="registrationForm" method="post" action="{% url 'landing:register-api' %}">
+            <div class="register-form-container">
+                <form method="post" action="{% url 'landing:register' %}" id="registerForm" class="register-form">
                     {% csrf_token %}
                     
                     <div class="form-row">
-                        <div class="form-group-inline">
-                            <label for="id_name">Nombre</label>
-                            {{ registration_form.name }}
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Nombre" required>
                         </div>
-                        <div class="form-group-inline">
-                            <label for="id_last_name">Apellidos</label>
-                            {{ registration_form.last_name }}
+                        
+                        <div class="form-group">
+                            <input type="text" name="lastname" placeholder="Apellidos" required>
                         </div>
                     </div>
                     
-                    <div class="form-group-inline full-width">
-                        <label for="id_postal_address">Dirección Postal</label>
-                        {{ registration_form.postal_address }}
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
+                        <div class="email-validation" id="emailValidation"></div>
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group-inline">
-                            <label for="id_phone_number">Teléfono</label>
-                            {{ registration_form.phone_number }}
-                        </div>
-                        <div class="form-group-inline">
-                            <label for="id_email">Email (opcional)</label>
-                            {{ registration_form.email }}
-                        </div>
-                    </div>
-                    
-                    <div class="form-group-inline">
-                        <label>¿Eres médico?</label>
-                        <div class="radio-group-horizontal">
-                            <label class="radio-label">
-                                <input type="radio" name="is_doctor" value="True" onchange="toggleDoctorFields(this.value)">
-                                Sí
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="is_doctor" value="False" checked onchange="toggleDoctorFields(this.value)">
-                                No
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div id="doctorFields" class="doctor-fields" style="display: none;">
-                        <div class="form-group-inline full-width">
-                            <label for="id_service_location">¿Dónde provee servicios?</label>
-                            {{ registration_form.service_location }}
+                        <div class="form-group">
+                            <input type="text" name="address" placeholder="Dirección postal" required>
                         </div>
                         
-                        <div class="form-row">
-                            <div class="form-group-inline">
-                                <label for="id_years_practicing">Años ejerciendo</label>
-                                {{ registration_form.years_practicing }}
+                        <div class="form-group">
+                            <input type="tel" name="phone" id="phone" placeholder="Número telefónico" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea name="services" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="question-group">
+                        <div class="question-section">¿Eres médico?</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <label>Sí</label>
+                                <input type="radio" name="is_doctor" value="yes" id="doctor_yes">
                             </div>
-                            <div class="form-group-inline">
-                                <label>¿Eres colegiado?</label>
-                                <div class="radio-group-horizontal">
-                                    <label class="radio-label">
-                                        <input type="radio" name="is_licensed" value="True">
-                                        Sí
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="is_licensed" value="False" checked>
-                                        No
-                                    </label>
-                                </div>
+                            <div class="radio-option">
+                                <label>No</label>
+                                <input type="radio" name="is_doctor" value="no" id="doctor_no">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="form-group-inline">
-                        <label>¿Necesitará ayuda con voto adelantado?</label>
-                        <div class="radio-group-horizontal">
-                            <label class="radio-label">
-                                <input type="radio" name="needs_voting_help" value="True">
-                                Sí
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="needs_voting_help" value="False" checked>
-                                No
-                            </label>
+                    <div class="years-section" id="yearsSection" style="display: flex;">
+                        <span>Años ejerciendo la disciplina</span>
+                        <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
+                    </div>
+                    
+                    <div class="question-group">
+                        <div class="question-section">¿Eres colegiado?</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <label>Sí</label>
+                                <input type="radio" name="is_member" value="yes">
+                            </div>
+                            <div class="radio-option">
+                                <label>No</label>
+                                <input type="radio" name="is_member" value="no">
+                            </div>
                         </div>
                     </div>
                     
-                    <div id="registrationMessages" style="margin-top: 20px;"></div>
+                    <div class="question-group">
+                        <div class="question-section">¿Necesitará ayuda con voto adelantado?</div>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <label>Sí</label>
+                                <input type="radio" name="needs_help" value="yes">
+                            </div>
+                            <div class="radio-option">
+                                <label>No</label>
+                                <input type="radio" name="needs_help" value="no">
+                            </div>
+                        </div>
+                    </div>
                     
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
-                        Completar Registro
-                    </button>
+                    <button type="submit" class="register-submit-btn">Enviar Registro</button>
                 </form>
-                {% else %}
-                <a href="{% url 'landing:register' %}" class="btn btn-primary animate-on-scroll">Registrarme Ahora</a>
-                {% endif %}
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     
     <!-- Footer -->
     <footer class="footer">
@@ -328,6 +326,199 @@
             </div>
         </div>
     </footer>
+    <!-- JavaScript para añadir al final del archivo o en script tag -->
+    <script>
+        // Register form functionality
+        (function() {
+            // Show/hide years practicing based on doctor selection
+            const doctorYes = document.getElementById('doctor_yes');
+            const doctorNo = document.getElementById('doctor_no');
+            const yearsSection = document.getElementById('yearsSection');
+            const yearsInput = document.getElementById('years');
+            
+            if (doctorYes) {
+                doctorYes.addEventListener('change', function() {
+                    if (this.checked) {
+                        yearsSection.style.display = 'flex';
+                    }
+                });
+            }
+            
+            if (doctorNo) {
+                doctorNo.addEventListener('change', function() {
+                    if (this.checked) {
+                        yearsSection.style.display = 'none';
+                        yearsInput.value = '';
+                    }
+                });
+            }
+            
+            // Validate years input
+            if (yearsInput) {
+                yearsInput.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    if (parseInt(this.value) > 70) {
+                        this.value = '70';
+                    }
+                });
+            }
+            
+            // Email validation
+            const commonDomains = {
+                'gmail.com': ['gmai.com', 'gmial.com', 'gmail.co', 'gmail.cm', 'gmail.con'],
+                'hotmail.com': ['hotmai.com', 'hotmial.com', 'hotmail.co', 'hotmail.cm'],
+                'yahoo.com': ['yaho.com', 'yahoo.co', 'yahoo.cm', 'yahooo.com'],
+                'outlook.com': ['outlok.com', 'outlook.co', 'outlook.cm'],
+                'icloud.com': ['iclod.com', 'icloud.co', 'icloud.cm']
+            };
+            
+            const emailInput = document.getElementById('email');
+            const emailValidation = document.getElementById('emailValidation');
+            let validationTimeout;
+            
+            function findCorrectDomain(typo) {
+                for (const [correct, typos] of Object.entries(commonDomains)) {
+                    if (typos.includes(typo.toLowerCase())) {
+                        return correct;
+                    }
+                }
+                return null;
+            }
+            
+            function validateEmailDomain(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!email || !email.includes('@')) {
+                    return null;
+                }
+                
+                const parts = email.split('@');
+                if (parts.length !== 2) {
+                    return { type: 'error', message: 'Formato de email inválido' };
+                }
+                
+                const domain = parts[1].toLowerCase();
+                
+                if (!domain || domain === '.' || domain.startsWith('.')) {
+                    return { type: 'error', message: 'El dominio del email está incompleto' };
+                }
+                
+                if (!domain.includes('.')) {
+                    return { type: 'error', message: 'Falta la extensión del dominio (ej: .com)' };
+                }
+                
+                if (domain.includes('..')) {
+                    return { type: 'error', message: 'El dominio contiene puntos duplicados' };
+                }
+                
+                const correctDomain = findCorrectDomain(domain);
+                if (correctDomain) {
+                    return { 
+                        type: 'warning', 
+                        message: `¿Quisiste decir ${parts[0]}@${correctDomain}?`,
+                        suggestion: `${parts[0]}@${correctDomain}`
+                    };
+                }
+                
+                if (emailRegex.test(email)) {
+                    return { type: 'success', message: '✓ Email válido' };
+                }
+                
+                return null;
+            }
+            
+            function showValidation(result) {
+                if (!result) {
+                    emailValidation.classList.remove('show', 'error', 'warning', 'success');
+                    return;
+                }
+                
+                emailValidation.innerHTML = result.message;
+                
+                if (result.suggestion) {
+                    emailValidation.style.cursor = 'pointer';
+                    emailValidation.onclick = () => {
+                        emailInput.value = result.suggestion;
+                        validateEmail();
+                    };
+                } else {
+                    emailValidation.style.cursor = 'default';
+                    emailValidation.onclick = null;
+                }
+                
+                emailValidation.classList.remove('error', 'warning', 'success');
+                emailValidation.classList.add('show', result.type);
+            }
+            
+            function validateEmail() {
+                const email = emailInput.value;
+                const result = validateEmailDomain(email);
+                showValidation(result);
+            }
+            
+            if (emailInput) {
+                emailInput.addEventListener('input', (e) => {
+                    clearTimeout(validationTimeout);
+                    if (e.target.value.includes('@')) {
+                        validationTimeout = setTimeout(() => {
+                            validateEmail();
+                        }, 500);
+                    } else {
+                        emailValidation.classList.remove('show');
+                    }
+                });
+                
+                emailInput.addEventListener('blur', () => {
+                    if (emailInput.value) {
+                        validateEmail();
+                    }
+                });
+            }
+            
+            // Phone formatting
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 0) {
+                        if (value.length <= 3) {
+                            value = `(${value}`;
+                        } else if (value.length <= 6) {
+                            value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                        } else {
+                            value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                        }
+                    }
+                    e.target.value = value;
+                });
+            }
+            
+            // Form validation on submit
+            const registerForm = document.getElementById('registerForm');
+            if (registerForm) {
+                registerForm.addEventListener('submit', (e) => {
+                    const email = emailInput.value;
+                    const validation = validateEmailDomain(email);
+                    
+                    if (validation && validation.type === 'error') {
+                        e.preventDefault();
+                        emailInput.focus();
+                        showValidation(validation);
+                        return false;
+                    }
+                    
+                    if (validation && validation.type === 'warning') {
+                        const proceed = confirm(`Posible error en el email. ${validation.message}\n\n¿Deseas continuar?`);
+                        if (!proceed) {
+                            e.preventDefault();
+                            emailInput.focus();
+                            return false;
+                        }
+                    }
+                });
+            }
+        })();
+    </script>
     
     <script>
         // Hide loader when page is ready
