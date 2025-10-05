@@ -17,7 +17,7 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{% static 'landing/img/favicon.png' %}">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -176,7 +176,105 @@
                 Únete al movimiento de transformación del Colegio de Médicos.<br>
                 Tu participación es fundamental para el cambio.
             </p>
-            <a href="{% url 'landing:register' %}" class="btn btn-primary animate-on-scroll">Registrarme Ahora</a>
+            
+            <!-- Formulario de Registro Integrado -->
+            <div class="registration-form-container animate-on-scroll">
+                {% if registration_form %}
+                <form id="registrationForm" method="post" action="{% url 'landing:register-api' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group-inline">
+                            <label for="id_name">Nombre</label>
+                            {{ registration_form.name }}
+                        </div>
+                        <div class="form-group-inline">
+                            <label for="id_last_name">Apellidos</label>
+                            {{ registration_form.last_name }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-inline full-width">
+                        <label for="id_postal_address">Dirección Postal</label>
+                        {{ registration_form.postal_address }}
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group-inline">
+                            <label for="id_phone_number">Teléfono</label>
+                            {{ registration_form.phone_number }}
+                        </div>
+                        <div class="form-group-inline">
+                            <label for="id_email">Email (opcional)</label>
+                            {{ registration_form.email }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-inline">
+                        <label>¿Eres médico?</label>
+                        <div class="radio-group-horizontal">
+                            <label class="radio-label">
+                                <input type="radio" name="is_doctor" value="True" onchange="toggleDoctorFields(this.value)">
+                                Sí
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="is_doctor" value="False" checked onchange="toggleDoctorFields(this.value)">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="doctorFields" class="doctor-fields" style="display: none;">
+                        <div class="form-group-inline full-width">
+                            <label for="id_service_location">¿Dónde provee servicios?</label>
+                            {{ registration_form.service_location }}
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group-inline">
+                                <label for="id_years_practicing">Años ejerciendo</label>
+                                {{ registration_form.years_practicing }}
+                            </div>
+                            <div class="form-group-inline">
+                                <label>¿Eres colegiado?</label>
+                                <div class="radio-group-horizontal">
+                                    <label class="radio-label">
+                                        <input type="radio" name="is_licensed" value="True">
+                                        Sí
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="is_licensed" value="False" checked>
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-inline">
+                        <label>¿Necesitará ayuda con voto adelantado?</label>
+                        <div class="radio-group-horizontal">
+                            <label class="radio-label">
+                                <input type="radio" name="needs_voting_help" value="True">
+                                Sí
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="needs_voting_help" value="False" checked>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="registrationMessages" style="margin-top: 20px;"></div>
+                    
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        Completar Registro
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'landing:register' %}" class="btn btn-primary animate-on-scroll">Registrarme Ahora</a>
+                {% endif %}
+            </div>
         </div>
     </section>
     
