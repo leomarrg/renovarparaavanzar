@@ -30,17 +30,11 @@ ALLOWED_HOSTS = [
     'leomarrg.pythonanywhere.com',
 ]
 
+# Site URL for absolute URLs in emails and other purposes
 if DEBUG:
     SITE_URL = 'http://127.0.0.1:8000'
 else:
     SITE_URL = 'https://www.renovarparaavanzar.com'
-
-
-
-# if DEBUG:
-#     SITE_URL = 'http://127.0.0.1:8000'
-# else:
-#     SITE_URL = 'https://www.tudominio.com'  # Cambiar en producción
 
 
 # Application definition
