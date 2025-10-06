@@ -30,6 +30,11 @@ ALLOWED_HOSTS = [
     'leomarrg.pythonanywhere.com',
 ]
 
+if DEBUG:
+    SITE_URL = 'http://127.0.0.1:8000'
+else:
+    SITE_URL = 'https://www.renovarparaavanzar.com'
+
 
 
 # if DEBUG:
