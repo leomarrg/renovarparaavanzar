@@ -31,10 +31,10 @@ ALLOWED_HOSTS = [
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-if DEBUG:
-    SITE_URL = 'http://127.0.0.1:8000'
-else:
-    SITE_URL = 'https://www.tudominio.com'  # Cambiar en producción
+# if DEBUG:
+#     SITE_URL = 'http://127.0.0.1:8000'
+# else:
+#     SITE_URL = 'https://www.tudominio.com'  # Cambiar en producción
 
 
 # Application definition
