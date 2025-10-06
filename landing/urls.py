@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     
      # Registro integrado en index pero con URL propia
-    path('registro/', views.IndexWithRegistrationView.as_view(), name='register'),
+    path('registro/', views.RegisterView.as_view(), name='register'),
     
     # Páginas informativas
     path('equipo/', views.TeamView.as_view(), name='team'),

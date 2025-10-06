@@ -198,7 +198,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <input type="text" name="lastname" placeholder="Apellidos" required>
+                            <input type="text" name="last_name" placeholder="Apellidos" required>
                         </div>
                     </div>
                     
@@ -209,16 +209,12 @@
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <input type="text" name="address" placeholder="Dirección postal" required>
+                            <input type="text" name="postal_address" placeholder="Dirección postal" required>
                         </div>
                         
                         <div class="form-group">
-                            <input type="tel" name="phone" id="phone" placeholder="Número telefónico" required>
+                            <input type="tel" name="phone_number" id="phone" placeholder="Número telefónico" required>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea name="services" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
                     </div>
                     
                     <div class="question-group">
@@ -226,44 +222,59 @@
                         <div class="radio-group">
                             <div class="radio-option">
                                 <label>Sí</label>
-                                <input type="radio" name="is_doctor" value="yes" id="doctor_yes">
+                                <input type="radio" name="is_doctor" value="True" id="doctor_yes" required>
                             </div>
                             <div class="radio-option">
                                 <label>No</label>
-                                <input type="radio" name="is_doctor" value="no" id="doctor_no">
+                                <input type="radio" name="is_doctor" value="False" id="doctor_no">
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="years-section" id="yearsSection" style="display: flex;">
-                        <span>Años ejerciendo la disciplina</span>
-                        <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
-                    </div>
-                    
-                    <div class="question-group">
-                        <div class="question-section">¿Eres colegiado?</div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <label>Sí</label>
-                                <input type="radio" name="is_member" value="yes">
-                            </div>
-                            <div class="radio-option">
-                                <label>No</label>
-                                <input type="radio" name="is_member" value="no">
+
+                    <!-- INICIO DEL DIV QUE SE OCULTA -->
+                    <div id="doctorFields" style="display: none;">
+                        
+                        <div class="form-group">
+                            <input type="text" name="specialty" id="specialty" placeholder="Especialidad que practica">
+                        </div>
+                        
+                        <div class="years-section">
+                            <span>Años ejerciendo la disciplina</span>
+                            <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <textarea name="service_location" id="service_location" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="question-group">
+                            <div class="question-section">¿Eres colegiado?</div>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <label>Sí</label>
+                                    <input type="radio" name="is_licensed" value="True" id="licensed_yes">
+                                </div>
+                                <div class="radio-option">
+                                    <label>No</label>
+                                    <input type="radio" name="is_licensed" value="False" id="licensed_no">
+                                </div>
                             </div>
                         </div>
+                        
                     </div>
-                    
+                    <!-- FIN DEL DIV QUE SE OCULTA -->
+
+                    <!-- ESTE DEBE ESTAR FUERA, SIEMPRE VISIBLE -->
                     <div class="question-group">
-                        <div class="question-section">¿Necesitará ayuda con voto adelantado?</div>
+                        <div class="question-section" style="font-size: .75rem;">¿Necesitará ayuda con voto adelantado?</div>
                         <div class="radio-group">
                             <div class="radio-option">
                                 <label>Sí</label>
-                                <input type="radio" name="needs_help" value="yes">
+                                <input type="radio" name="needs_voting_help" value="True" required>
                             </div>
                             <div class="radio-option">
                                 <label>No</label>
-                                <input type="radio" name="needs_help" value="no">
+                                <input type="radio" name="needs_voting_help" value="False">
                             </div>
                         </div>
                     </div>
@@ -608,6 +619,76 @@
         
         // Update countdown every second
         setInterval(updateCountdown, 1000);
+
+        // Show/hide doctor-specific fields based on selection
+        const doctorYes = document.getElementById('doctor_yes');
+        const doctorNo = document.getElementById('doctor_no');
+        const doctorFields = document.getElementById('doctorFields');
+        const yearsInput = document.getElementById('years');
+        const specialtyInput = document.getElementById('specialty');
+        const serviceLocationInput = document.getElementById('service_location');
+        const licensedYes = document.getElementById('licensed_yes');
+        const licensedNo = document.getElementById('licensed_no');
+
+        if (doctorNo) {
+            doctorNo.addEventListener('change', function() {
+                if (this.checked) {
+                    doctorFields.style.display = 'none';
+                    
+                    // DESHABILITAR los campos para que no se envíen
+                    if (yearsInput) {
+                        yearsInput.value = '';
+                        yearsInput.disabled = true;
+                    }
+                    if (specialtyInput) {
+                        specialtyInput.value = '';
+                        specialtyInput.disabled = true;
+                    }
+                    if (serviceLocationInput) {
+                        serviceLocationInput.value = '';
+                        serviceLocationInput.disabled = true;
+                    }
+                    if (licensedYes) {
+                        licensedYes.checked = false;
+                        licensedYes.disabled = true;
+                        licensedYes.removeAttribute('required');
+                    }
+                    if (licensedNo) {
+                        licensedNo.checked = false;
+                        licensedNo.disabled = true;
+                        licensedNo.removeAttribute('required');
+                    }
+                }
+            });
+        }
+
+        if (doctorYes) {
+            doctorYes.addEventListener('change', function() {
+                if (this.checked) {
+                    doctorFields.style.display = 'block';
+                    
+                    // HABILITAR los campos cuando se muestra
+                    if (yearsInput) yearsInput.disabled = false;
+                    if (specialtyInput) specialtyInput.disabled = false;
+                    if (serviceLocationInput) serviceLocationInput.disabled = false;
+                    if (licensedYes) {
+                        licensedYes.disabled = false;
+                        licensedYes.setAttribute('required', 'required');
+                    }
+                    if (licensedNo) {
+                        licensedNo.disabled = false;
+                        licensedNo.setAttribute('required', 'required');
+                    }
+                }
+            });
+        }
+        {% if scroll_to_register %}
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+            }, 600);
+        });
+        {% endif %}
     </script>
     
     {% if messages %}

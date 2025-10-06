@@ -224,56 +224,29 @@ class RegisterAPIView(View):
             })
 
 
-class RegisterView(View):
+class RegisterView(IndexView):
     """Vista para registro de voluntarios y simpatizantes - adaptada de ponchapr_app"""
-    template_name = 'landing/register.html'
-    
-    def get(self, request):
-        # Importar el formulario aquí para evitar errores de importación circular
-        try:
-            from .forms import RegistrationForm
-        except ImportError:
-            # Si el formulario no existe aún, crear contexto básico
-            context = {
-                'page_title': 'Únete al Movimiento - Renovar para Avanzar',
-                'candidate': {
-                    'name': 'Dr. Méndez Sexto',
-                    'campaign_slogan': 'Renovar para Avanzar',
-                }
-            }
-            return render(request, self.template_name, context)
-        
-        form = RegistrationForm()
-        context = {
-            'page_title': 'Únete al Movimiento - Renovar para Avanzar',
-            'form': form,
-            'candidate': {
-                'name': 'Dr. Méndez Sexto',
-                'campaign_slogan': 'Renovar para Avanzar',
-            }
-        }
-        return render(request, self.template_name, context)
+
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['scroll_to_register'] = True
+            return context
     
     def post(self, request):
-        # Importar el formulario y modelo
         try:
             from .forms import RegistrationForm
             from .models import Registration
         except ImportError as e:
             messages.error(request, f"Error de configuración: {str(e)}")
-            return redirect('landing:register')
+            return redirect('landing:index')
         
         form = RegistrationForm(request.POST)
         
         if form.is_valid():
             try:
-                # Guardar el registro (similar a front_desk_register en ponchapr)
-                registration = form.save(commit=False)
+                registration = form.save()
                 
-                # El unique_id se genera automáticamente en el método save del modelo
-                registration.save()
-                
-                # Intentar enviar correo de confirmación si se proporcionó email
                 email_sent = False
                 email_status = ""
                 
@@ -282,13 +255,9 @@ class RegisterView(View):
                         email_sent = self.send_confirmation_email(registration)
                         if email_sent:
                             email_status = "Se ha enviado un correo de confirmación a tu email."
-                        else:
-                            email_status = ""
                     except Exception as email_error:
                         print(f"Error enviando correo: {email_error}")
-                        email_status = ""
                 
-                # Mensaje de éxito con el código único
                 success_message = f'''
                 ¡Registro exitoso! {registration.name} {registration.last_name} ha sido registrado. 
                 <br><br>
@@ -301,49 +270,30 @@ class RegisterView(View):
                 '''
                 
                 messages.success(request, success_message)
-                
-                # Crear un nuevo formulario vacío para el siguiente registro
-                form = RegistrationForm()
+                return redirect('landing:index')
                 
             except Exception as e:
                 print(f"Error en el registro: {str(e)}")
                 traceback.print_exc()
-                messages.error(request, f"Hubo un problema con el registro. Por favor intenta de nuevo.")
+                messages.error(request, "Hubo un problema con el registro. Por favor intenta de nuevo.")
         else:
-            # Procesar errores del formulario
             for field, errors in form.errors.items():
                 for error in errors:
-                    # Obtener el nombre legible del campo
-                    if field in form.fields:
-                        field_name = form.fields[field].label
-                    else:
-                        field_name = field.replace('_', ' ').title()
+                    field_name = form.fields[field].label if field in form.fields else field.replace('_', ' ').title()
                     messages.error(request, f"{field_name}: {error}")
         
-        context = {
-            'page_title': 'Únete al Movimiento - Renovar para Avanzar',
-            'form': form,
-            'candidate': {
-                'name': 'Dr. Méndez Sexto',
-                'campaign_slogan': 'Renovar para Avanzar',
-            }
-        }
-        return render(request, self.template_name, context)
+        return redirect('landing:index')
     
     def send_confirmation_email(self, registration):
-        """Enviar email de confirmación - adaptado de ponchapr_app"""
+        """Enviar email de confirmación"""
         try:
-            subject = 'Confirmación de Registro - Renovar para Avanzar'
+            subject = 'Gracias por el apoyo - Renovar para Avanzar'  # CAMBIADO
             from_email = settings.EMAIL_HOST_USER if hasattr(settings, 'EMAIL_HOST_USER') else 'noreply@renovarparaavanzar.com'
             to_email = registration.email
             
-            # Contenido HTML del email
             html_content = self.generate_email_html(registration)
-            
-            # Generar versión de texto plano
             text_content = strip_tags(html_content)
             
-            # Crear el email
             email = EmailMultiAlternatives(
                 subject,
                 text_content,
@@ -351,20 +301,17 @@ class RegisterView(View):
                 [to_email]
             )
             
-            # Adjuntar el contenido HTML
             email.attach_alternative(html_content, "text/html")
-            
-            # Enviar el email
             email.send()
             print(f"Email de confirmación enviado exitosamente a {to_email}")
             
             return True
-            
+        
         except Exception as e:
             print(f"Error enviando email de confirmación: {e}")
             traceback.print_exc()
             return False
-    
+
     def generate_email_html(self, registration):
         """Generar el HTML del email de confirmación"""
         return f"""
@@ -379,33 +326,23 @@ class RegisterView(View):
                     color: #333;
                     max-width: 600px;
                     margin: 0 auto;
-                    padding: 20px;
+                    padding: 0;
+                    background-color: #f4f4f4;
                 }}
                 .header {{
                     background: linear-gradient(135deg, #4DB6AC, #00897B);
                     color: white;
-                    padding: 20px;
+                    padding: 40px 20px;
                     text-align: center;
-                    border-radius: 10px 10px 0 0;
+                }}
+                .header img {{
+                    max-width: 200px;
+                    height: auto;
+                    margin-bottom: 20px;
                 }}
                 .content {{
-                    background: #f9f9f9;
+                    background: #ffffff;
                     padding: 30px;
-                    border-radius: 0 0 10px 10px;
-                }}
-                .code-box {{
-                    background: #fff;
-                    border: 2px solid #FF7043;
-                    border-radius: 10px;
-                    padding: 20px;
-                    margin: 20px 0;
-                    text-align: center;
-                }}
-                .code {{
-                    font-size: 32px;
-                    font-weight: bold;
-                    color: #FF7043;
-                    letter-spacing: 2px;
                 }}
                 .info-row {{
                     margin: 10px 0;
@@ -416,24 +353,33 @@ class RegisterView(View):
                     font-weight: bold;
                     color: #00897B;
                 }}
+                .donation-box {{
+                    background: #FFF3CD;
+                    border: 2px solid #FF7043;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin: 20px 0;
+                    text-align: center;
+                }}
+                .footer {{
+                    background: #f9f9f9;
+                    padding: 20px;
+                    text-align: center;
+                    border-top: 2px solid #e0e0e0;
+                }}
             </style>
         </head>
         <body>
             <div class="header">
-                <h1>¡Bienvenido a Renovar para Avanzar!</h1>
-                <p>Campaña Dr. Méndez Sexto</p>
+                <img src="https://renovarparaavanzar.com/static/landing/img/DR-MENDEZ-GENERICO@2x.jpg" alt="Dr. Méndez Sexto">
+                <h1>¡Juntos Renovamos el Colegio de Médicos!</h1>
+                <p>Campaña Dr. Méndez Sexto - Renovar para Avanzar</p>
             </div>
             
             <div class="content">
                 <p>Estimado/a <strong>{registration.name} {registration.last_name}</strong>,</p>
                 
-                <p>¡Gracias por unirte a nuestro movimiento! Tu registro ha sido confirmado exitosamente.</p>
-                
-                <div class="code-box">
-                    <p>Tu Código Único de Registro:</p>
-                    <div class="code">{registration.unique_id}</div>
-                    <p style="font-size: 12px; color: #666;">Por favor guarda este código para futuras referencias</p>
-                </div>
+                <p>¡Gracias por unirte a nuestro movimiento de transformación! Tu registro ha sido confirmado exitosamente.</p>
                 
                 <h3>Información Registrada:</h3>
                 
@@ -466,17 +412,30 @@ class RegisterView(View):
                 </div>
                 
                 <p style="margin-top: 30px;">
-                    {'Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.' if registration.needs_voting_help else 'Pronto recibirás más información sobre eventos y actividades de la campaña.'}
+                    {'Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.' if registration.needs_voting_help else ''}
+                </p>
+                
+                <div class="donation-box">
+                    <h3 style="color: #FF7043; margin-top: 0;">Apoya la Campaña</h3>
+                    <p>Puedes realizar tu donación a través de <strong>ATH Móvil</strong> a:</p>
+                    <p style="font-size: 24px; font-weight: bold; color: #00897B;">comitedrmendezsexto</p>
+                </div>
+                
+                <p style="background: #E8F4F1; padding: 15px; border-radius: 8px; font-size: 14px;">
+                    <strong>📧 Mantente Informado:</strong><br>
+                    Recibirás avisos, noticias y promociones de la campaña por correo electrónico y mensaje de texto.
                 </p>
                 
                 <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
-                
-                <p style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
-                    <strong>Atentamente,</strong><br>
-                    Equipo de Campaña<br>
-                    <strong style="color: #4DB6AC;">Dr. Méndez Sexto</strong><br>
-                    <em>Renovar para Avanzar - Colegio de Médicos y Cirujanos de Puerto Rico</em>
-                </p>
+            </div>
+            
+            <div class="footer">
+                <strong>Atentamente,</strong><br>
+                Equipo de Campaña<br>
+                <strong style="color: #4DB6AC;">Dr. Méndez Sexto</strong><br>
+                <em>Renovar para Avanzar</em><br>
+                <small>Colegio de Médicos y Cirujanos de Puerto Rico</small><br><br>
+                <small style="color: #666;">#RenovarParaAvanzar</small>
             </div>
         </body>
         </html>
