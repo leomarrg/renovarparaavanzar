@@ -317,8 +317,8 @@ class RegisterView(IndexView):
         from django.conf import settings
         
         # URLs de las imágenes
-        logos_img = f"{settings.SITE_URL}/static/landing/img/logos-combinados.png"
-        ath_logo = f"{settings.SITE_URL}/static/landing/img/ath-logo.png"
+        logos_img = f"{settings.SITE_URL}/static/landing/img/dr_rpa.rev@2x.png"
+        ath_logo = f"{settings.SITE_URL}/static/landing/img/ATHM-logo-horizontal.png"
         
         return f"""
         <!DOCTYPE html>
