@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     'leomarrg.pythonanywhere.com',
 ]
 
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
 
 # if DEBUG:
 #     SITE_URL = 'http://127.0.0.1:8000'
