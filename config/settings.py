@@ -27,6 +27,7 @@ DEBUG = config('DEBUG', default='False', cast=bool)
 ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
+    'leomarrg.pythonanywhere.com',
 ]
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
