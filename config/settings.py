@@ -25,10 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
 DEBUG = config('DEBUG', default='False', cast=bool)
 ALLOWED_HOSTS = [
-    'www.renovarparaavanzar.com',  # Si tienes dominio propio
     'renovarparaavanzar.com',
-    '127.0.0.1',
-    'localhost',
+    'www.renovarparaavanzar.com',
 ]
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
