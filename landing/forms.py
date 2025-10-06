@@ -15,7 +15,7 @@ class RegistrationForm(forms.ModelForm):
         required=True
     )
     
-    # Campo para "¿Eres colegiado?" como radio buttons - AHORA NO REQUERIDO
+    # Campo para "¿Eres colegiado?" como radio buttons - NO REQUERIDO
     is_licensed = forms.ChoiceField(
         choices=[(True, 'Sí'), (False, 'No')],
         widget=forms.RadioSelect(attrs={
@@ -23,7 +23,7 @@ class RegistrationForm(forms.ModelForm):
         }),
         label='¿Eres colegiado?',
         initial=False,
-        required=False  # CAMBIO AQUÍ
+        required=False
     )
     
     # Campo para "¿Necesitará ayuda con voto adelantado?" como radio buttons
@@ -37,6 +37,27 @@ class RegistrationForm(forms.ModelForm):
         required=True
     )
     
+    # NUEVOS CAMPOS - Checkboxes de términos y promociones
+    accepts_terms = forms.BooleanField(
+        required=True,
+        initial=True,
+        label='Acepto los términos y condiciones',
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input',
+            'checked': 'checked'
+        })
+    )
+    
+    accepts_promotions = forms.BooleanField(
+        required=False,
+        initial=True,
+        label='Acepto recibir información sobre la campaña',
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input',
+            'checked': 'checked'
+        })
+    )
+    
     class Meta:
         model = Registration
         fields = [
@@ -45,12 +66,14 @@ class RegistrationForm(forms.ModelForm):
             'postal_address', 
             'phone_number',
             'service_location',
-            'specialty',  # AGREGAR ESTO
+            'specialty',
             'is_doctor',
             'years_practicing',
             'is_licensed',
             'needs_voting_help',
-            'email'
+            'email',
+            'accepts_terms',
+            'accepts_promotions'
         ]
         
         widgets = {
@@ -75,7 +98,7 @@ class RegistrationForm(forms.ModelForm):
                 'placeholder': '(787) 123-4567',
                 'required': True,
             }),
-            'specialty': forms.TextInput(attrs={  # AGREGAR ESTO
+            'specialty': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Especialidad médica',
             }),
@@ -126,6 +149,13 @@ class RegistrationForm(forms.ModelForm):
                 raise forms.ValidationError("El número de teléfono debe tener al menos 10 dígitos.")
             return phone
         return phone
+    
+    def clean_accepts_terms(self):
+        """Validar que los términos hayan sido aceptados"""
+        accepts_terms = self.cleaned_data.get('accepts_terms')
+        if not accepts_terms:
+            raise forms.ValidationError("Debe aceptar los términos y condiciones para continuar.")
+        return accepts_terms
     
     def clean(self):
         """Validación general del formulario"""

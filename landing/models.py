@@ -38,6 +38,18 @@ class Registration(models.Model):
         verbose_name="¿Necesitará ayuda con voto adelantado?",
         default=False
     )
+
+    accepts_terms = models.BooleanField(
+        verbose_name="Acepta términos y condiciones",
+        default=False,
+        help_text="El usuario acepta los términos de servicio"
+    )
+    
+    accepts_promotions = models.BooleanField(
+        verbose_name="Acepta recibir promociones",
+        default=False,
+        help_text="El usuario acepta recibir comunicaciones promocionales"
+    )
     
     # Campos del sistema
     unique_id = models.CharField(max_length=6, unique=True, blank=True)

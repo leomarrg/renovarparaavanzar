@@ -15,6 +15,8 @@ class RegistrationAdmin(admin.ModelAdmin):
         'is_doctor_display',
         'is_licensed_display',
         'needs_voting_help_display',
+        'accepts_terms_display',
+        'accepts_promotions_display',
         'created_at'
     )
     
@@ -22,6 +24,8 @@ class RegistrationAdmin(admin.ModelAdmin):
         'is_doctor',
         'is_licensed', 
         'needs_voting_help',
+        'accepts_terms',
+        'accepts_promotions',
         'created_at'
     )
     
@@ -46,13 +50,17 @@ class RegistrationAdmin(admin.ModelAdmin):
         ('Asistencia Electoral', {
             'fields': ('needs_voting_help',)
         }),
+        ('Consentimientos', {
+            'fields': ('accepts_terms', 'accepts_promotions'),
+            'description': 'Consentimientos del usuario'
+        }),
         ('Información del Sistema', {
             'fields': ('unique_id', 'created_at', 'updated_at'),
             'classes': ('collapse',)
         })
     )
     
-    actions = ['export_to_csv', 'export_doctors_only', 'export_voting_help']
+    actions = ['export_to_csv', 'export_doctors_only', 'export_voting_help', 'export_promotions']
     
     def full_name(self, obj):
         """Mostrar nombre completo"""
@@ -90,6 +98,26 @@ class RegistrationAdmin(admin.ModelAdmin):
     needs_voting_help_display.short_description = "¿Necesita Ayuda Voto?"
     needs_voting_help_display.admin_order_field = 'needs_voting_help'
     
+    def accepts_terms_display(self, obj):
+        """Mostrar si aceptó términos"""
+        if obj.accepts_terms:
+            return format_html(
+                '<span style="color: green;">✓ Aceptó</span>'
+            )
+        return format_html('<span style="color: red;">✗ No aceptó</span>')
+    accepts_terms_display.short_description = "Términos"
+    accepts_terms_display.admin_order_field = 'accepts_terms'
+    
+    def accepts_promotions_display(self, obj):
+        """Mostrar si aceptó promociones"""
+        if obj.accepts_promotions:
+            return format_html(
+                '<span style="color: green;">✓ Aceptó</span>'
+            )
+        return format_html('<span style="color: gray;">No aceptó</span>')
+    accepts_promotions_display.short_description = "Promociones"
+    accepts_promotions_display.admin_order_field = 'accepts_promotions'
+    
     def export_to_csv(self, request, queryset):
         """Exportar registros seleccionados a CSV"""
         response = HttpResponse(content_type='text/csv')
@@ -99,7 +127,8 @@ class RegistrationAdmin(admin.ModelAdmin):
         writer.writerow([
             'Código', 'Nombre', 'Apellidos', 'Dirección', 'Teléfono', 
             'Email', '¿Médico?', 'Lugar de Servicios', 'Años Ejerciendo', 
-            '¿Colegiado?', '¿Necesita Ayuda Voto?', 'Fecha Registro'
+            '¿Colegiado?', '¿Necesita Ayuda Voto?', 'Aceptó Términos', 
+            'Aceptó Promociones', 'Fecha Registro'
         ])
         
         for reg in queryset:
@@ -115,6 +144,8 @@ class RegistrationAdmin(admin.ModelAdmin):
                 reg.years_practicing or '',
                 'Sí' if reg.is_licensed else 'No',
                 'Sí' if reg.needs_voting_help else 'No',
+                'Sí' if reg.accepts_terms else 'No',
+                'Sí' if reg.accepts_promotions else 'No',
                 reg.created_at.strftime('%d/%m/%Y %H:%M')
             ])
         
@@ -172,6 +203,29 @@ class RegistrationAdmin(admin.ModelAdmin):
         return response
     export_voting_help.short_description = "Exportar lista de ayuda voto adelantado"
     
+    def export_promotions(self, request, queryset):
+        """Exportar personas que aceptaron recibir promociones"""
+        accepts_promos = queryset.filter(accepts_promotions=True)
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="lista_promociones.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow([
+            'Código', 'Nombre', 'Apellidos', 'Email', 'Teléfono'
+        ])
+        
+        for person in accepts_promos:
+            writer.writerow([
+                person.unique_id,
+                person.name,
+                person.last_name,
+                person.email or '',
+                person.phone_number
+            ])
+        
+        return response
+    export_promotions.short_description = "Exportar lista de contactos para promociones"
+    
     def changelist_view(self, request, extra_context=None):
         """Vista personalizada del listado con estadísticas"""
         extra_context = extra_context or {}
@@ -181,14 +235,19 @@ class RegistrationAdmin(admin.ModelAdmin):
         total_medicos = Registration.objects.filter(is_doctor=True).count()
         total_colegiados = Registration.objects.filter(is_licensed=True).count()
         total_necesitan_ayuda = Registration.objects.filter(needs_voting_help=True).count()
+        total_acepto_terminos = Registration.objects.filter(accepts_terms=True).count()
+        total_acepto_promociones = Registration.objects.filter(accepts_promotions=True).count()
         
         extra_context.update({
             'total_registros': total_registros,
             'total_medicos': total_medicos,
             'total_colegiados': total_colegiados,
             'total_necesitan_ayuda': total_necesitan_ayuda,
+            'total_acepto_terminos': total_acepto_terminos,
+            'total_acepto_promociones': total_acepto_promociones,
             'porcentaje_medicos': round((total_medicos / total_registros * 100), 1) if total_registros > 0 else 0,
             'porcentaje_ayuda': round((total_necesitan_ayuda / total_registros * 100), 1) if total_registros > 0 else 0,
+            'porcentaje_promociones': round((total_acepto_promociones / total_registros * 100), 1) if total_registros > 0 else 0,
         })
         
         return super().changelist_view(request, extra_context=extra_context)

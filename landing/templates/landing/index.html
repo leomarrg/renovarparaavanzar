@@ -26,6 +26,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
+
+    <style>
+.checkbox-group {
+    padding: 15px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 12px;
+    margin-top: 3px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #4DB6AC;
+    flex-shrink: 0;
+}
+
+.checkbox-text {
+    color: #333;
+    user-select: none;
+}
+
+.checkbox-text a {
+    color: #4DB6AC;
+    text-decoration: underline;
+}
+
+.checkbox-text a:hover {
+    color: #377e7c;
+}
+</style>
 </head>
 <body>
     <!-- Loader -->
@@ -277,6 +315,33 @@
                                 <input type="radio" name="needs_voting_help" value="False">
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Checkbox de términos y condiciones -->
+                    <div class="checkbox-group" style="margin: 25px 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                name="accepts_terms" 
+                                id="accepts_terms" 
+                                required 
+                                checked>
+                            <span class="checkbox-text">
+                                Acepto los <a href="#" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Checkbox de promociones -->
+                    <div class="checkbox-group" style="margin: 25px 0;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                name="accepts_promotions" 
+                                id="accepts_promotions" 
+                                checked>
+                            <span class="checkbox-text">
+                                Acepto recibir información sobre la campaña y actividades
+                            </span>
+                        </label>
                     </div>
                     
                     <button type="submit" class="register-submit-btn">Someter</button>
