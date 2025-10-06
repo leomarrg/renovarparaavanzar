@@ -3,6 +3,28 @@
    Estilos Personalizados
    ============================================== */
 
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Michigan Signature';
+    src: url('../fonts/Michigan_Signature.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Variables de Color */
 :root {
     --teal-primary: #4DB6AC;
@@ -20,6 +42,8 @@
     --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
     --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
     --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+    --font-primary: 'Montserrat', sans-serif;
+    --font-signature: 'Michigan Signature', cursive;
 }
 
 /* Reset y Base */
@@ -34,18 +58,22 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-primary);
     color: var(--gray-dark);
     background-color: var(--white);
-    line-height: 1.6;
+    line-height: 1.4;
     overflow-x: hidden;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: var(--font-primary);
     font-weight: 700;
-    line-height: 1.2;
+}
+
+.signature-text,
+.title-script {
+    font-family: var(--font-signature);
 }
 
 .script-font {
@@ -530,33 +558,45 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ========== REGISTER SECTION ========== */
 .register-section {
-    padding: 80px 0;
-    background: linear-gradient(180deg, #F0F9F7 0%, #E8F4F1 100%);
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  padding: 80px 0;
+  background-color: #fff;
+  overflow: hidden;
 }
 
+/* Fondo con patrón */
 .register-section::before {
-    content: '';
-    position: absolute;
-    top: -20%;
-    left: -10%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(74, 155, 142, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('../img/backgrounds/pattern-line.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: .05;
 }
 
+/* Capa blanca con opacidad de abajo hacia arriba */
 .register-section::after {
-    content: '';
-    position: absolute;
-    bottom: -15%;
-    right: -10%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(230, 126, 91, 0.06) 0%, transparent 70%);
-    border-radius: 50%;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top, 
+    rgba(255, 255, 255, 1) 0%,      /* blanco sólido abajo */
+    rgba(255, 255, 255, 0.8) 70%,   /* casi blanco a mitad */
+    rgba(255, 255, 255, 0) 80%      /* transparente arriba */
+  );
+  z-index: 2;
 }
+
+/* Asegura que el contenido quede encima */
+.register-section > * {
+  position: relative;
+  z-index: 3;
+}
+
 
 .register-wrapper {
     max-width: 720px;
@@ -567,7 +607,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .register-header {
     text-align: center;
-    margin-bottom: 40px;
 }
 
 .header-badge {
@@ -577,62 +616,52 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50px;
     display: inline-block;
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: var(--font-primary);
     margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(74, 155, 142, 0.3);
+    background: linear-gradient(to right, #377e7c 0%, #377e7c 5%, #4dabaa 60%);
 }
 
 .title-main {
-    font-size: 1.3rem;
+    font-size: 2.3rem;
     color: #2C3E50;
-    margin-bottom: 5px;
     font-weight: 400;
+    font-family: var(--font-primary);
 }
 
 .title-script {
-    font-family: 'Pacifico', cursive;
-    font-size: 2.5rem;
+    font-family: var(--font-signature);
+    font-size: 4.2rem;
     color: #E67E5B;
-    margin: 10px 0 20px;
+    margin: -15px 0 0 0;
     font-weight: 400;
     line-height: 1.2;
 }
 
 .doctor-name {
-    margin: 20px 0;
+    margin: 10px 0;
+    text-align: center;
 }
 
-.doctor-prefix {
-    color: #6B7280;
-    font-size: 1.1rem;
-    font-weight: 400;
-}
-
-.doctor-surname {
-    color: #4A9B8E;
-    font-size: 1.8rem;
-    font-weight: 600;
+.doctor-name img {
+    max-width: 270px;
+    width: 100%;
+    height: auto;
     display: inline-block;
 }
 
-.doctor-lastname {
-    color: #4A9B8E;
-    font-size: 1.8rem;
-    font-weight: 600;
-}
-
 .campaign-hashtag {
-    color: #2C3E50;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-top: 10px;
+    color: #414042;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: var(--font-primary);
+    margin-top: 20px;
 }
 
 .register-form-container {
-    background: white;
     border-radius: 20px;
     padding: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
 }
 
 .form-row {
@@ -676,7 +705,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .register-form input[type="text"],
 .register-form input[type="email"],
-.register-form input[type="tel"] {
+.register-form input[type="tel"],
+.register-form textarea {
     text-align: center;
 }
 
@@ -696,8 +726,8 @@ h1, h2, h3, h4, h5, h6 {
 .question-group {
     margin: 25px 0;
     display: grid;
-    grid-template-columns: 270px 1fr;
-    gap: 20px;
+    grid-template-columns: 194px 1fr;
+    gap: 10px;
     align-items: center;
 }
 
@@ -711,21 +741,23 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     font-size: 0.95rem;
     white-space: nowrap;
+    background: linear-gradient(to right, #377e7c 0%, #377e7c 5%, #4dabaa 60%);
 }
 
 .radio-group {
     display: flex;
     justify-content: flex-start;
-    gap: 40px;
+    gap: 20px;
 }
 
 .years-section {
     margin: 25px 0 !important;
     display: grid !important;
-    grid-template-columns: 315px 1fr !important;
+    grid-template-columns: 218px 1fr !important;
     gap: 20px !important;
     align-items: center !important;
     animation: slideDown 0.3s ease;
+    
 }
 
 .years-section span {
@@ -736,6 +768,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
     text-align: center;
     display: block;
+    background: linear-gradient(to right, #377e7c 0%, #377e7c 5%, #4dabaa 60%);
 }
 
 .years-section input[type="number"] {
@@ -762,20 +795,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .register-submit-btn {
-    width: 100%;
+    width: 50%;
     padding: 16px;
-    background: linear-gradient(135deg, #4A9B8E 0%, #3A7B6E 100%);
+    background: #c06737;
     color: white;
     border: none;
     border-radius: 50px;
     font-size: 1.1rem;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 30px;
-    text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 4px 15px rgba(74, 155, 142, 0.3);
+    margin: 30px auto 0;  /* ← Esta línea lo centra */
+    display: block;
+
 }
 
 .register-submit-btn:hover {
@@ -982,11 +1015,11 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .title-script {
-        font-size: 2rem;
+        font-size: 3.5rem;
     }
     
-    .radio-group {
-        gap: 30px;
+    .doctor-name img {
+        max-width: 220px;
     }
     
     .years-section {
@@ -998,17 +1031,24 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 480px) {
     .header-badge {
-        font-size: 1.2rem;
-        padding: 10px 30px;
+        font-size: 1.9rem;
+        padding: 14px 55px;
+    }
+    
+    .title-main {
+        font-size: 1.7rem;
     }
     
     .title-script {
-        font-size: 1.8rem;
+        font-size: 2.5rem;
     }
     
-    .doctor-surname,
-    .doctor-lastname {
-        font-size: 1.5rem;
+    .doctor-name img {
+        max-width: 220px;
+    }
+    
+    .campaign-hashtag {
+        font-size: 1.45rem;
     }
 }
 
@@ -1110,7 +1150,6 @@ h1, h2, h3, h4, h5, h6 {
     flex-shrink: 0 !important;
 }
 
-/* Eliminar cualquier orden */
 .register-form .radio-option > * {
     order: 0 !important;
 }

@@ -314,6 +314,12 @@ class RegisterView(IndexView):
 
     def generate_email_html(self, registration):
         """Generar el HTML del email de confirmación"""
+        from django.conf import settings
+        
+        # URLs de las imágenes
+        logos_img = f"{settings.SITE_URL}/static/landing/img/logos-combinados.png"
+        ath_logo = f"{settings.SITE_URL}/static/landing/img/ath-logo.png"
+        
         return f"""
         <!DOCTYPE html>
         <html lang="es">
@@ -321,7 +327,7 @@ class RegisterView(IndexView):
             <meta charset="UTF-8">
             <style>
                 body {{
-                    font-family: Arial, sans-serif;
+                    font-family: 'Montserrat', Arial, sans-serif;
                     line-height: 1.6;
                     color: #333;
                     max-width: 600px;
@@ -329,113 +335,223 @@ class RegisterView(IndexView):
                     padding: 0;
                     background-color: #f4f4f4;
                 }}
+                .container {{
+                    background: #ffffff;
+                    margin: 20px auto;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                }}
                 .header {{
                     background: linear-gradient(135deg, #4DB6AC, #00897B);
                     color: white;
                     padding: 40px 20px;
                     text-align: center;
                 }}
-                .header img {{
-                    max-width: 200px;
+                .header h1 {{
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 700;
+                }}
+                .thank-you-box {{
+                    background: #377e7c;
+                    color: white;
+                    padding: 30px 20px;
+                    text-align: center;
+                    margin: 0;
+                }}
+                .thank-you-box p {{
+                    font-size: 16px;
+                    line-height: 1.8;
+                    margin: 0 0 25px 0;
+                    font-weight: 500;
+                }}
+                .thank-you-box img {{
+                    max-width: 400px;
+                    width: 100%;
                     height: auto;
-                    margin-bottom: 20px;
+                    margin-top: 20px;
                 }}
                 .content {{
-                    background: #ffffff;
                     padding: 30px;
                 }}
-                .info-row {{
-                    margin: 10px 0;
-                    padding: 8px 0;
-                    border-bottom: 1px solid #e0e0e0;
-                }}
-                .label {{
-                    font-weight: bold;
-                    color: #00897B;
-                }}
-                .donation-box {{
-                    background: #FFF3CD;
-                    border: 2px solid #FF7043;
-                    border-radius: 10px;
+                .info-section {{
+                    background: #f8f9fa;
+                    border-left: 4px solid #377e7c;
                     padding: 20px;
                     margin: 20px 0;
+                    border-radius: 5px;
+                }}
+                .info-section h3 {{
+                    color: #377e7c;
+                    margin-top: 0;
+                    font-size: 18px;
+                }}
+                .info-row {{
+                    margin: 12px 0;
+                    padding: 10px 0;
+                    border-bottom: 1px solid #e0e0e0;
+                }}
+                .info-row:last-child {{
+                    border-bottom: none;
+                }}
+                .label {{
+                    font-weight: 700;
+                    color: #377e7c;
+                    display: inline-block;
+                    min-width: 180px;
+                }}
+                .ath-box {{
+                    background: #377e7c;
+                    color: white;
+                    border-radius: 15px;
+                    padding: 30px 25px;
+                    margin: 25px 0;
                     text-align: center;
                 }}
+                .ath-box h3 {{
+                    color: white;
+                    margin: 0 0 15px 0;
+                    font-size: 22px;
+                    font-weight: 700;
+                }}
+                .ath-box p {{
+                    color: white;
+                    margin: 10px 0;
+                    font-size: 16px;
+                    line-height: 1.6;
+                }}
+                .ath-handle {{
+                    font-size: 26px;
+                    font-weight: bold;
+                    color: #FFEB3B;
+                    margin: 20px 0;
+                    padding: 15px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 10px;
+                    display: inline-block;
+                }}
+                .ath-logo {{
+                    margin-top: 20px;
+                }}
+                .ath-logo img {{
+                    max-width: 150px;
+                    height: auto;
+                }}
                 .footer {{
-                    background: #f9f9f9;
-                    padding: 20px;
+                    background: #2c3e50;
+                    color: #ecf0f1;
+                    padding: 25px;
                     text-align: center;
-                    border-top: 2px solid #e0e0e0;
+                }}
+                .footer strong {{
+                    color: #4DB6AC;
+                }}
+                .hashtag {{
+                    color: #4DB6AC;
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin-top: 10px;
                 }}
             </style>
         </head>
         <body>
-            <div class="header">
-                <img src="https://renovarparaavanzar.com/static/landing/img/DR-MENDEZ-GENERICO@2x.jpg" alt="Dr. Méndez Sexto">
-                <h1>¡Juntos Renovamos el Colegio de Médicos!</h1>
-                <p>Campaña Dr. Méndez Sexto - Renovar para Avanzar</p>
-            </div>
-            
-            <div class="content">
-                <p>Estimado/a <strong>{registration.name} {registration.last_name}</strong>,</p>
-                
-                <p>¡Gracias por unirte a nuestro movimiento de transformación! Tu registro ha sido confirmado exitosamente.</p>
-                
-                <h3>Información Registrada:</h3>
-                
-                <div class="info-row">
-                    <span class="label">Nombre Completo:</span> {registration.name} {registration.last_name}
+            <div class="container">
+                <div class="header">
+                    <h1>Renovar para Avanzar</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">Dr. Méndez Sexto - Presidente del Colegio de Médicos</p>
                 </div>
                 
-                <div class="info-row">
-                    <span class="label">Teléfono:</span> {registration.phone_number}
+                <div class="thank-you-box">
+                    <p>
+                        Gracias por unirte para juntos renovar el Colegio de Médicos Cirujanos de Puerto Rico 
+                        y avanzar por nuestra profesión y la salud de Puerto Rico.
+                    </p>
+                    <img src="{logos_img}" alt="Logos">
                 </div>
                 
-                <div class="info-row">
-                    <span class="label">Dirección:</span> {registration.postal_address}
+                <div class="content">
+                    <p style="font-size: 16px;">Estimado/a <strong>{registration.name} {registration.last_name}</strong>,</p>
+                    
+                    <p>Tu registro ha sido confirmado exitosamente. Nos alegra contar contigo en este importante proceso de transformación.</p>
+                    
+                    <div class="info-section">
+                        <h3>Información Registrada</h3>
+                        
+                        <div class="info-row">
+                            <span class="label">Nombre completo:</span>
+                            <span>{registration.name} {registration.last_name}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="label">Teléfono:</span>
+                            <span>{registration.phone_number}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="label">Dirección:</span>
+                            <span>{registration.postal_address}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="label">¿Es médico?:</span>
+                            <span>{'Sí' if registration.is_doctor else 'No'}</span>
+                        </div>
+                        
+                        {f'''<div class="info-row">
+                            <span class="label">Especialidad:</span>
+                            <span>{registration.specialty}</span>
+                        </div>''' if registration.specialty else ''}
+                        
+                        {f'''<div class="info-row">
+                            <span class="label">Años ejerciendo:</span>
+                            <span>{registration.years_practicing} años</span>
+                        </div>''' if registration.years_practicing else ''}
+                        
+                        {f'''<div class="info-row">
+                            <span class="label">Dónde ofrece servicios:</span>
+                            <span>{registration.service_location}</span>
+                        </div>''' if registration.service_location else ''}
+                        
+                        <div class="info-row">
+                            <span class="label">¿Es colegiado?:</span>
+                            <span>{'Sí' if registration.is_licensed else 'No'}</span>
+                        </div>
+                        
+                        <div class="info-row">
+                            <span class="label">Ayuda voto adelantado:</span>
+                            <span>{'Sí necesita ayuda' if registration.needs_voting_help else 'No necesita ayuda'}</span>
+                        </div>
+                    </div>
+                    
+                    {f'''<p style="background: #e8f4f1; padding: 15px; border-radius: 8px; border-left: 4px solid #4DB6AC;">
+                        <strong style="color: #377e7c;">Próximos pasos:</strong><br>
+                        Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.
+                    </p>''' if registration.needs_voting_help else ''}
+                    
+                    <div class="ath-box">
+                        <h3>Apoya la campaña</h3>
+                        <p>Puedes realizar tu donación a través de<br>ATH Móvil Pay Business</p>
+                        <div class="ath-handle">/comitedrmendezsexto</div>
+                        <div class="ath-logo">
+                            <img src="{ath_logo}" alt="ATH Móvil">
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center; color: #666; font-size: 14px; margin-top: 30px;">
+                        Si tienes alguna pregunta, no dudes en contactarnos.
+                    </p>
                 </div>
                 
-                <div class="info-row">
-                    <span class="label">¿Es médico?:</span> {'Sí' if registration.is_doctor else 'No'}
+                <div class="footer">
+                    <strong>Dr. Méndez Sexto</strong><br>
+                    <em>Renovar para Avanzar</em><br>
+                    <small>Colegio de Médicos y Cirujanos de Puerto Rico</small>
+                    <div class="hashtag">#RenovarParaAvanzar</div>
+                    <p style="font-size: 11px; color: #95a5a6; margin-top: 20px;">
+                        Pagado por el Comité Dr. Méndez Sexto
+                    </p>
                 </div>
-                
-                {'<div class="info-row"><span class="label">Años ejerciendo:</span> ' + str(registration.years_practicing) + ' años</div>' if registration.years_practicing else ''}
-                
-                {'<div class="info-row"><span class="label">Lugar donde provee servicios:</span> ' + str(registration.service_location) + '</div>' if registration.service_location else ''}
-                
-                <div class="info-row">
-                    <span class="label">¿Es colegiado?:</span> {'Sí' if registration.is_licensed else 'No'}
-                </div>
-                
-                <div class="info-row">
-                    <span class="label">¿Necesita ayuda con voto adelantado?:</span> {'Sí' if registration.needs_voting_help else 'No'}
-                </div>
-                
-                <p style="margin-top: 30px;">
-                    {'Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.' if registration.needs_voting_help else ''}
-                </p>
-                
-                <div class="donation-box">
-                    <h3 style="color: #FF7043; margin-top: 0;">Apoya la Campaña</h3>
-                    <p>Puedes realizar tu donación a través de <strong>ATH Móvil</strong> a:</p>
-                    <p style="font-size: 24px; font-weight: bold; color: #00897B;">comitedrmendezsexto</p>
-                </div>
-                
-                <p style="background: #E8F4F1; padding: 15px; border-radius: 8px; font-size: 14px;">
-                    <strong>📧 Mantente Informado:</strong><br>
-                    Recibirás avisos, noticias y promociones de la campaña por correo electrónico y mensaje de texto.
-                </p>
-                
-                <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
-            </div>
-            
-            <div class="footer">
-                <strong>Atentamente,</strong><br>
-                Equipo de Campaña<br>
-                <strong style="color: #4DB6AC;">Dr. Méndez Sexto</strong><br>
-                <em>Renovar para Avanzar</em><br>
-                <small>Colegio de Médicos y Cirujanos de Puerto Rico</small><br><br>
-                <small style="color: #666;">#RenovarParaAvanzar</small>
             </div>
         </body>
         </html>
@@ -549,7 +665,7 @@ class CountdownAPIView(View):
     """API endpoint para obtener el countdown actualizado"""
     
     def get(self, request):
-        election_date = datetime(2024, 3, 15, 18, 0, 0)  # Fecha de elección
+        election_date = datetime(2025, 12, 12, 12, 0, 0)  # Fecha de elección
         now = datetime.now()
         time_remaining = election_date - now
         

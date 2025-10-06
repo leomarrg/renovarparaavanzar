@@ -28,6 +28,8 @@ class Registration(models.Model):
     )
     is_licensed = models.BooleanField(
         verbose_name="¿Eres colegiado?",
+        null=True,
+        blank=True,
         default=False
     )
     
@@ -41,6 +43,7 @@ class Registration(models.Model):
     unique_id = models.CharField(max_length=6, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    specialty = models.CharField(max_length=200, blank=True, null=True, verbose_name="Especialidad")
     
     # Email opcional para enviar confirmaciones
     email = models.EmailField(

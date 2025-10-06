@@ -11,17 +11,19 @@ class RegistrationForm(forms.ModelForm):
             'class': 'form-check-input'
         }),
         label='¿Eres médico?',
-        initial=False
+        initial=False,
+        required=True
     )
     
-    # Campo para "¿Eres colegiado?" como radio buttons
+    # Campo para "¿Eres colegiado?" como radio buttons - AHORA NO REQUERIDO
     is_licensed = forms.ChoiceField(
         choices=[(True, 'Sí'), (False, 'No')],
         widget=forms.RadioSelect(attrs={
             'class': 'form-check-input'
         }),
         label='¿Eres colegiado?',
-        initial=False
+        initial=False,
+        required=False  # CAMBIO AQUÍ
     )
     
     # Campo para "¿Necesitará ayuda con voto adelantado?" como radio buttons
@@ -31,7 +33,8 @@ class RegistrationForm(forms.ModelForm):
             'class': 'form-check-input'
         }),
         label='¿Necesitará ayuda con voto adelantado?',
-        initial=False
+        initial=False,
+        required=True
     )
     
     class Meta:
@@ -42,6 +45,7 @@ class RegistrationForm(forms.ModelForm):
             'postal_address', 
             'phone_number',
             'service_location',
+            'specialty',  # AGREGAR ESTO
             'is_doctor',
             'years_practicing',
             'is_licensed',
@@ -71,9 +75,13 @@ class RegistrationForm(forms.ModelForm):
                 'placeholder': '(787) 123-4567',
                 'required': True,
             }),
+            'specialty': forms.TextInput(attrs={  # AGREGAR ESTO
+                'class': 'form-control',
+                'placeholder': 'Especialidad médica',
+            }),
             'service_location': forms.Textarea(attrs={
                 'class': 'form-control',
-                'placeholder': 'Indique los lugares donde provee servicios médicos (hospitales, clínicas, etc.)',
+                'placeholder': 'Indique los lugares donde provee servicios médicos',
                 'rows': 3,
             }),
             'years_practicing': forms.NumberInput(attrs={
@@ -93,46 +101,37 @@ class RegistrationForm(forms.ModelForm):
             'last_name': 'Apellidos', 
             'postal_address': 'Dirección Postal',
             'phone_number': 'Número Telefónico',
+            'specialty': 'Especialidad',
             'service_location': '¿Dónde provee servicios?',
             'years_practicing': 'Años ejerciendo',
             'email': 'Correo electrónico (opcional)'
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hacer que los campos de médico NO sean requeridos por defecto
+        self.fields['service_location'].required = False
+        self.fields['specialty'].required = False
+        self.fields['years_practicing'].required = False
+        self.fields['is_licensed'].required = False
     
     def clean_phone_number(self):
         """Validación y formateo del número de teléfono"""
         phone = self.cleaned_data.get('phone_number')
         if phone:
             import re
-            # Remover caracteres no numéricos excepto + al inicio
             phone = re.sub(r'[^\d\s\-\(\)\+]', '', phone)
-            
-            # Verificar que tiene al menos 10 dígitos
             digits_only = re.sub(r'[^\d]', '', phone)
             if len(digits_only) < 10:
                 raise forms.ValidationError("El número de teléfono debe tener al menos 10 dígitos.")
-                
             return phone
         return phone
-    
-    def clean_years_practicing(self):
-        """Validación para años ejerciendo - solo si es médico"""
-        years = self.cleaned_data.get('years_practicing')
-        is_doctor = self.cleaned_data.get('is_doctor')
-        
-        # Convertir el string a booleano si es necesario
-        if isinstance(is_doctor, str):
-            is_doctor = is_doctor.lower() == 'true'
-        
-        if is_doctor and not years:
-            raise forms.ValidationError("Por favor indique los años ejerciendo la medicina.")
-            
-        return years
     
     def clean(self):
         """Validación general del formulario"""
         cleaned_data = super().clean()
         
-        # Convertir strings a booleanos para los campos de radio buttons
+        # Convertir strings a booleanos
         for field in ['is_doctor', 'is_licensed', 'needs_voting_help']:
             if field in cleaned_data:
                 value = cleaned_data[field]
@@ -140,17 +139,24 @@ class RegistrationForm(forms.ModelForm):
                     cleaned_data[field] = value.lower() == 'true'
         
         is_doctor = cleaned_data.get('is_doctor')
-        is_licensed = cleaned_data.get('is_licensed')
-        service_location = cleaned_data.get('service_location')
         
-        # Si es médico, debe indicar dónde provee servicios
-        if is_doctor and not service_location:
-            self.add_error('service_location', 
-                          'Por favor indique dónde provee servicios médicos.')
-        
-        # Si dice ser colegiado, debe ser médico
-        if is_licensed and not is_doctor:
-            self.add_error('is_licensed', 
-                          'Solo los médicos pueden estar colegiados.')
+        # SOLO validar campos de médico SI es médico
+        if is_doctor:
+            service_location = cleaned_data.get('service_location')
+            is_licensed = cleaned_data.get('is_licensed')
+            
+            if not service_location:
+                self.add_error('service_location', 
+                              'Por favor indique dónde provee servicios médicos.')
+            
+            if is_licensed is None:
+                self.add_error('is_licensed', 
+                              'Por favor indique si está colegiado.')
+        else:
+            # Si NO es médico, establecer valores por defecto
+            cleaned_data['service_location'] = ''
+            cleaned_data['specialty'] = ''
+            cleaned_data['is_licensed'] = False
+            cleaned_data['years_practicing'] = None
         
         return cleaned_data

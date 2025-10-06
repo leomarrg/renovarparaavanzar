@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu('
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
+DEBUG = config('DEBUG', default='False', cast=bool)
+ALLOWED_HOSTS = [
+    'www.renovarparaavanzar.com',  # Si tienes dominio propio
+    'renovarparaavanzar.com',
+    '127.0.0.1',
+    'localhost',
+]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    SITE_URL = 'http://127.0.0.1:8000'
+else:
+    SITE_URL = 'https://www.tudominio.com'  # Cambiar en producción
 
 
 # Application definition
@@ -47,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -88,7 +100,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'creatudominiopr@gmail.com'
 EMAIL_HOST_PASSWORD = 'nggf bpyh xgmf qrpi'  # NO uses tu contraseña normal, usa App Password
-DEFAULT_FROM_EMAIL = 'Dr. Méndez Sexto'
+DEFAULT_FROM_EMAIL = 'creatudominiopr@gmail.com'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -123,15 +135,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+# Al final del archivo, cambiar STATIC configuración:
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
     BASE_DIR / 'landing' / 'static',
 ]
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+# Media files (si las necesitas en el futuro)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

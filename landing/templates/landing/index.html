@@ -23,16 +23,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
 </head>
 <body>
     <!-- Loader -->
-    <div class="loader" id="loader">
+    <!-- <div class="loader" id="loader">
         <div class="loader-spinner"></div>
     </div>
     
-    <!-- Header -->
+    Header
     <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
@@ -43,8 +44,8 @@
             </button>
         </nav>
         
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
+         Mobile Menu -->
+        <!-- <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
             <a href="#plan">Plan Estratégico</a>
@@ -52,10 +53,10 @@
             <a href="#register">Registrarse</a>
             <a href="#contact">Contacto</a>
         </div>
-    </header>
+    </header> -->
     
     <!-- Hero Section -->
-    <section class="hero" id="hero">
+    <!-- <section class="hero" id="hero">
         <div class="hero-content">
             <h1>{{ candidate.name }}</h1>
             <p class="subtitle">{{ candidate.title }}<br>{{ candidate.subtitle }}</p>
@@ -74,10 +75,10 @@
                 <a href="#register" class="btn btn-outline" style="margin-left: 15px;">Registrarse</a>
             </div>
         </div>
-    </section>
+    </section> --> 
     
     <!-- Team Section -->
-    <section class="team-section" id="team">
+    <!-- <section class="team-section" id="team">
         <div class="container">
             <div class="section-header">
                 <h2>Nuestro</h2>
@@ -98,10 +99,10 @@
                     <p class="role">{{ member.role }}</p>
                     <p class="district">{{ member.district }}</p>
                 </div>
-                {% endfor %}
+                {% endfor %} -->
                 
                 <!-- Featured Member -->
-                <div class="team-member juan-destacado animate-on-scroll">
+                <!-- <div class="team-member juan-destacado animate-on-scroll">
                     <div class="team-member-image">
                         {% if featured_member.image %}
                         <img src="{% static featured_member.image %}" alt="{{ featured_member.name }}">
@@ -115,10 +116,10 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     
     <!-- Strategic Plan Section -->
-    <section class="strategic-plan" id="plan">
+    <!-- <section class="strategic-plan" id="plan">
         <div class="container">
             <h2>Plan</h2>
             <div class="script">Estratégico</div>
@@ -133,10 +134,10 @@
                 {% endfor %}
             </div>
         </div>
-    </section>
+    </section> -->
     
     <!-- Donation Section -->
-    <section class="donation-section" id="donate">
+    <!-- <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-content animate-on-scroll">
                 <h2>¡Únete!</h2>
@@ -166,7 +167,7 @@
                 <div class="hashtag">{{ donation.hashtag }}</div>
             </div>
         </div>
-    </section>
+    </section> -->
     
 <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
 <section class="register-section" id="register">
@@ -180,8 +181,7 @@
                     <div class="title-script">renovación!</div>
                     
                     <div class="doctor-name">
-                        <span class="doctor-prefix">Dr.</span><br>
-                        <span class="doctor-surname">Méndez<span class="doctor-lastname">Sexto</span></span>
+                        <img src="{% static 'landing/img/logo-mendez.png' %}" alt="Dr. Méndez Sexto">
                     </div>
                     
                     <div class="campaign-hashtag">#RenovarParaAvanzar</div>
@@ -239,7 +239,7 @@
                         </div>
                         
                         <div class="years-section">
-                            <span>Años ejerciendo la disciplina</span>
+                            <span>Años ejerciendo</span>
                             <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
                         </div>
                         
@@ -266,7 +266,7 @@
 
                     <!-- ESTE DEBE ESTAR FUERA, SIEMPRE VISIBLE -->
                     <div class="question-group">
-                        <div class="question-section" style="font-size: .75rem;">¿Necesitará ayuda con voto adelantado?</div>
+                        <div class="question-section" style="font-size: .75rem;">¿Desea voto adelantado?</div>
                         <div class="radio-group">
                             <div class="radio-option">
                                 <label>Sí</label>
@@ -279,7 +279,7 @@
                         </div>
                     </div>
                     
-                    <button type="submit" class="register-submit-btn">Enviar Registro</button>
+                    <button type="submit" class="register-submit-btn">Someter</button>
                 </form>
             </div>
         </div>
@@ -292,7 +292,8 @@
         <div class="container">
             <div class="footer-content">
                 <h3>{{ candidate.name }}</h3>
-                <p class="subtitle">Candidato a la Presidencia del Colegio de Médicos</p>
+                <p class="subtitle">Candidato a la Presidencia del Colegio de Médicos Cirujanos de Puerto Rico</p>
+                <h4>Conteo Regresivo para elecciones.</h4>
             </div>
             
             <div class="countdown" id="countdown">
@@ -316,311 +317,28 @@
             
             <div class="social-links">
                 {% if social_media.facebook %}
-                <a href="{{ social_media.facebook }}" target="_blank" class="social-link">f</a>
+                <a href="{{ social_media.facebook }}" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
                 {% endif %}
                 {% if social_media.twitter %}
-                <a href="{{ social_media.twitter }}" target="_blank" class="social-link">𝕏</a>
+                <a href="{{ social_media.twitter }}" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
                 {% endif %}
                 {% if social_media.instagram %}
-                <a href="{{ social_media.instagram }}" target="_blank" class="social-link">📷</a>
-                {% endif %}
-                {% if social_media.linkedin %}
-                <a href="{{ social_media.linkedin }}" target="_blank" class="social-link">in</a>
+                <a href="{{ social_media.instagram }}" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
                 {% endif %}
             </div>
-            
             <div class="copyright">
-                <p>&copy; 2024 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
+                <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
                 <p style="margin-top: 10px; font-size: 0.8rem;">
-                    Pagado por el Comité Dr. Méndez Sexto
+                    Powered By Dominio
                 </p>
             </div>
         </div>
     </footer>
     <!-- JavaScript para añadir al final del archivo o en script tag -->
     <script>
-        // Register form functionality
-        (function() {
-            // Show/hide years practicing based on doctor selection
-            const doctorYes = document.getElementById('doctor_yes');
-            const doctorNo = document.getElementById('doctor_no');
-            const yearsSection = document.getElementById('yearsSection');
-            const yearsInput = document.getElementById('years');
-            
-            if (doctorYes) {
-                doctorYes.addEventListener('change', function() {
-                    if (this.checked) {
-                        yearsSection.style.display = 'flex';
-                    }
-                });
-            }
-            
-            if (doctorNo) {
-                doctorNo.addEventListener('change', function() {
-                    if (this.checked) {
-                        yearsSection.style.display = 'none';
-                        yearsInput.value = '';
-                    }
-                });
-            }
-            
-            // Validate years input
-            if (yearsInput) {
-                yearsInput.addEventListener('input', function(e) {
-                    this.value = this.value.replace(/[^0-9]/g, '');
-                    if (parseInt(this.value) > 70) {
-                        this.value = '70';
-                    }
-                });
-            }
-            
-            // Email validation
-            const commonDomains = {
-                'gmail.com': ['gmai.com', 'gmial.com', 'gmail.co', 'gmail.cm', 'gmail.con'],
-                'hotmail.com': ['hotmai.com', 'hotmial.com', 'hotmail.co', 'hotmail.cm'],
-                'yahoo.com': ['yaho.com', 'yahoo.co', 'yahoo.cm', 'yahooo.com'],
-                'outlook.com': ['outlok.com', 'outlook.co', 'outlook.cm'],
-                'icloud.com': ['iclod.com', 'icloud.co', 'icloud.cm']
-            };
-            
-            const emailInput = document.getElementById('email');
-            const emailValidation = document.getElementById('emailValidation');
-            let validationTimeout;
-            
-            function findCorrectDomain(typo) {
-                for (const [correct, typos] of Object.entries(commonDomains)) {
-                    if (typos.includes(typo.toLowerCase())) {
-                        return correct;
-                    }
-                }
-                return null;
-            }
-            
-            function validateEmailDomain(email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                
-                if (!email || !email.includes('@')) {
-                    return null;
-                }
-                
-                const parts = email.split('@');
-                if (parts.length !== 2) {
-                    return { type: 'error', message: 'Formato de email inválido' };
-                }
-                
-                const domain = parts[1].toLowerCase();
-                
-                if (!domain || domain === '.' || domain.startsWith('.')) {
-                    return { type: 'error', message: 'El dominio del email está incompleto' };
-                }
-                
-                if (!domain.includes('.')) {
-                    return { type: 'error', message: 'Falta la extensión del dominio (ej: .com)' };
-                }
-                
-                if (domain.includes('..')) {
-                    return { type: 'error', message: 'El dominio contiene puntos duplicados' };
-                }
-                
-                const correctDomain = findCorrectDomain(domain);
-                if (correctDomain) {
-                    return { 
-                        type: 'warning', 
-                        message: `¿Quisiste decir ${parts[0]}@${correctDomain}?`,
-                        suggestion: `${parts[0]}@${correctDomain}`
-                    };
-                }
-                
-                if (emailRegex.test(email)) {
-                    return { type: 'success', message: '✓ Email válido' };
-                }
-                
-                return null;
-            }
-            
-            function showValidation(result) {
-                if (!result) {
-                    emailValidation.classList.remove('show', 'error', 'warning', 'success');
-                    return;
-                }
-                
-                emailValidation.innerHTML = result.message;
-                
-                if (result.suggestion) {
-                    emailValidation.style.cursor = 'pointer';
-                    emailValidation.onclick = () => {
-                        emailInput.value = result.suggestion;
-                        validateEmail();
-                    };
-                } else {
-                    emailValidation.style.cursor = 'default';
-                    emailValidation.onclick = null;
-                }
-                
-                emailValidation.classList.remove('error', 'warning', 'success');
-                emailValidation.classList.add('show', result.type);
-            }
-            
-            function validateEmail() {
-                const email = emailInput.value;
-                const result = validateEmailDomain(email);
-                showValidation(result);
-            }
-            
-            if (emailInput) {
-                emailInput.addEventListener('input', (e) => {
-                    clearTimeout(validationTimeout);
-                    if (e.target.value.includes('@')) {
-                        validationTimeout = setTimeout(() => {
-                            validateEmail();
-                        }, 500);
-                    } else {
-                        emailValidation.classList.remove('show');
-                    }
-                });
-                
-                emailInput.addEventListener('blur', () => {
-                    if (emailInput.value) {
-                        validateEmail();
-                    }
-                });
-            }
-            
-            // Phone formatting
-            const phoneInput = document.getElementById('phone');
-            if (phoneInput) {
-                phoneInput.addEventListener('input', (e) => {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 0) {
-                        if (value.length <= 3) {
-                            value = `(${value}`;
-                        } else if (value.length <= 6) {
-                            value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-                        } else {
-                            value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
-                        }
-                    }
-                    e.target.value = value;
-                });
-            }
-            
-            // Form validation on submit
-            const registerForm = document.getElementById('registerForm');
-            if (registerForm) {
-                registerForm.addEventListener('submit', (e) => {
-                    const email = emailInput.value;
-                    const validation = validateEmailDomain(email);
-                    
-                    if (validation && validation.type === 'error') {
-                        e.preventDefault();
-                        emailInput.focus();
-                        showValidation(validation);
-                        return false;
-                    }
-                    
-                    if (validation && validation.type === 'warning') {
-                        const proceed = confirm(`Posible error en el email. ${validation.message}\n\n¿Deseas continuar?`);
-                        if (!proceed) {
-                            e.preventDefault();
-                            emailInput.focus();
-                            return false;
-                        }
-                    }
-                });
-            }
-        })();
-    </script>
-    
-    <script>
-        // Hide loader when page is ready
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loader').classList.add('hidden');
-            }, 500);
-        });
-        
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        menuToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('active');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-            });
-        });
-        
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const headerHeight = document.getElementById('header').offsetHeight;
-                    const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Animate on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Countdown timer
-        function updateCountdown() {
-            fetch('{% url "landing:countdown-api" %}')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.ended) {
-                        document.getElementById('countdown').innerHTML = `
-                            <h3 style="color: var(--teal-primary);">${data.message}</h3>
-                        `;
-                    } else {
-                        document.getElementById('days').textContent = String(data.days).padStart(2, '0');
-                        document.getElementById('hours').textContent = String(data.hours).padStart(2, '0');
-                        document.getElementById('minutes').textContent = String(data.minutes).padStart(2, '0');
-                        document.getElementById('seconds').textContent = String(data.seconds).padStart(2, '0');
-                    }
-                })
-                .catch(error => console.error('Error updating countdown:', error));
-        }
-        
-        // Update countdown every second
-        setInterval(updateCountdown, 1000);
-
-        // Show/hide doctor-specific fields based on selection
+    // Register form functionality
+    (function() {
+        // Show/hide years practicing based on doctor selection
         const doctorYes = document.getElementById('doctor_yes');
         const doctorNo = document.getElementById('doctor_no');
         const doctorFields = document.getElementById('doctorFields');
@@ -629,24 +347,27 @@
         const serviceLocationInput = document.getElementById('service_location');
         const licensedYes = document.getElementById('licensed_yes');
         const licensedNo = document.getElementById('licensed_no');
-
+        
         if (doctorNo) {
             doctorNo.addEventListener('change', function() {
                 if (this.checked) {
-                    doctorFields.style.display = 'none';
+                    if (doctorFields) doctorFields.style.display = 'none';
                     
-                    // DESHABILITAR los campos para que no se envíen
+                    // Limpiar y deshabilitar campos
                     if (yearsInput) {
                         yearsInput.value = '';
                         yearsInput.disabled = true;
+                        yearsInput.removeAttribute('required');
                     }
                     if (specialtyInput) {
                         specialtyInput.value = '';
                         specialtyInput.disabled = true;
+                        specialtyInput.removeAttribute('required');
                     }
                     if (serviceLocationInput) {
                         serviceLocationInput.value = '';
                         serviceLocationInput.disabled = true;
+                        serviceLocationInput.removeAttribute('required');
                     }
                     if (licensedYes) {
                         licensedYes.checked = false;
@@ -665,9 +386,9 @@
         if (doctorYes) {
             doctorYes.addEventListener('change', function() {
                 if (this.checked) {
-                    doctorFields.style.display = 'block';
+                    if (doctorFields) doctorFields.style.display = 'block';
                     
-                    // HABILITAR los campos cuando se muestra
+                    // Habilitar campos
                     if (yearsInput) yearsInput.disabled = false;
                     if (specialtyInput) specialtyInput.disabled = false;
                     if (serviceLocationInput) serviceLocationInput.disabled = false;
@@ -677,27 +398,306 @@
                     }
                     if (licensedNo) {
                         licensedNo.disabled = false;
-                        licensedNo.setAttribute('required', 'required');
                     }
                 }
             });
         }
-        {% if scroll_to_register %}
+        
+        // Validate years input
+        if (yearsInput) {
+            yearsInput.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (parseInt(this.value) > 70) {
+                    this.value = '70';
+                }
+            });
+        }
+        
+        // Email validation
+        const commonDomains = {
+            'gmail.com': ['gmai.com', 'gmial.com', 'gmail.co', 'gmail.cm', 'gmail.con'],
+            'hotmail.com': ['hotmai.com', 'hotmial.com', 'hotmail.co', 'hotmail.cm'],
+            'yahoo.com': ['yaho.com', 'yahoo.co', 'yahoo.cm', 'yahooo.com'],
+            'outlook.com': ['outlok.com', 'outlook.co', 'outlook.cm'],
+            'icloud.com': ['iclod.com', 'icloud.co', 'icloud.cm']
+        };
+        
+        const emailInput = document.getElementById('email');
+        const emailValidation = document.getElementById('emailValidation');
+        let validationTimeout;
+        
+        function findCorrectDomain(typo) {
+            for (const [correct, typos] of Object.entries(commonDomains)) {
+                if (typos.includes(typo.toLowerCase())) {
+                    return correct;
+                }
+            }
+            return null;
+        }
+        
+        function validateEmailDomain(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!email || !email.includes('@')) {
+                return null;
+            }
+            
+            const parts = email.split('@');
+            if (parts.length !== 2) {
+                return { type: 'error', message: 'Formato de email inválido' };
+            }
+            
+            const domain = parts[1].toLowerCase();
+            
+            if (!domain || domain === '.' || domain.startsWith('.')) {
+                return { type: 'error', message: 'El dominio del email está incompleto' };
+            }
+            
+            if (!domain.includes('.')) {
+                return { type: 'error', message: 'Falta la extensión del dominio (ej: .com)' };
+            }
+            
+            if (domain.includes('..')) {
+                return { type: 'error', message: 'El dominio contiene puntos duplicados' };
+            }
+            
+            const correctDomain = findCorrectDomain(domain);
+            if (correctDomain) {
+                return { 
+                    type: 'warning', 
+                    message: `¿Quisiste decir ${parts[0]}@${correctDomain}?`,
+                    suggestion: `${parts[0]}@${correctDomain}`
+                };
+            }
+            
+            if (emailRegex.test(email)) {
+                return { type: 'success', message: '✓ Email válido' };
+            }
+            
+            return null;
+        }
+        
+        function showValidation(result) {
+            if (!emailValidation) return;
+            
+            if (!result) {
+                emailValidation.classList.remove('show', 'error', 'warning', 'success');
+                return;
+            }
+            
+            emailValidation.innerHTML = result.message;
+            
+            if (result.suggestion) {
+                emailValidation.style.cursor = 'pointer';
+                emailValidation.onclick = () => {
+                    emailInput.value = result.suggestion;
+                    validateEmail();
+                };
+            } else {
+                emailValidation.style.cursor = 'default';
+                emailValidation.onclick = null;
+            }
+            
+            emailValidation.classList.remove('error', 'warning', 'success');
+            emailValidation.classList.add('show', result.type);
+        }
+        
+        function validateEmail() {
+            if (!emailInput) return;
+            const email = emailInput.value;
+            const result = validateEmailDomain(email);
+            showValidation(result);
+        }
+        
+        if (emailInput) {
+            emailInput.addEventListener('input', (e) => {
+                clearTimeout(validationTimeout);
+                if (e.target.value.includes('@')) {
+                    validationTimeout = setTimeout(() => {
+                        validateEmail();
+                    }, 500);
+                } else if (emailValidation) {
+                    emailValidation.classList.remove('show');
+                }
+            });
+            
+            emailInput.addEventListener('blur', () => {
+                if (emailInput.value) {
+                    validateEmail();
+                }
+            });
+        }
+        
+        // Phone formatting
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (value.length <= 3) {
+                        value = `(${value}`;
+                    } else if (value.length <= 6) {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                    } else {
+                        value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                    }
+                }
+                e.target.value = value;
+            });
+        }
+        
+        // Form validation on submit
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm && emailInput) {
+            registerForm.addEventListener('submit', (e) => {
+                const email = emailInput.value;
+                const validation = validateEmailDomain(email);
+                
+                if (validation && validation.type === 'error') {
+                    e.preventDefault();
+                    emailInput.focus();
+                    showValidation(validation);
+                    return false;
+                }
+                
+                if (validation && validation.type === 'warning') {
+                    const proceed = confirm(`Posible error en el email. ${validation.message}\n\n¿Deseas continuar?`);
+                    if (!proceed) {
+                        e.preventDefault();
+                        emailInput.focus();
+                        return false;
+                    }
+                }
+            });
+        }
+    })();
+</script>
+
+<script>
+    // Elementos que pueden no existir (secciones comentadas)
+    const loader = document.getElementById('loader');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const header = document.getElementById('header');
+    
+    // Hide loader when page is ready
+    if (loader) {
         window.addEventListener('load', function() {
             setTimeout(function() {
-                document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
-            }, 600);
+                loader.classList.add('hidden');
+            }, 500);
         });
-        {% endif %}
-    </script>
+    }
     
-    {% if messages %}
-    <script>
-        // Display Django messages if any
-        {% for message in messages %}
-            alert('{{ message }}');
-        {% endfor %}
-    </script>
+    // Mobile menu toggle
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+            });
+        });
+    }
+    
+    // Header scroll effect
+    if (header) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    }
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerHeight = header ? header.offsetHeight : 0;
+                const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Animate on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Countdown timer
+    function updateCountdown() {
+        fetch('{% url "landing:countdown-api" %}')
+            .then(response => response.json())
+            .then(data => {
+                const countdownEl = document.getElementById('countdown');
+                if (!countdownEl) return;
+                
+                if (data.ended) {
+                    countdownEl.innerHTML = `
+                        <h3 style="color: var(--teal-primary);">${data.message}</h3>
+                    `;
+                } else {
+                    const days = document.getElementById('days');
+                    const hours = document.getElementById('hours');
+                    const minutes = document.getElementById('minutes');
+                    const seconds = document.getElementById('seconds');
+                    
+                    if (days) days.textContent = String(data.days).padStart(2, '0');
+                    if (hours) hours.textContent = String(data.hours).padStart(2, '0');
+                    if (minutes) minutes.textContent = String(data.minutes).padStart(2, '0');
+                    if (seconds) seconds.textContent = String(data.seconds).padStart(2, '0');
+                }
+            })
+            .catch(error => console.error('Error updating countdown:', error));
+    }
+    
+    // Update countdown every second
+    if (document.getElementById('countdown')) {
+        setInterval(updateCountdown, 1000);
+    }
+    
+    {% if scroll_to_register %}
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const registerSection = document.getElementById('register');
+            if (registerSection) {
+                registerSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 600);
+    });
     {% endif %}
+</script>
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert('{{ message }}');
+    {% endfor %}
+</script>
+{% endif %}
 </body>
 </html>
