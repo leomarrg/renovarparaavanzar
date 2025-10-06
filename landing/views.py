@@ -151,7 +151,7 @@ class IndexView(TemplateView):
             'title': 'Dr. Méndez Sexto - Renovar para Avanzar',
             'description': 'Únete al movimiento de transformación del Colegio de Médicos y Cirujanos de Puerto Rico',
             'keywords': 'Dr. Méndez Sexto, Colegio de Médicos, Puerto Rico, elecciones, salud',
-            'og_image': 'landing/img/og-image.jpg'
+            'og_image': 'landing/img/logo-renovar.png'
         }
         
         return context
