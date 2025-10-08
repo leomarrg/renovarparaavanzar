@@ -266,213 +266,250 @@
     <!-- Donation Section -->
     <section class="donation-section" id="donate">
         <div class="container">
-            <div class="donation-content animate-on-scroll">
-                <h2>¡Únete!</h2>
-                
-                <div class="donation-info">
-                    <p>Haz tu donativo a través de {{ donation.platform }} a:</p>
-                    <div class="donation-handle">{{ donation.handle }}</div>
+            <div class="donation-wrapper">
+                <div class="donation-header">
+                    <div class="header-badge">¡Apoya la Campaña!</div>
+                    <div class="title-main">Haz tu</div>
+                    <div class="title-script">donación</div>
+                    <p class="subtitle-text">
+                        Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
+                    </p>
                 </div>
-                
-                <!-- Selector de monto -->
-                <div class="amount-selection" style="margin: 30px 0;">
-                    <h3 style="color: #377e7c; margin-bottom: 20px; text-align: center;">Selecciona el monto</h3>
-                    <div class="amount-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto 20px;">
-                        <button class="amount-btn" data-amount="25" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$25</button>
-                        <button class="amount-btn" data-amount="50" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$50</button>
-                        <button class="amount-btn" data-amount="100" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$100</button>
-                        <button class="amount-btn active" data-amount="250" style="padding: 12px; border: 2px solid #4DB6AC; background: #4DB6AC; color: white; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$250</button>
-                        <button class="amount-btn" data-amount="500" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$500</button>
-                        <button class="amount-btn" data-amount="1000" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$1,000</button>
-                    </div>
-                    
-                    <div class="custom-amount" style="text-align: center; max-width: 400px; margin: 0 auto;">
-                        <input type="number" 
-                            id="customDonationAmount" 
-                            placeholder="Otra cantidad ($1 - $1,500)" 
-                            min="1" 
-                            max="1500" 
-                            step="0.01"
-                            style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; text-align: center;">
-                    </div>
-                </div>
-                
-                <!-- Información del donante (opcional) -->
-                <!-- <div class="donor-info" style="max-width: 500px; margin: 30px auto; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
-                    <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem; color: #fff;">Información opcional del donante:</p>
-                    <input type="text" 
-                        id="donorName" 
-                        placeholder="Nombre completo (opcional)"
-                        style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
-                    <input type="email" 
-                        id="donorEmail" 
-                        placeholder="Correo electrónico (opcional)"
-                        style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
-                    <input type="tel" 
-                        id="donorPhone" 
-                        placeholder="Teléfono (opcional)"
-                        style="width: 100%; padding: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
-                </div> -->
-                
-                <!-- Estado del pago -->
-                <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 600px; text-align: center;"></div>
-                
-                <!-- ATH Móvil Payment Button -->
 
-                <div id="ATHMovil_Checkout_Button_payment"></div>
-                
-                <p class="legal-text">{{ donation.legal_text }}</p>
-                
-                <div class="hashtag">{{ donation.hashtag }}</div>
+                <div class="donation-content">
+                    <!-- Mensaje de estado -->
+                    <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
+                    
+                    <div class="amount-options">
+                        <h3>Selecciona un monto</h3>
+                        
+                        <div class="amount-grid">
+                            <div class="amount-btn" data-amount="25">
+                                <span class="amount-value">$25</span>
+                                <span class="amount-label">Apoyo Básico</span>
+                            </div>
+                            <div class="amount-btn" data-amount="50">
+                                <span class="amount-value">$50</span>
+                                <span class="amount-label">Apoyo Solidario</span>
+                            </div>
+                            <div class="amount-btn" data-amount="100">
+                                <span class="amount-value">$100</span>
+                                <span class="amount-label">Apoyo Comprometido</span>
+                            </div>
+                            <div class="amount-btn" data-amount="250">
+                                <span class="amount-value">$250</span>
+                                <span class="amount-label">Apoyo Firme</span>
+                            </div>
+                            <div class="amount-btn" data-amount="500">
+                                <span class="amount-value">$500</span>
+                                <span class="amount-label">Apoyo Extraordinario</span>
+                            </div>
+                            <div class="amount-btn" data-amount="1000">
+                                <span class="amount-value">$1,000</span>
+                                <span class="amount-label">Apoyo Transformador</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="custom-amount">
+                        <p>O ingresa otra cantidad:</p>
+                        <div class="custom-input-wrapper">
+                            <input 
+                                type="number" 
+                                class="custom-input" 
+                                id="customDonationAmount"
+                                placeholder="0.00"
+                                min="1"
+                                max="1500"
+                                step="0.01"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Monto seleccionado -->
+                    <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
+                        <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
+                        <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
+                            $<span id="selectedAmountValue">0</span>
+                        </p>
+                    </div>
+
+                    <div class="info-note" style="background: #E3F2FD; border-left: 4px solid #2196F3; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                        <h4 style="color: #1565C0; margin: 0 0 10px 0; font-size: 1.1rem;">
+                            ¿Cómo funciona?
+                        </h4>
+                        <ol style="color: #1565C0; margin: 0; padding-left: 20px; line-height: 1.8;">
+                            <li>Selecciona un monto arriba</li>
+                            <li>Haz click en "Donar con ATH Móvil"</li>
+                            <li>Ingresa tu número de teléfono</li>
+                            <li>Abre la app ATH Móvil y confirma</li>
+                        </ol>
+                    </div>
+
+                    <!-- ATH Móvil Payment Button -->
+                    <div id="ATHMovil_Checkout_Button_payment"></div>
+
+                    <div class="donation-info" style="margin-top: 25px;">
+                        <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
+                            Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
+                        </p>
+                        <div class="ath-handle">/comitedrmendezsexto</div>
+                    </div>
+
+                    <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 20px;">
+                        Este comité está debidamente registrado como una entidad sin fines de lucro.
+                    </p>
+
+                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+                </div>
             </div>
         </div>
     </section>
     
-<!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
-<section class="register-section" id="register">
-    <div class="container">
-        <div class="register-wrapper">
-            <div class="register-header">
-                <div class="header-badge">Registro</div>
-                
-                <div class="title-section">
-                    <div class="title-main">¡Iniciemos la</div>
-                    <div class="title-script">renovación!</div>
+    <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
+    <section class="register-section" id="register">
+        <div class="container">
+            <div class="register-wrapper">
+                <div class="register-header">
+                    <div class="header-badge">Registro</div>
                     
-                    <div class="doctor-name">
-                        <img src="{% static 'landing/img/logo-mendez.png' %}" alt="Dr. Méndez Sexto">
+                    <div class="title-section">
+                        <div class="title-main">¡Iniciemos la</div>
+                        <div class="title-script">renovación!</div>
+                        
+                        <div class="doctor-name">
+                            <img src="{% static 'landing/img/logo-mendez.png' %}" alt="Dr. Méndez Sexto">
+                        </div>
+                        
+                        <div class="campaign-hashtag">#RenovarParaAvanzar</div>
                     </div>
-                    
-                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
                 </div>
-            </div>
-            
-            <div class="register-form-container">
-                <form method="post" action="{% url 'landing:register' %}" id="registerForm" class="register-form">
-                    {% csrf_token %}
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" name="name" placeholder="Nombre" required>
-                        </div>
+                
+                <div class="register-form-container">
+                    <form method="post" action="{% url 'landing:register' %}" id="registerForm" class="register-form">
+                        {% csrf_token %}
                         
-                        <div class="form-group">
-                            <input type="text" name="last_name" placeholder="Apellidos" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
-                        <div class="email-validation" id="emailValidation"></div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <input type="text" name="postal_address" placeholder="Dirección postal" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <input type="tel" name="phone_number" id="phone" placeholder="Número telefónico" required>
-                        </div>
-                    </div>
-                    
-                    <div class="question-group">
-                        <div class="question-section">¿Eres médico?</div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <label>Sí</label>
-                                <input type="radio" name="is_doctor" value="True" id="doctor_yes" required>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Nombre" required>
                             </div>
-                            <div class="radio-option">
-                                <label>No</label>
-                                <input type="radio" name="is_doctor" value="False" id="doctor_no">
+                            
+                            <div class="form-group">
+                                <input type="text" name="last_name" placeholder="Apellidos" required>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- INICIO DEL DIV QUE SE OCULTA -->
-                    <div id="doctorFields" style="display: none;">
                         
                         <div class="form-group">
-                            <input type="text" name="specialty" id="specialty" placeholder="Especialidad que practica">
+                            <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
+                            <div class="email-validation" id="emailValidation"></div>
                         </div>
                         
-                        <div class="years-section">
-                            <span>Años ejerciendo</span>
-                            <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
-                        </div>
-                        
-                        <div class="form-group">
-                            <textarea name="service_location" id="service_location" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" name="postal_address" placeholder="Dirección postal" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="tel" name="phone_number" id="phone" placeholder="Número telefónico" required>
+                            </div>
                         </div>
                         
                         <div class="question-group">
-                            <div class="question-section">¿Eres colegiado?</div>
+                            <div class="question-section">¿Eres médico?</div>
                             <div class="radio-group">
                                 <div class="radio-option">
                                     <label>Sí</label>
-                                    <input type="radio" name="is_licensed" value="True" id="licensed_yes">
+                                    <input type="radio" name="is_doctor" value="True" id="doctor_yes" required>
                                 </div>
                                 <div class="radio-option">
                                     <label>No</label>
-                                    <input type="radio" name="is_licensed" value="False" id="licensed_no">
+                                    <input type="radio" name="is_doctor" value="False" id="doctor_no">
                                 </div>
                             </div>
                         </div>
-                        
-                    </div>
-                    <!-- FIN DEL DIV QUE SE OCULTA -->
 
-                    <!-- ESTE DEBE ESTAR FUERA, SIEMPRE VISIBLE -->
-                    <div class="question-group">
-                        <div class="question-section" style="font-size: .75rem;">¿Desea voto adelantado?</div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <label>Sí</label>
-                                <input type="radio" name="needs_voting_help" value="True" required>
+                        <!-- INICIO DEL DIV QUE SE OCULTA -->
+                        <div id="doctorFields" style="display: none;">
+                            
+                            <div class="form-group">
+                                <input type="text" name="specialty" id="specialty" placeholder="Especialidad que practica">
                             </div>
-                            <div class="radio-option">
-                                <label>No</label>
-                                <input type="radio" name="needs_voting_help" value="False">
+                            
+                            <div class="years-section">
+                                <span>Años ejerciendo</span>
+                                <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
+                            </div>
+                            
+                            <div class="form-group">
+                                <textarea name="service_location" id="service_location" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
+                            </div>
+                            
+                            <div class="question-group">
+                                <div class="question-section">¿Eres colegiado?</div>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <label>Sí</label>
+                                        <input type="radio" name="is_licensed" value="True" id="licensed_yes">
+                                    </div>
+                                    <div class="radio-option">
+                                        <label>No</label>
+                                        <input type="radio" name="is_licensed" value="False" id="licensed_no">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- FIN DEL DIV QUE SE OCULTA -->
+
+                        <!-- ESTE DEBE ESTAR FUERA, SIEMPRE VISIBLE -->
+                        <div class="question-group">
+                            <div class="question-section" style="font-size: .75rem;">¿Desea voto adelantado?</div>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <label>Sí</label>
+                                    <input type="radio" name="needs_voting_help" value="True" required>
+                                </div>
+                                <div class="radio-option">
+                                    <label>No</label>
+                                    <input type="radio" name="needs_voting_help" value="False">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Checkbox de términos y condiciones -->
-                    <div class="checkbox-group" style="margin: 25px 0;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" 
-                                name="accepts_terms" 
-                                id="accepts_terms" 
-                                required 
-                                checked>
-                            <span class="checkbox-text">
-                                Acepto los <a href="{% url 'landing:terms' %}" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
-                            </span>
-                        </label>
-                    </div>
+                        <!-- Checkbox de términos y condiciones -->
+                        <div class="checkbox-group" style="margin: 25px 0;">
+                            <label class="checkbox-label">
+                                <input type="checkbox" 
+                                    name="accepts_terms" 
+                                    id="accepts_terms" 
+                                    required 
+                                    checked>
+                                <span class="checkbox-text">
+                                    Acepto los <a href="{% url 'landing:terms' %}" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
+                                </span>
+                            </label>
+                        </div>
 
-                    <!-- Checkbox de promociones -->
-                    <div class="checkbox-group" style="margin: 25px 0;">
-                        <label class="checkbox-label">
-                            <input type="checkbox" 
-                                name="accepts_promotions" 
-                                id="accepts_promotions" 
-                                checked>
-                            <span class="checkbox-text">
-                                Acepto recibir información sobre la campaña y actividades
-                            </span>
-                        </label>
-                    </div>
-                    
-                    <button type="submit" class="register-submit-btn">Someter</button>
-                </form>
+                        <!-- Checkbox de promociones -->
+                        <div class="checkbox-group" style="margin: 25px 0;">
+                            <label class="checkbox-label">
+                                <input type="checkbox" 
+                                    name="accepts_promotions" 
+                                    id="accepts_promotions" 
+                                    checked>
+                                <span class="checkbox-text">
+                                    Acepto recibir información sobre la campaña y actividades
+                                </span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="register-submit-btn">Someter</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -520,580 +557,51 @@
             </div>
         </div>
     </footer>
-    <!-- JavaScript para añadir al final del archivo o en script tag -->
+    <!-- ==========================================
+         DJANGO MESSAGES DATA
+         ========================================== -->
+    {% if messages %}
     <script>
-    // Register form functionality
-    (function() {
-        // Show/hide years practicing based on doctor selection
-        const doctorYes = document.getElementById('doctor_yes');
-        const doctorNo = document.getElementById('doctor_no');
-        const doctorFields = document.getElementById('doctorFields');
-        const yearsInput = document.getElementById('years');
-        const specialtyInput = document.getElementById('specialty');
-        const serviceLocationInput = document.getElementById('service_location');
-        const licensedYes = document.getElementById('licensed_yes');
-        const licensedNo = document.getElementById('licensed_no');
-        
-        if (doctorNo) {
-            doctorNo.addEventListener('change', function() {
-                if (this.checked) {
-                    if (doctorFields) doctorFields.style.display = 'none';
-                    
-                    // Limpiar y deshabilitar campos
-                    if (yearsInput) {
-                        yearsInput.value = '';
-                        yearsInput.disabled = true;
-                        yearsInput.removeAttribute('required');
-                    }
-                    if (specialtyInput) {
-                        specialtyInput.value = '';
-                        specialtyInput.disabled = true;
-                        specialtyInput.removeAttribute('required');
-                    }
-                    if (serviceLocationInput) {
-                        serviceLocationInput.value = '';
-                        serviceLocationInput.disabled = true;
-                        serviceLocationInput.removeAttribute('required');
-                    }
-                    if (licensedYes) {
-                        licensedYes.checked = false;
-                        licensedYes.disabled = true;
-                        licensedYes.removeAttribute('required');
-                    }
-                    if (licensedNo) {
-                        licensedNo.checked = false;
-                        licensedNo.disabled = true;
-                        licensedNo.removeAttribute('required');
-                    }
-                }
-            });
-        }
+        window.djangoMessages = [
+            {% for message in messages %}
+            {
+                level: '{{ message.tags }}',
+                message: '{{ message|escapejs }}'
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+    </script>
+    {% endif %}
 
-        if (doctorYes) {
-            doctorYes.addEventListener('change', function() {
-                if (this.checked) {
-                    if (doctorFields) doctorFields.style.display = 'block';
-                    
-                    // Habilitar campos
-                    if (yearsInput) yearsInput.disabled = false;
-                    if (specialtyInput) specialtyInput.disabled = false;
-                    if (serviceLocationInput) serviceLocationInput.disabled = false;
-                    if (licensedYes) {
-                        licensedYes.disabled = false;
-                        licensedYes.setAttribute('required', 'required');
-                    }
-                    if (licensedNo) {
-                        licensedNo.disabled = false;
-                    }
-                }
-            });
-        }
-        
-        // Validate years input
-        if (yearsInput) {
-            yearsInput.addEventListener('input', function(e) {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                if (parseInt(this.value) > 70) {
-                    this.value = '70';
-                }
-            });
-        }
-        
-        // Email validation
-        const commonDomains = {
-            'gmail.com': ['gmai.com', 'gmial.com', 'gmail.co', 'gmail.cm', 'gmail.con'],
-            'hotmail.com': ['hotmai.com', 'hotmial.com', 'hotmail.co', 'hotmail.cm'],
-            'yahoo.com': ['yaho.com', 'yahoo.co', 'yahoo.cm', 'yahooo.com'],
-            'outlook.com': ['outlok.com', 'outlook.co', 'outlook.cm'],
-            'icloud.com': ['iclod.com', 'icloud.co', 'icloud.cm']
-        };
-        
-        const emailInput = document.getElementById('email');
-        const emailValidation = document.getElementById('emailValidation');
-        let validationTimeout;
-        
-        function findCorrectDomain(typo) {
-            for (const [correct, typos] of Object.entries(commonDomains)) {
-                if (typos.includes(typo.toLowerCase())) {
-                    return correct;
-                }
-            }
-            return null;
-        }
-        
-        function validateEmailDomain(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
-            if (!email || !email.includes('@')) {
-                return null;
-            }
-            
-            const parts = email.split('@');
-            if (parts.length !== 2) {
-                return { type: 'error', message: 'Formato de email inválido' };
-            }
-            
-            const domain = parts[1].toLowerCase();
-            
-            if (!domain || domain === '.' || domain.startsWith('.')) {
-                return { type: 'error', message: 'El dominio del email está incompleto' };
-            }
-            
-            if (!domain.includes('.')) {
-                return { type: 'error', message: 'Falta la extensión del dominio (ej: .com)' };
-            }
-            
-            if (domain.includes('..')) {
-                return { type: 'error', message: 'El dominio contiene puntos duplicados' };
-            }
-            
-            const correctDomain = findCorrectDomain(domain);
-            if (correctDomain) {
-                return { 
-                    type: 'warning', 
-                    message: `¿Quisiste decir ${parts[0]}@${correctDomain}?`,
-                    suggestion: `${parts[0]}@${correctDomain}`
-                };
-            }
-            
-            if (emailRegex.test(email)) {
-                return { type: 'success', message: '✓ Email válido' };
-            }
-            
-            return null;
-        }
-        
-        function showValidation(result) {
-            if (!emailValidation) return;
-            
-            if (!result) {
-                emailValidation.classList.remove('show', 'error', 'warning', 'success');
-                return;
-            }
-            
-            emailValidation.innerHTML = result.message;
-            
-            if (result.suggestion) {
-                emailValidation.style.cursor = 'pointer';
-                emailValidation.onclick = () => {
-                    emailInput.value = result.suggestion;
-                    validateEmail();
-                };
-            } else {
-                emailValidation.style.cursor = 'default';
-                emailValidation.onclick = null;
-            }
-            
-            emailValidation.classList.remove('error', 'warning', 'success');
-            emailValidation.classList.add('show', result.type);
-        }
-        
-        function validateEmail() {
-            if (!emailInput) return;
-            const email = emailInput.value;
-            const result = validateEmailDomain(email);
-            showValidation(result);
-        }
-        
-        if (emailInput) {
-            emailInput.addEventListener('input', (e) => {
-                clearTimeout(validationTimeout);
-                if (e.target.value.includes('@')) {
-                    validationTimeout = setTimeout(() => {
-                        validateEmail();
-                    }, 500);
-                } else if (emailValidation) {
-                    emailValidation.classList.remove('show');
-                }
-            });
-            
-            emailInput.addEventListener('blur', () => {
-                if (emailInput.value) {
-                    validateEmail();
-                }
-            });
-        }
-        
-        // Phone formatting
-        const phoneInput = document.getElementById('phone');
-        if (phoneInput) {
-            phoneInput.addEventListener('input', (e) => {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 0) {
-                    if (value.length <= 3) {
-                        value = `(${value}`;
-                    } else if (value.length <= 6) {
-                        value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-                    } else {
-                        value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
-                    }
-                }
-                e.target.value = value;
-            });
-        }
-        
-        // Form validation on submit
-        const registerForm = document.getElementById('registerForm');
-        if (registerForm && emailInput) {
-            registerForm.addEventListener('submit', (e) => {
-                const email = emailInput.value;
-                const validation = validateEmailDomain(email);
-                
-                if (validation && validation.type === 'error') {
-                    e.preventDefault();
-                    emailInput.focus();
-                    showValidation(validation);
-                    return false;
-                }
-                
-                if (validation && validation.type === 'warning') {
-                    const proceed = confirm(`Posible error en el email. ${validation.message}\n\n¿Deseas continuar?`);
-                    if (!proceed) {
-                        e.preventDefault();
-                        emailInput.focus();
-                        return false;
-                    }
-                }
-            });
-        }
-    })();
-</script>
-
-<script>
-    // Elementos de la página
-    const pageLoader = document.getElementById('loader');
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const header = document.getElementById('header');
-    
-    // Hide loader when page is ready
-    if (pageLoader) {
+    <!-- ==========================================
+         SCROLL TO REGISTER (Django variable)
+         ========================================== -->
+    {% if scroll_to_register %}
+    <script>
         window.addEventListener('load', function() {
             setTimeout(function() {
-                pageLoader.classList.add('hidden');
-            }, 500);
-        });
-    }
-    
-    // Mobile menu toggle
-    if (menuToggle && mobileMenu) {
-        menuToggle.addEventListener('click', function() {
-            mobileMenu.classList.toggle('active');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                mobileMenu.classList.remove('active');
-            });
-        });
-    }
-    
-    // Header scroll effect
-    if (header) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-    }
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerHeight = header ? header.offsetHeight : 0;
-                const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-    
-    // Animate on scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-            }
-        });
-    }, observerOptions);
-    
-    document.querySelectorAll('.animate-on-scroll').forEach(el => {
-        observer.observe(el);
-    });
-    
-    // Countdown timer
-    function updateCountdown() {
-        fetch('{% url "landing:countdown-api" %}')
-            .then(response => response.json())
-            .then(data => {
-                const countdownEl = document.getElementById('countdown');
-                if (!countdownEl) return;
-                
-                if (data.ended) {
-                    countdownEl.innerHTML = `
-                        <h3 style="color: var(--teal-primary);">${data.message}</h3>
-                    `;
-                } else {
-                    const days = document.getElementById('days');
-                    const hours = document.getElementById('hours');
-                    const minutes = document.getElementById('minutes');
-                    const seconds = document.getElementById('seconds');
-                    
-                    if (days) days.textContent = String(data.days).padStart(2, '0');
-                    if (hours) hours.textContent = String(data.hours).padStart(2, '0');
-                    if (minutes) minutes.textContent = String(data.minutes).padStart(2, '0');
-                    if (seconds) seconds.textContent = String(data.seconds).padStart(2, '0');
+                const registerSection = document.getElementById('register');
+                if (registerSection) {
+                    registerSection.scrollIntoView({ behavior: 'smooth' });
                 }
-            })
-            .catch(error => console.error('Error updating countdown:', error));
-    }
-    
-    // Update countdown every second
-    if (document.getElementById('countdown')) {
-        setInterval(updateCountdown, 1000);
-    }
-    
-    {% if scroll_to_register %}
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            const registerSection = document.getElementById('register');
-            if (registerSection) {
-                registerSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 600);
-    });
+            }, 600);
+        });
+    </script>
     {% endif %}
-</script>
 
-{% if messages %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                // Crear el elemento del mensaje
-                const successMsg = document.createElement('div');
-                successMsg.className = 'success-message show';
-                
-                let timeLeft = 30;
-                const timeDisplay = document.createElement('div');
-                timeDisplay.className = 'time-remaining';
-                timeDisplay.textContent = `Este mensaje se ocultará en ${timeLeft} segundos`;
-                
-                successMsg.innerHTML = `
-                    <i class="fas fa-check-circle"></i>
-                    <p>{{ message|safe }}</p>
-                `;
-                successMsg.appendChild(timeDisplay);
-                
-                // Insertar el mensaje antes del formulario
-                const registerForm = document.getElementById('registerForm');
-                if (registerForm) {
-                    registerForm.parentElement.insertBefore(successMsg, registerForm);
-                    
-                    // Scroll hacia el mensaje
-                    setTimeout(() => {
-                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 100);
-                    
-                    // Actualizar el contador cada segundo
-                    const countdown = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft > 0) {
-                            timeDisplay.textContent = `Este mensaje se ocultará en ${timeLeft} segundos`;
-                        } else {
-                            clearInterval(countdown);
-                        }
-                    }, 1000);
-                    
-                    // Ocultar después de 30 segundos
-                    setTimeout(() => {
-                        successMsg.classList.remove('show');
-                        setTimeout(() => successMsg.remove(), 500);
-                    }, 30000); // 30 segundos
-                }
-            {% elif message.tags == 'error' %}
-                // Mostrar errores con alert
-                alert('{{ message|escapejs }}');
-            {% else %}
-                // Otros tipos de mensajes
-                alert('{{ message|escapejs }}');
-            {% endif %}
-        {% endfor %}
-    });
-</script>
-{% endif %}
-
-<!-- ATH Móvil Script -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-<script>
-    console.log('🔄 Cargando script ATH Móvil - Version 2.0'); // Para verificar que cargó el nuevo
+    <!-- ==========================================
+         EXTERNAL JAVASCRIPT FILES
+         ========================================== -->
     
-    // Configuración de ATH Móvil
-    let selectedDonationAmount = 250;
+    <!-- 1. ATH Móvil Base Script (DEBE IR PRIMERO) -->
+    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     
-    // Crear objeto ATHM_Checkout con getters dinámicos
-    window.ATHM_Checkout = {
-        env: 'production',
-        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
-        timeout: 600,
-        theme: 'btn',
-        lang: 'es',
-        get total() { 
-            console.log('📊 ATH leyendo total:', selectedDonationAmount);
-            return selectedDonationAmount; 
-        },
-        get subtotal() { return selectedDonationAmount; },
-        tax: 0,
-        metadata1: 'Donacion Campaña',
-        metadata2: 'RenovarParaAvanzar',
-        get items() {
-            return [{
-                "name": "Donación Campaña",
-                "description": "Donación para la campaña Renovar para Avanzar",
-                "quantity": "1",
-                "price": selectedDonationAmount.toString(),
-                "tax": "0",
-                "metadata": "donacion"
-            }];
-        },
-        phoneNumber: ""
-    };
-
-    // Funciones de callback
-    async function authorizationATHM() {
-        const paymentStatus = document.getElementById('paymentStatusDonation');
-        
-        try {
-            const responseAuth = await authorization();
-            console.log('✅ Autorización exitosa:', responseAuth);
-            
-            if (responseAuth && responseAuth.status === 'success') {
-                paymentStatus.className = 'payment-status success';
-                paymentStatus.style.display = 'block';
-                paymentStatus.innerHTML = `
-                    <i class="fas fa-check-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px; color: #059669;"></i>
-                    <h3 style="margin: 10px 0; color: #065F46;">¡Donación exitosa!</h3>
-                    <p style="margin: 10px 0; color: #065F46;">Gracias por tu donación de <strong>$${responseAuth.data.total.toFixed(2)}</strong>.</p>
-                    ${responseAuth.data.referenceNumber ? `<p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8; color: #065F46;">Referencia: ${responseAuth.data.referenceNumber}</p>` : ''}
-                `;
-                paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                setTimeout(() => { paymentStatus.style.display = 'none'; }, 15000);
-            }
-        } catch (error) {
-            console.error('❌ Error:', error);
-            paymentStatus.className = 'payment-status error';
-            paymentStatus.style.display = 'block';
-            paymentStatus.innerHTML = `
-                <i class="fas fa-exclamation-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
-                <h3 style="margin: 10px 0;">Error en la transacción</h3>
-                <p>${error.message || 'Hubo un problema procesando tu donación.'}</p>
-            `;
-            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-    
-    async function cancelATHM() {
-        const paymentStatus = document.getElementById('paymentStatusDonation');
-        
-        try {
-            const responseCancel = await findPaymentATHM();
-            console.log('⚠️ Pago marcado como cancelado:', responseCancel);
-            
-            // NO mostrar mensaje de error automáticamente
-            // Esperar a que el usuario realmente cancele
-            
-            paymentStatus.className = 'payment-status processing';
-            paymentStatus.style.display = 'block';
-            paymentStatus.innerHTML = `
-                <i class="fas fa-info-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
-                <h3 style="margin: 10px 0;">Revisa tu app ATH Móvil</h3>
-                <p>Si el pago aún aparece en tu app ATH Móvil, confírmalo desde ahí.</p>
-                <p style="margin-top: 10px; font-size: 0.9rem;">El pago puede estar activo aunque esta ventana se haya cerrado.</p>
-            `;
-            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            setTimeout(() => {
-                paymentStatus.style.display = 'none';
-            }, 10000);
-        } catch (error) {
-            console.error('Error al cancelar:', error);
-        }
-    }
-    
-    async function expiredATHM() {
-        const paymentStatus = document.getElementById('paymentStatusDonation');
-        try {
-            const responseExpired = await findPaymentATHM();
-            paymentStatus.className = 'payment-status error';
-            paymentStatus.style.display = 'block';
-            paymentStatus.innerHTML = `
-                <i class="fas fa-clock" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
-                <h3 style="margin: 10px 0;">Tiempo expirado</h3>
-                <p>El tiempo para completar la transacción ha expirado.</p>
-            `;
-            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => { paymentStatus.style.display = 'none'; }, 5000);
-        } catch (error) {
-            console.error('Error en expiración:', error);
-        }
-    }
-    
-    // Event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('✅ DOM listo, configurando event listeners');
-        
-        // Botones de monto
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.amount-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.background = 'white';
-                    b.style.color = '#377e7c';
-                });
-                
-                this.classList.add('active');
-                this.style.background = '#4DB6AC';
-                this.style.color = 'white';
-                
-                selectedDonationAmount = parseFloat(this.dataset.amount);
-                document.getElementById('customDonationAmount').value = '';
-                
-                console.log('💰 Nuevo monto:', selectedDonationAmount);
-            });
-        });
-        
-        // Input personalizado
-        const customAmountInput = document.getElementById('customDonationAmount');
-        if (customAmountInput) {
-            customAmountInput.addEventListener('input', function() {
-                document.querySelectorAll('.amount-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.background = 'white';
-                    b.style.color = '#377e7c';
-                });
-                
-                const value = parseFloat(this.value);
-                if (value >= 1 && value <= 1500) {
-                    selectedDonationAmount = value;
-                    console.log('💰 Monto personalizado:', selectedDonationAmount);
-                }
-            });
-        }
-    });
-</script>
+    <!-- 2. Custom JavaScript Modules -->
+    <script src="{% static 'landing/js/page-interactions.js' %}"></script>
+    <script src="{% static 'landing/js/form-validation.js' %}"></script>
+    <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+    <script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
+    <script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 </body>
 </html>

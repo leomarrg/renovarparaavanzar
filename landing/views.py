@@ -565,106 +565,229 @@ class RegisterView(IndexView):
 
 
 class DonateView(TemplateView):
-    """Vista para procesar donaciones con ATH Móvil"""
+    """Vista principal de donación con ATH Móvil E-commerce"""
     template_name = 'landing/donate.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Configuración de ATH Móvil
+        # Configuración de ATH Móvil para el frontend
         context['ath_config'] = {
-            'public_token': getattr(settings, 'ATH_MOVIL_PUBLIC_TOKEN', 'a66ce73d04f2087615f6320b724defc5b4eedc55'),
-            'env': 'production',
-            'theme': 'btn',  # opciones: btn, btn-dark, btn-light
-            'lang': 'es',
-            'timeout': 600,
+            'public_token': settings.ATH_MOVIL_PUBLIC_TOKEN,
+            'env': settings.ATH_MOVIL_ENV,
+            'timeout': settings.ATH_MOVIL_TIMEOUT,
+            'site_url': settings.SITE_URL,
         }
         
-        # Información de donación
-        context['donation'] = {
-            'platform': 'ATH Móvil Pay Business',
-            'handle': '/comitedrmendezsexto',
-            'legal_text': 'Este comité está debidamente registrado como una entidad sin fines de lucro y en cumplimiento con las leyes aplicables.',
+        # Información de la campaña
+        context['candidate'] = {
+            'name': 'Dr. Méndez Sexto',
+            'campaign_slogan': 'Renovar para Avanzar',
         }
         
         return context
-    
+
+
+# Al inicio del archivo, asegúrate de tener estos imports
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+import requests
+import json
+
+# ... tus otras vistas ...
+
+# Después de tu IndexView, agrega estas vistas:
+
 @method_decorator(csrf_exempt, name='dispatch')
-class ATHMovilCallbackView(View):
-    """Vista para manejar callbacks de ATH Móvil"""
+class ATHPaymentView(View):
+    """Endpoint para crear el pago en ATH Móvil"""
     
     def post(self, request):
-        """Procesar autorización de pago"""
         try:
             data = json.loads(request.body)
             
-            # Aquí puedes guardar la transacción en tu base de datos
-            # Por ejemplo, crear un modelo de Donation
+            amount = float(data.get('amount', 0))
+            metadata1 = data.get('metadata1', 'Donacion Campaña')
+            metadata2 = data.get('metadata2', 'RenovarParaAvanzar')
             
-            payment_info = {
-                'ecommerce_id': data.get('ecommerceId'),
-                'reference_number': data.get('referenceNumber'),
-                'status': data.get('ecommerceStatus'),
-                'total': data.get('total'),
-                'name': data.get('name', ''),
-                'email': data.get('email', ''),
-                'phone': data.get('phoneNumber', ''),
-                'date': data.get('transactionDate'),
+            if amount <= 0:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Monto inválido'
+                }, status=400)
+            
+            # Preparar datos para ATH Móvil
+            payment_data = {
+                'publicToken': settings.ATH_MOVIL_PUBLIC_TOKEN,
+                'timeout': settings.ATH_MOVIL_TIMEOUT,
+                'total': amount,
+                'subtotal': amount,
+                'tax': 0,
+                'metadata1': metadata1,
+                'metadata2': metadata2,
+                'items': [{
+                    'name': 'Donación Campaña',
+                    'description': f'Donación para {metadata2}',
+                    'quantity': 1,
+                    'price': amount,
+                    'tax': 0,
+                    'metadata': metadata1
+                }]
             }
             
-            # Aquí guardarías en la base de datos
-            # donation = Donation.objects.create(**payment_info)
+            # Llamar a la API de ATH Móvil
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/payment',
+                json=payment_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
             
-            return JsonResponse({
-                'success': True,
-                'message': '¡Gracias por tu donación!',
-                'data': payment_info
-            })
-            
+            if response.status_code == 200:
+                result = response.json()
+                return JsonResponse(result)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al crear el pago',
+                    'details': response.text
+                }, status=response.status_code)
+                
         except Exception as e:
+            print(f"Error en ATHPaymentView: {str(e)}")
+            traceback.print_exc()
             return JsonResponse({
-                'success': False,
-                'message': f'Error procesando el pago: {str(e)}'
-            }, status=400)
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
 
 
-class ATHMovilVerifyView(View):
-    """Vista para verificar estado de transacción"""
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHUpdatePhoneView(View):
+    """Endpoint para actualizar el teléfono"""
     
     def post(self, request):
-        """Verificar estado de un pago"""
         try:
             data = json.loads(request.body)
+            
             ecommerce_id = data.get('ecommerceId')
-            public_token = getattr(settings, 'ATH_MOVIL_PUBLIC_TOKEN', '')
+            phone_number = data.get('phoneNumber')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
             
-            # Llamar al API de ATH Móvil para verificar
-            url = 'https://payments.athmovil.com/api/business-transaction/ecommerce/business/findPayment'
-            
-            payload = {
+            update_data = {
                 'ecommerceId': ecommerce_id,
+                'phoneNumber': phone_number,
                 'publicToken': public_token
             }
             
-            headers = {
-                'Content-Type': 'application/json',
-            }
-            
-            response = requests.post(url, json=payload, headers=headers)
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/update-phone-number',
+                json=update_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
             
             if response.status_code == 200:
                 return JsonResponse(response.json())
             else:
                 return JsonResponse({
-                    'success': False,
-                    'message': 'Error verificando la transacción'
-                }, status=400)
+                    'status': 'error',
+                    'message': 'Error al actualizar teléfono'
+                }, status=response.status_code)
                 
         except Exception as e:
+            print(f"Error en ATHUpdatePhoneView: {str(e)}")
             return JsonResponse({
-                'success': False,
+                'status': 'error',
                 'message': str(e)
-            }, status=400)
+            }, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHAuthorizationView(View):
+    """Endpoint para autorizar el pago"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            ecommerce_id = data.get('ecommerceId')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
+            
+            auth_data = {
+                'ecommerceId': ecommerce_id,
+                'publicToken': public_token
+            }
+            
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/authorization',
+                json=auth_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                # Si el pago fue exitoso, log
+                if result.get('status') == 'success':
+                    payment_data = result.get('data', {})
+                    print(f"✅ Pago exitoso: {payment_data.get('referenceNumber')}")
+                
+                return JsonResponse(result)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al autorizar'
+                }, status=response.status_code)
+                
+        except Exception as e:
+            print(f"Error en ATHAuthorizationView: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHFindPaymentView(View):
+    """Endpoint para consultar estado del pago"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            ecommerce_id = data.get('ecommerceId')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
+            
+            find_data = {
+                'ecommerceId': ecommerce_id,
+                'publicToken': public_token
+            }
+            
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/business/findPayment',
+                json=find_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                return JsonResponse(response.json())
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al buscar pago'
+                }, status=response.status_code)
+                
+        except Exception as e:
+            print(f"Error en ATHFindPaymentView: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+    
+
 
 
 class TeamView(TemplateView):

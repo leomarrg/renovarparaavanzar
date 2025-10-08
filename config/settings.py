@@ -31,7 +31,8 @@ ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     'leomarrg.pythonanywhere.com',
-    '127.0.0.1'
+    '127.0.0.1',
+    'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
 
 # Site URL for absolute URLs in emails and other purposes
@@ -155,7 +156,7 @@ ATH_MOVIL_API_URL = 'https://payments.athmovil.com/api'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Puerto_Rico'
 
 USE_I18N = True
 

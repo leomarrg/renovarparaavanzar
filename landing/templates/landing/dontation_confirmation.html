@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Gracias por tu Donación! - {{ candidate.campaign_slogan }}</title>
+    
+    <link rel="icon" type="image/png" href="{% static 'landing/img/favicon.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
+</head>
+<body>
+    
+    <section class="register-section" style="min-height: 100vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="register-wrapper" style="max-width: 600px;">
+                
+                <!-- Ícono de Éxito -->
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #4DB6AC, #00897B); border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center; animation: pulse 2s infinite;">
+                        <i class="fas fa-heart" style="color: white; font-size: 50px;"></i>
+                    </div>
+                    
+                    <h1 style="font-size: 2.8rem; color: #2C3E50; margin-bottom: 15px; font-weight: 700;">
+                        ¡Gracias por tu Apoyo!
+                    </h1>
+                    
+                    <div class="title-script" style="color: #E67E5B; font-size: 3rem; margin-bottom: 20px;">
+                        Juntos renovaremos Puerto Rico
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de Confirmación -->
+                <div class="register-form-container">
+                    <div style="background: linear-gradient(135deg, #4DB6AC, #00897B); border-radius: 20px; padding: 40px; margin-bottom: 30px; text-align: center; color: white;">
+                        <h2 style="color: white; font-size: 1.8rem; margin-bottom: 20px; font-weight: 700;">
+                            ✓ Donación Completada
+                        </h2>
+                        
+                        <p style="font-size: 1.2rem; line-height: 1.8; margin: 0; opacity: 0.95;">
+                            Tu donación a través de <strong>ATH Móvil Pay Business</strong> ha sido procesada exitosamente.
+                        </p>
+                    </div>
+                    
+                    <!-- Mensaje Principal -->
+                    <div style="background: #E8F0EE; border-radius: 15px; padding: 30px; margin-bottom: 30px; text-align: center;">
+                        <p style="color: #2C3E50; font-size: 1.15rem; line-height: 1.8; margin-bottom: 20px;">
+                            Gracias por ser parte de este movimiento de <strong style="color: #377e7c;">transformación</strong>. 
+                            Con tu apoyo, vamos a <strong style="color: #377e7c;">renovar el Colegio de Médicos y Cirujanos de Puerto Rico</strong> 
+                            y avanzar por nuestra profesión y la salud de Puerto Rico.
+                        </p>
+                        
+                        <div style="margin-top: 25px; padding-top: 25px; border-top: 2px solid #D1E5E0;">
+                            <p style="color: #718096; font-size: 0.95rem; line-height: 1.6;">
+                                Recibirás una confirmación de ATH Móvil en tu aplicación.<br>
+                                Guarda tu comprobante para tus récords.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Logo -->
+                    <div class="doctor-name" style="margin: 40px 0;">
+                        <img src="{% static 'landing/img/logo-mendez.png' %}" alt="Dr. Méndez Sexto" style="max-width: 270px;">
+                    </div>
+                    
+                    <div class="campaign-hashtag" style="text-align: center; margin-bottom: 40px; font-size: 1.6rem;">
+                        #RenovarParaAvanzar
+                    </div>
+                    
+                    <!-- Botones de Acción -->
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px;">
+                        <a href="{% url 'landing:index' %}" class="btn btn-primary" style="text-decoration: none; flex: 1; min-width: 200px; text-align: center;">
+                            <i class="fas fa-home" style="margin-right: 8px;"></i>
+                            Volver al Inicio
+                        </a>
+                        
+                        <a href="{% url 'landing:index' %}#register" class="btn btn-teal-outline" style="text-decoration: none; flex: 1; min-width: 200px; text-align: center;">
+                            <i class="fas fa-user-plus" style="margin-right: 8px;"></i>
+                            Registrarme
+                        </a>
+                    </div>
+                    
+                    <!-- Compartir en Redes -->
+                    <div style="background: #F8F9FA; border-radius: 15px; padding: 30px; text-align: center;">
+                        <h3 style="color: #377e7c; margin-bottom: 20px; font-size: 1.3rem;">
+                            Ayúdanos a crecer el movimiento
+                        </h3>
+                        <p style="color: #718096; margin-bottom: 20px; font-size: 1rem;">
+                            Comparte nuestra campaña en tus redes sociales:
+                        </p>
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <a href="https://facebook.com/sharer/sharer.php?u=https://www.renovarparaavanzar.com" target="_blank" class="social-link" style="width: 50px; height: 50px; font-size: 1.3rem;">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?text=Apoyé%20a%20%40DrMendezSexto%20para%20renovar%20el%20Colegio%20de%20Médicos.%20%23RenovarParaAvanzar%20https://www.renovarparaavanzar.com" target="_blank" class="social-link" style="width: 50px; height: 50px; font-size: 1.3rem;">
+                                <i class="fab fa-x-twitter"></i>
+                            </a>
+                            <a href="https://www.instagram.com/" target="_blank" class="social-link" style="width: 50px; height: 50px; font-size: 1.3rem;">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://wa.me/?text=Apoyé%20a%20Dr.%20Méndez%20Sexto%20para%20renovar%20el%20Colegio%20de%20Médicos.%20%23RenovarParaAvanzar%20https://www.renovarparaavanzar.com" target="_blank" class="social-link" style="width: 50px; height: 50px; font-size: 1.3rem;">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer Simplificado -->
+    <footer class="footer" style="padding: 40px 20px;">
+        <div class="container">
+            <h3 style="margin-bottom: 10px;">{{ candidate.name }}</h3>
+            <p style="opacity: 0.9; margin-bottom: 20px;">Candidato a la Presidencia del Colegio de Médicos Cirujanos de Puerto Rico</p>
+            
+            <div class="copyright" style="margin-top: 30px;">
+                <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
+                <p style="margin-top: 10px; font-size: 0.8rem;">Powered By Dominio</p>
+            </div>
+        </div>
+    </footer>
+    
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+    
+</body>
+</html>
