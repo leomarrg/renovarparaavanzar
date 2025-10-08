@@ -63,26 +63,88 @@
 .checkbox-text a:hover {
     color: #377e7c;
 }
+
+/* Success message styles */
+.success-message {
+    background: #D1FAE5;
+    border: 2px solid #059669;
+    color: #065F46;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: none;
+    animation: slideDown 0.5s ease;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.success-message i {
+    color: #059669;
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estilos para los botones de monto */
+.amount-btn:hover {
+    background: #4DB6AC !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.amount-btn.active {
+    background: #4DB6AC !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(77, 182, 172, 0.4);
+}
+
+/* Estilos para el estado del pago */
+.payment-status.success {
+    background: #D1FAE5;
+    border: 2px solid #059669;
+    color: #065F46;
+    display: block !important;
+}
+
+.payment-status.error {
+    background: #FEE2E2;
+    border: 2px solid #DC2626;
+    color: #991B1B;
+    display: block !important;
+}
+
+.payment-status.processing {
+    background: #DBEAFE;
+    border: 2px solid #2563EB;
+    color: #1E40AF;
+    display: block !important;
+}
+
 </style>
 </head>
 <body>
     <!-- Loader -->
-    <!-- <div class="loader" id="loader">
+     <div class="loader" id="loader">
         <div class="loader-spinner"></div>
     </div>
     
-    Header
-    <header class="header" id="header">
+    <!-- Header -->
+    <!-- <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
-                <img src="{% static 'landing/img/logo-renovar.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
+                <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
             </div>
             <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
-        </nav>
+        </nav> -->
         
-         Mobile Menu -->
+         <!-- Mobile Menu -->
         <!-- <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
@@ -96,33 +158,60 @@
     <!-- Hero Section -->
     <!-- <section class="hero" id="hero">
         <div class="hero-content">
-            <h1>{{ candidate.name }}</h1>
-            <p class="subtitle">{{ candidate.title }}<br>{{ candidate.subtitle }}</p>
-            <p class="hero-text">{{ candidate.message }}</p>
-            
-            <h2 style="font-size: 2.5rem; margin: 30px 0; font-weight: 800;">¡Únete!</h2>
-            
-            <p style="margin-bottom: 30px; font-size: 1.1rem;">
-                Haz tu donativo a través de<br>
-                <strong>{{ donation.platform }}</strong><br>
-                a <strong style="color: #FFEB3B;">{{ donation.handle }}</strong>
+            <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
+
+            <p class="hero-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
+        </div>
+    </section> -->
+
+    <!-- Countdown Section -->
+    <!-- <section class="countdown-section">
+        <div class="countdown-wrapper">
+            <h2 class="countdown-title">Lorem ipsum dolor</h2>
             
-            <div style="margin-top: 40px;">
-                <a href="#donate" class="btn btn-primary">Donar Ahora</a>
-                <a href="#register" class="btn btn-outline" style="margin-left: 15px;">Registrarse</a>
+            <div class="countdown-display">
+                <div class="countdown-row">
+                    <div class="countdown-unit">
+                        <span class="countdown-value" id="days-mini">{{ countdown.days }}</span>
+                        <span class="countdown-label">Días</span>
+                    </div>
+                </div>
+                
+                <div class="countdown-row">
+                    <div class="countdown-unit">
+                        <span class="countdown-value" id="hours-mini">{{ countdown.hours }}</span>
+                        <span class="countdown-label">Horas</span>
+                    </div>
+                </div>
+                
+                <div class="countdown-row">
+                    <div class="countdown-unit">
+                        <span class="countdown-value" id="minutes-mini">{{ countdown.minutes }}</span>
+                        <span class="countdown-label">Minutos</span>
+                    </div>
+                </div>
+                
+                <div class="countdown-row">
+                    <div class="countdown-unit">
+                        <span class="countdown-value" id="seconds-mini">{{ countdown.seconds }}</span>
+                        <span class="countdown-label">Segundos</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </section> --> 
+    </section> -->
     
     <!-- Team Section -->
     <!-- <section class="team-section" id="team">
-        <div class="container">
-            <div class="section-header">
+        <div class="section-header">
+            <div class="section-header-content">
                 <h2>Nuestro</h2>
                 <div class="script">Equipo</div>
             </div>
-            
+        </div>
+        <div class="container">
             <div class="team-grid">
                 {% for member in team_members %}
                 <div class="team-member animate-on-scroll">
@@ -175,7 +264,7 @@
     </section> -->
     
     <!-- Donation Section -->
-    <!-- <section class="donation-section" id="donate">
+    <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-content animate-on-scroll">
                 <h2>¡Únete!</h2>
@@ -185,27 +274,59 @@
                     <div class="donation-handle">{{ donation.handle }}</div>
                 </div>
                 
-                <div class="qr-container">
-                    {% if donation.qr_code %}
-                    <img src="{% static donation.qr_code %}" alt="QR Code para donar">
-                    {% else %}
-                    <div style="width: 100%; height: 100%; background: #E0E0E0; display: flex; align-items: center; justify-content: center; border-radius: 10px;">
-                        <span style="color: #999;">QR Code</span>
+                <!-- Selector de monto -->
+                <div class="amount-selection" style="margin: 30px 0;">
+                    <h3 style="color: #377e7c; margin-bottom: 20px; text-align: center;">Selecciona el monto</h3>
+                    <div class="amount-buttons" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto 20px;">
+                        <button class="amount-btn" data-amount="25" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$25</button>
+                        <button class="amount-btn" data-amount="50" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$50</button>
+                        <button class="amount-btn" data-amount="100" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$100</button>
+                        <button class="amount-btn active" data-amount="250" style="padding: 12px; border: 2px solid #4DB6AC; background: #4DB6AC; color: white; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$250</button>
+                        <button class="amount-btn" data-amount="500" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$500</button>
+                        <button class="amount-btn" data-amount="1000" style="padding: 12px; border: 2px solid #4DB6AC; background: white; color: #377e7c; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">$1,000</button>
                     </div>
-                    {% endif %}
+                    
+                    <div class="custom-amount" style="text-align: center; max-width: 400px; margin: 0 auto;">
+                        <input type="number" 
+                            id="customDonationAmount" 
+                            placeholder="Otra cantidad ($1 - $1,500)" 
+                            min="1" 
+                            max="1500" 
+                            step="0.01"
+                            style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1rem; text-align: center;">
+                    </div>
                 </div>
                 
-                <a href="{% url 'landing:donate' %}" class="ath-button">
-                    <img src="{% static 'landing/img/ath-logo.png' %}" alt="ATH" style="height: 25px;">
-                    <span>ATH Móvil</span>
-                </a>
+                <!-- Información del donante (opcional) -->
+                <!-- <div class="donor-info" style="max-width: 500px; margin: 30px auto; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                    <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem; color: #fff;">Información opcional del donante:</p>
+                    <input type="text" 
+                        id="donorName" 
+                        placeholder="Nombre completo (opcional)"
+                        style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
+                    <input type="email" 
+                        id="donorEmail" 
+                        placeholder="Correo electrónico (opcional)"
+                        style="width: 100%; padding: 10px; margin-bottom: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
+                    <input type="tel" 
+                        id="donorPhone" 
+                        placeholder="Teléfono (opcional)"
+                        style="width: 100%; padding: 10px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.9); border-radius: 8px; font-size: 0.95rem;">
+                </div> -->
+                
+                <!-- Estado del pago -->
+                <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 600px; text-align: center;"></div>
+                
+                <!-- ATH Móvil Payment Button -->
+
+                <div id="ATHMovil_Checkout_Button_payment"></div>
                 
                 <p class="legal-text">{{ donation.legal_text }}</p>
                 
                 <div class="hashtag">{{ donation.hashtag }}</div>
             </div>
         </div>
-    </section> -->
+    </section>
     
 <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
 <section class="register-section" id="register">
@@ -326,7 +447,7 @@
                                 required 
                                 checked>
                             <span class="checkbox-text">
-                                Acepto los <a href="#" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
+                                Acepto los <a href="{% url 'landing:terms' %}" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
                             </span>
                         </label>
                     </div>
@@ -382,13 +503,13 @@
             
             <div class="social-links">
                 {% if social_media.facebook %}
-                <a href="{{ social_media.facebook }}" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
                 {% endif %}
                 {% if social_media.twitter %}
-                <a href="{{ social_media.twitter }}" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
                 {% endif %}
                 {% if social_media.instagram %}
-                <a href="{{ social_media.instagram }}" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
                 {% endif %}
             </div>
             <div class="copyright">
@@ -639,17 +760,17 @@
 </script>
 
 <script>
-    // Elementos que pueden no existir (secciones comentadas)
-    const loader = document.getElementById('loader');
+    // Elementos de la página
+    const pageLoader = document.getElementById('loader');
     const menuToggle = document.getElementById('menuToggle');
     const mobileMenu = document.getElementById('mobileMenu');
     const header = document.getElementById('header');
     
     // Hide loader when page is ready
-    if (loader) {
+    if (pageLoader) {
         window.addEventListener('load', function() {
             setTimeout(function() {
-                loader.classList.add('hidden');
+                pageLoader.classList.add('hidden');
             }, 500);
         });
     }
@@ -759,10 +880,220 @@
 
 {% if messages %}
 <script>
-    {% for message in messages %}
-        alert('{{ message }}');
-    {% endfor %}
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                // Crear el elemento del mensaje
+                const successMsg = document.createElement('div');
+                successMsg.className = 'success-message show';
+                
+                let timeLeft = 30;
+                const timeDisplay = document.createElement('div');
+                timeDisplay.className = 'time-remaining';
+                timeDisplay.textContent = `Este mensaje se ocultará en ${timeLeft} segundos`;
+                
+                successMsg.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <p>{{ message|safe }}</p>
+                `;
+                successMsg.appendChild(timeDisplay);
+                
+                // Insertar el mensaje antes del formulario
+                const registerForm = document.getElementById('registerForm');
+                if (registerForm) {
+                    registerForm.parentElement.insertBefore(successMsg, registerForm);
+                    
+                    // Scroll hacia el mensaje
+                    setTimeout(() => {
+                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                    
+                    // Actualizar el contador cada segundo
+                    const countdown = setInterval(() => {
+                        timeLeft--;
+                        if (timeLeft > 0) {
+                            timeDisplay.textContent = `Este mensaje se ocultará en ${timeLeft} segundos`;
+                        } else {
+                            clearInterval(countdown);
+                        }
+                    }, 1000);
+                    
+                    // Ocultar después de 30 segundos
+                    setTimeout(() => {
+                        successMsg.classList.remove('show');
+                        setTimeout(() => successMsg.remove(), 500);
+                    }, 30000); // 30 segundos
+                }
+            {% elif message.tags == 'error' %}
+                // Mostrar errores con alert
+                alert('{{ message|escapejs }}');
+            {% else %}
+                // Otros tipos de mensajes
+                alert('{{ message|escapejs }}');
+            {% endif %}
+        {% endfor %}
+    });
 </script>
 {% endif %}
+
+<!-- ATH Móvil Script -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+<script>
+    console.log('🔄 Cargando script ATH Móvil - Version 2.0'); // Para verificar que cargó el nuevo
+    
+    // Configuración de ATH Móvil
+    let selectedDonationAmount = 250;
+    
+    // Crear objeto ATHM_Checkout con getters dinámicos
+    window.ATHM_Checkout = {
+        env: 'production',
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
+        timeout: 600,
+        theme: 'btn',
+        lang: 'es',
+        get total() { 
+            console.log('📊 ATH leyendo total:', selectedDonationAmount);
+            return selectedDonationAmount; 
+        },
+        get subtotal() { return selectedDonationAmount; },
+        tax: 0,
+        metadata1: 'Donacion Campaña',
+        metadata2: 'RenovarParaAvanzar',
+        get items() {
+            return [{
+                "name": "Donación Campaña",
+                "description": "Donación para la campaña Renovar para Avanzar",
+                "quantity": "1",
+                "price": selectedDonationAmount.toString(),
+                "tax": "0",
+                "metadata": "donacion"
+            }];
+        },
+        phoneNumber: ""
+    };
+
+    // Funciones de callback
+    async function authorizationATHM() {
+        const paymentStatus = document.getElementById('paymentStatusDonation');
+        
+        try {
+            const responseAuth = await authorization();
+            console.log('✅ Autorización exitosa:', responseAuth);
+            
+            if (responseAuth && responseAuth.status === 'success') {
+                paymentStatus.className = 'payment-status success';
+                paymentStatus.style.display = 'block';
+                paymentStatus.innerHTML = `
+                    <i class="fas fa-check-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px; color: #059669;"></i>
+                    <h3 style="margin: 10px 0; color: #065F46;">¡Donación exitosa!</h3>
+                    <p style="margin: 10px 0; color: #065F46;">Gracias por tu donación de <strong>$${responseAuth.data.total.toFixed(2)}</strong>.</p>
+                    ${responseAuth.data.referenceNumber ? `<p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8; color: #065F46;">Referencia: ${responseAuth.data.referenceNumber}</p>` : ''}
+                `;
+                paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => { paymentStatus.style.display = 'none'; }, 15000);
+            }
+        } catch (error) {
+            console.error('❌ Error:', error);
+            paymentStatus.className = 'payment-status error';
+            paymentStatus.style.display = 'block';
+            paymentStatus.innerHTML = `
+                <i class="fas fa-exclamation-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
+                <h3 style="margin: 10px 0;">Error en la transacción</h3>
+                <p>${error.message || 'Hubo un problema procesando tu donación.'}</p>
+            `;
+            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    async function cancelATHM() {
+        const paymentStatus = document.getElementById('paymentStatusDonation');
+        
+        try {
+            const responseCancel = await findPaymentATHM();
+            console.log('⚠️ Pago marcado como cancelado:', responseCancel);
+            
+            // NO mostrar mensaje de error automáticamente
+            // Esperar a que el usuario realmente cancele
+            
+            paymentStatus.className = 'payment-status processing';
+            paymentStatus.style.display = 'block';
+            paymentStatus.innerHTML = `
+                <i class="fas fa-info-circle" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
+                <h3 style="margin: 10px 0;">Revisa tu app ATH Móvil</h3>
+                <p>Si el pago aún aparece en tu app ATH Móvil, confírmalo desde ahí.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem;">El pago puede estar activo aunque esta ventana se haya cerrado.</p>
+            `;
+            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                paymentStatus.style.display = 'none';
+            }, 10000);
+        } catch (error) {
+            console.error('Error al cancelar:', error);
+        }
+    }
+    
+    async function expiredATHM() {
+        const paymentStatus = document.getElementById('paymentStatusDonation');
+        try {
+            const responseExpired = await findPaymentATHM();
+            paymentStatus.className = 'payment-status error';
+            paymentStatus.style.display = 'block';
+            paymentStatus.innerHTML = `
+                <i class="fas fa-clock" style="font-size: 2.5rem; display: block; margin-bottom: 15px;"></i>
+                <h3 style="margin: 10px 0;">Tiempo expirado</h3>
+                <p>El tiempo para completar la transacción ha expirado.</p>
+            `;
+            paymentStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => { paymentStatus.style.display = 'none'; }, 5000);
+        } catch (error) {
+            console.error('Error en expiración:', error);
+        }
+    }
+    
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('✅ DOM listo, configurando event listeners');
+        
+        // Botones de monto
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.amount-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.background = 'white';
+                    b.style.color = '#377e7c';
+                });
+                
+                this.classList.add('active');
+                this.style.background = '#4DB6AC';
+                this.style.color = 'white';
+                
+                selectedDonationAmount = parseFloat(this.dataset.amount);
+                document.getElementById('customDonationAmount').value = '';
+                
+                console.log('💰 Nuevo monto:', selectedDonationAmount);
+            });
+        });
+        
+        // Input personalizado
+        const customAmountInput = document.getElementById('customDonationAmount');
+        if (customAmountInput) {
+            customAmountInput.addEventListener('input', function() {
+                document.querySelectorAll('.amount-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.background = 'white';
+                    b.style.color = '#377e7c';
+                });
+                
+                const value = parseFloat(this.value);
+                if (value >= 1 && value <= 1500) {
+                    selectedDonationAmount = value;
+                    console.log('💰 Monto personalizado:', selectedDonationAmount);
+                }
+            });
+        }
+    });
+</script>
+
 </body>
 </html>

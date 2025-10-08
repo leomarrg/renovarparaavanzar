@@ -4,12 +4,33 @@ from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.conf import settings
 from django.utils import timezone
 import json
 from datetime import datetime, timedelta
 import traceback
+import threading
+import requests
+
+
+def send_email_async(registration):
+    """Enviar email en un thread separado para no bloquear la respuesta"""
+    def _send_email():
+        try:
+            register_view = RegisterView()
+            register_view.send_confirmation_email(registration)
+        except Exception as e:
+            print(f"Error enviando email async: {e}")
+            traceback.print_exc()
+    
+    thread = threading.Thread(target=_send_email)
+    thread.daemon = True
+    thread.start()
 
 
 class IndexView(TemplateView):
@@ -162,7 +183,7 @@ class IndexWithRegistrationView(IndexView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['scroll_to_register'] = True  # Flag para hacer scroll automático
+        context['scroll_to_register'] = True
         return context
 
 
@@ -187,15 +208,11 @@ class RegisterAPIView(View):
                 registration = form.save(commit=False)
                 registration.save()
                 
-                # Intentar enviar email si se proporcionó
+                # Enviar email de forma asíncrona si se proporcionó
                 email_sent = False
                 if registration.email:
-                    try:
-                        # Usar el método de la clase RegisterView
-                        register_view = RegisterView()
-                        email_sent = register_view.send_confirmation_email(registration)
-                    except Exception as e:
-                        print(f"Error enviando email: {e}")
+                    send_email_async(registration)
+                    email_sent = True
                 
                 return JsonResponse({
                     'success': True,
@@ -225,13 +242,12 @@ class RegisterAPIView(View):
 
 
 class RegisterView(IndexView):
-    """Vista para registro de voluntarios y simpatizantes - adaptada de ponchapr_app"""
-
+    """Vista para registro de voluntarios y simpatizantes"""
 
     def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            context['scroll_to_register'] = True
-            return context
+        context = super().get_context_data(**kwargs)
+        context['scroll_to_register'] = True
+        return context
     
     def post(self, request):
         try:
@@ -247,27 +263,17 @@ class RegisterView(IndexView):
             try:
                 registration = form.save()
                 
-                email_sent = False
-                email_status = ""
-                
+                # Enviar email de forma asíncrona
                 if registration.email:
-                    try:
-                        email_sent = self.send_confirmation_email(registration)
-                        if email_sent:
-                            email_status = "Se ha enviado un correo de confirmación a tu email."
-                    except Exception as email_error:
-                        print(f"Error enviando correo: {email_error}")
+                    send_email_async(registration)
+                    email_status = "Se ha enviado un correo de confirmación a tu email."
+                else:
+                    email_status = ""
                 
-                success_message = f'''
-                ¡Registro exitoso! {registration.name} {registration.last_name} ha sido registrado. 
-                <br><br>
-                <div style="background: #FFF3CD; border: 2px solid #FFC107; border-radius: 10px; padding: 15px; margin: 10px 0;">
-                    <strong style="font-size: 1.2em;">Tu código de confirmación es:</strong><br>
-                    <span style="font-size: 2em; color: #FF7043; font-weight: bold;">{registration.unique_id}</span><br>
-                    <small>Por favor guárdalo para futuras referencias</small>
-                </div>
-                {email_status}
-                '''
+                # Crear mensaje simple de éxito
+                success_message = f'¡Registro exitoso! {registration.name} {registration.last_name} ha sido registrado.'
+                if email_status:
+                    success_message += f' {email_status}'
                 
                 messages.success(request, success_message)
                 return redirect('landing:index')
@@ -287,7 +293,7 @@ class RegisterView(IndexView):
     def send_confirmation_email(self, registration):
         """Enviar email de confirmación"""
         try:
-            subject = 'Gracias por el apoyo - Renovar para Avanzar'  # CAMBIADO
+            subject = 'Gracias por el apoyo - Renovar para Avanzar'
             from_email = settings.EMAIL_HOST_USER if hasattr(settings, 'EMAIL_HOST_USER') else 'noreply@renovarparaavanzar.com'
             to_email = registration.email
             
@@ -329,7 +335,7 @@ class RegisterView(IndexView):
                 body {{
                     font-family: 'Montserrat', Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #fff;
                     max-width: 600px;
                     margin: 0 auto;
                     padding: 0;
@@ -424,7 +430,7 @@ class RegisterView(IndexView):
                 .ath-handle {{
                     font-size: 26px;
                     font-weight: bold;
-                    color: #FFEB3B;
+                    color: #fff;
                     margin: 20px 0;
                     padding: 15px;
                     background: rgba(255, 255, 255, 0.1);
@@ -558,33 +564,107 @@ class RegisterView(IndexView):
         """
 
 
-class DonateView(View):
-    """Vista para procesar donaciones (redirige a ATH Móvil)"""
+class DonateView(TemplateView):
+    """Vista para procesar donaciones con ATH Móvil"""
+    template_name = 'landing/donate.html'
     
-    def get(self, request):
-        # Aquí puedes registrar el intento de donación
-        return redirect('https://athmovilpr.com/pay/comitedrmendezsexto')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Configuración de ATH Móvil
+        context['ath_config'] = {
+            'public_token': getattr(settings, 'ATH_MOVIL_PUBLIC_TOKEN', 'a66ce73d04f2087615f6320b724defc5b4eedc55'),
+            'env': 'production',
+            'theme': 'btn',  # opciones: btn, btn-dark, btn-light
+            'lang': 'es',
+            'timeout': 600,
+        }
+        
+        # Información de donación
+        context['donation'] = {
+            'platform': 'ATH Móvil Pay Business',
+            'handle': '/comitedrmendezsexto',
+            'legal_text': 'Este comité está debidamente registrado como una entidad sin fines de lucro y en cumplimiento con las leyes aplicables.',
+        }
+        
+        return context
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHMovilCallbackView(View):
+    """Vista para manejar callbacks de ATH Móvil"""
     
     def post(self, request):
-        # Para procesar donaciones vía formulario si es necesario
+        """Procesar autorización de pago"""
         try:
             data = json.loads(request.body)
-            amount = data.get('amount')
-            donor_email = data.get('email')
             
-            # Aquí puedes guardar la información en la base de datos
-            # Por ahora solo retornamos success
+            # Aquí puedes guardar la transacción en tu base de datos
+            # Por ejemplo, crear un modelo de Donation
+            
+            payment_info = {
+                'ecommerce_id': data.get('ecommerceId'),
+                'reference_number': data.get('referenceNumber'),
+                'status': data.get('ecommerceStatus'),
+                'total': data.get('total'),
+                'name': data.get('name', ''),
+                'email': data.get('email', ''),
+                'phone': data.get('phoneNumber', ''),
+                'date': data.get('transactionDate'),
+            }
+            
+            # Aquí guardarías en la base de datos
+            # donation = Donation.objects.create(**payment_info)
             
             return JsonResponse({
                 'success': True,
-                'message': 'Gracias por tu apoyo. Serás redirigido a ATH Móvil.'
+                'message': '¡Gracias por tu donación!',
+                'data': payment_info
             })
             
         except Exception as e:
             return JsonResponse({
                 'success': False,
-                'message': 'Hubo un error procesando tu solicitud.'
-            })
+                'message': f'Error procesando el pago: {str(e)}'
+            }, status=400)
+
+
+class ATHMovilVerifyView(View):
+    """Vista para verificar estado de transacción"""
+    
+    def post(self, request):
+        """Verificar estado de un pago"""
+        try:
+            data = json.loads(request.body)
+            ecommerce_id = data.get('ecommerceId')
+            public_token = getattr(settings, 'ATH_MOVIL_PUBLIC_TOKEN', '')
+            
+            # Llamar al API de ATH Móvil para verificar
+            url = 'https://payments.athmovil.com/api/business-transaction/ecommerce/business/findPayment'
+            
+            payload = {
+                'ecommerceId': ecommerce_id,
+                'publicToken': public_token
+            }
+            
+            headers = {
+                'Content-Type': 'application/json',
+            }
+            
+            response = requests.post(url, json=payload, headers=headers)
+            
+            if response.status_code == 200:
+                return JsonResponse(response.json())
+            else:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Error verificando la transacción'
+                }, status=400)
+                
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            }, status=400)
 
 
 class TeamView(TemplateView):
@@ -595,7 +675,6 @@ class TeamView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Nuestro Equipo'
         
-        # Aquí puedes agregar información más detallada del equipo
         context['team_details'] = {
             'leader': {
                 'name': 'Dr. Méndez Sexto',
@@ -603,7 +682,7 @@ class TeamView(TemplateView):
                 'bio': 'Con más de 25 años de experiencia en el campo de la medicina...',
                 'image': 'landing/img/dr-mendez.png'
             },
-            'members': []  # Lista completa de miembros
+            'members': []
         }
         
         return context
@@ -626,14 +705,12 @@ class ContactView(View):
         return render(request, self.template_name, context)
     
     def post(self, request):
-        # Procesar formulario de contacto
         name = request.POST.get('name')
         email = request.POST.get('email')
         subject = request.POST.get('subject', 'Consulta desde el sitio web')
         message = request.POST.get('message')
         
         try:
-            # Enviar email
             email_message = f"""
             Nuevo mensaje de contacto:
             
@@ -644,14 +721,6 @@ class ContactView(View):
             Mensaje:
             {message}
             """
-            
-            # send_mail(
-            #     subject=f'Contacto Web: {subject}',
-            #     message=email_message,
-            #     from_email=settings.DEFAULT_FROM_EMAIL,
-            #     recipient_list=['info@renovarparaavanzar.com'],
-            #     fail_silently=False,
-            # )
             
             messages.success(request, '¡Mensaje enviado! Te responderemos pronto.')
             return redirect('landing:contact')
@@ -665,7 +734,7 @@ class CountdownAPIView(View):
     """API endpoint para obtener el countdown actualizado"""
     
     def get(self, request):
-        election_date = datetime(2025, 12, 12, 12, 0, 0)  # Fecha de elección
+        election_date = datetime(2025, 12, 12, 12, 0, 0)
         now = datetime.now()
         time_remaining = election_date - now
         
@@ -682,3 +751,13 @@ class CountdownAPIView(View):
             'minutes': (time_remaining.seconds % 3600) // 60,
             'seconds': time_remaining.seconds % 60
         })
+    
+
+class TermsView(TemplateView):
+    """Vista para Términos y Condiciones"""
+    template_name = 'landing/terms.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Términos y Condiciones'
+        return context

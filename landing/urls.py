@@ -20,4 +20,6 @@ urlpatterns = [
     # API endpoints
     path('api/countdown/', views.CountdownAPIView.as_view(), name='countdown-api'),
     path('api/register/', views.RegisterAPIView.as_view(), name='register-api'),
+
+    path('terminos/', views.TermsView.as_view(), name='terms'),
 ]

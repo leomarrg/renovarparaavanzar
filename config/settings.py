@@ -22,12 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
-DEBUG = config('DEBUG', default='False', cast=bool)
+# SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
+# DEBUG = config('DEBUG', default='False', cast=bool)
+
+SECRET_KEY = 'django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu('
+DEBUG = True
 ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     'leomarrg.pythonanywhere.com',
+    '127.0.0.1'
 ]
 
 # Site URL for absolute URLs in emails and other purposes
@@ -117,6 +121,33 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# ============================================
+# ATH MÓVIL CONFIGURATION
+# ============================================
+
+# Public Token de ATH Business (obligatorio)
+# Obtén este token desde tu app ATH Business > Configuración
+ATH_MOVIL_PUBLIC_TOKEN = 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763'
+
+# Private Token para operaciones de backend (opcional)
+# Solo necesario si vas a hacer refunds o consultas desde el servidor
+#ATH_MOVIL_PRIVATE_TOKEN = 'tu_private_token_aqui'
+
+# Ambiente: 'production' o 'sandbox' (actualmente solo hay production)
+ATH_MOVIL_ENV = 'production'
+
+# Timeout para transacciones (en segundos, entre 120 y 600)
+ATH_MOVIL_TIMEOUT = 600
+
+# Tema del botón: 'btn', 'btn-dark' o 'btn-light'
+ATH_MOVIL_THEME = 'btn'
+
+# Idioma: 'es' o 'en'
+ATH_MOVIL_LANG = 'es'
+
+# URL base de la API
+ATH_MOVIL_API_URL = 'https://payments.athmovil.com/api'
 
 
 # Internationalization
