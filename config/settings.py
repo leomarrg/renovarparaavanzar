@@ -102,7 +102,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'creatudominiopr@gmail.com'
-EMAIL_HOST_PASSWORD = 'nggf bpyh xgmf qrpi'  # NO uses tu contraseña normal, usa App Password
+EMAIL_HOST_PASSWORD = 'jcss wjfv qoav tovt'  # NO uses tu contraseña normal, usa App Password
 DEFAULT_FROM_EMAIL = 'creatudominiopr@gmail.com'
 
 # Password validation
