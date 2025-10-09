@@ -51,7 +51,7 @@ def send_email_async(registration):
     
     print(f"🔵 [MAIN] Creando thread para {registration.email}")
     thread = threading.Thread(target=_send_email)
-    thread.daemon = False
+    thread.daemon = True
     thread.start()
     print(f"🔵 [MAIN] Thread creado: daemon={thread.daemon}, alive={thread.is_alive()}")
 
