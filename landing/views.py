@@ -34,7 +34,7 @@ def send_email_async(registration):
             traceback.print_exc()
     
     thread = threading.Thread(target=_send_email)
-    thread.daemon = True
+    thread.daemon = False
     thread.start()
 
 
