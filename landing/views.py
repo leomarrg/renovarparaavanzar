@@ -16,44 +16,22 @@ from datetime import datetime, timedelta
 import traceback
 import threading
 import requests
-import logging
 
-logger = logging.getLogger(__name__)
 
 def send_email_async(registration):
     """Enviar email en un thread separado para no bloquear la respuesta"""
     def _send_email():
         try:
-            print(f"🚀 [THREAD START] Iniciando para {registration.email}")
-            logger.info(f"Attempting to send email to {registration.email}")
-            
-            print(f"📧 [STEP 1] Creando RegisterView...")
             register_view = RegisterView()
-            
-            print(f"📧 [STEP 2] Llamando a send_confirmation_email...")
-            result = register_view.send_confirmation_email(registration)
-            
-            print(f"📧 [STEP 3] Resultado de send_confirmation_email: {result}")
-            
-            if result:
-                logger.info(f"Email sent successfully to {registration.email}")
-                print(f"✅ [SUCCESS] Email enviado exitosamente a {registration.email}")
-            else:
-                print(f"❌ [FAILED] send_confirmation_email retornó False para {registration.email}")
-                
+            register_view.send_confirmation_email(registration)
         except Exception as e:
-            logger.error(f"Error enviando email async: {e}")
-            print(f"❌ [EXCEPTION] Error: {e}")
-            print(f"❌ [EXCEPTION] Tipo: {type(e).__name__}")
+            print(f"Error enviando email async: {e}")
             traceback.print_exc()
-        
-        print(f"🏁 [THREAD END] Thread terminado para {registration.email}")
     
-    print(f"🔵 [MAIN] Creando thread para {registration.email}")
     thread = threading.Thread(target=_send_email)
     thread.daemon = True
     thread.start()
-    print(f"🔵 [MAIN] Thread creado: daemon={thread.daemon}, alive={thread.is_alive()}")
+
 
 class IndexView(TemplateView):
     """Vista principal del landing page - Dr. Méndez Sexto"""
@@ -315,21 +293,12 @@ class RegisterView(IndexView):
     def send_confirmation_email(self, registration):
         """Enviar email de confirmación"""
         try:
-            print(f"📨 [send_confirmation_email] INICIO para {registration.email}")
-            
             subject = 'Gracias por el apoyo - Renovar para Avanzar'
             from_email = settings.EMAIL_HOST_USER if hasattr(settings, 'EMAIL_HOST_USER') else 'noreply@renovarparaavanzar.com'
             to_email = registration.email
             
-            print(f"📨 [send_confirmation_email] From: {from_email}")
-            print(f"📨 [send_confirmation_email] To: {to_email}")
-            print(f"📨 [send_confirmation_email] Subject: {subject}")
-            
-            print(f"📨 [send_confirmation_email] Generando HTML...")
             html_content = self.generate_email_html(registration)
             text_content = strip_tags(html_content)
-            
-            print(f"📨 [send_confirmation_email] HTML generado: {len(html_content)} caracteres")
             
             email = EmailMultiAlternatives(
                 subject,
@@ -339,16 +308,13 @@ class RegisterView(IndexView):
             )
             
             email.attach_alternative(html_content, "text/html")
-            
-            print(f"📨 [send_confirmation_email] Llamando a email.send()...")
             email.send()
+            print(f"Email de confirmación enviado exitosamente a {to_email}")
             
-            print(f"✅ [send_confirmation_email] Email enviado exitosamente a {to_email}")
             return True
         
         except Exception as e:
-            print(f"❌ [send_confirmation_email] ERROR: {e}")
-            print(f"❌ [send_confirmation_email] Tipo de error: {type(e).__name__}")
+            print(f"Error enviando email de confirmación: {e}")
             traceback.print_exc()
             return False
 
