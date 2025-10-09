@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     'leomarrg.pythonanywhere.com',
-    # '127.0.0.1',
+    '127.0.0.1',
     # 'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
 
