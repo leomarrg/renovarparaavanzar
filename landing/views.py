@@ -71,59 +71,59 @@ class IndexView(TemplateView):
         context['team_members'] = [
             {
                 'id': 1,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. San Juan 1',
-                'image': 'landing/img/team/member-1.jpg'
+                'name': 'Dr. Méndez Sexto',
+                'role': 'Médico Generalista',
+                'district': 'Presidente',
+                'image': 'landing/img/miembros/'
             },
             {
                 'id': 2,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado', 
-                'district': 'Dist. San Juan 2',
-                'image': 'landing/img/team/member-2.jpg'
+                'name': 'Dra. Sharon Millán Aponte',
+                'role': 'Médico Generalista', 
+                'district': 'Secretaria',
+                'image': 'landing/img/miembros/dra_sharon_milan.jpg'
             },
             {
                 'id': 3,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Bayamón',
+                'name': 'Dra. Kimberly Ramos',
+                'role': 'Médico Generalista',
+                'district': 'Presidenta del Senado',
                 'image': 'landing/img/team/member-3.jpg'
             },
             {
                 'id': 4,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Caguas',
-                'image': 'landing/img/team/member-4.jpg'
+                'name': 'Dr. Juan Rodríguez Vélez',
+                'role': 'Psiquiatra',
+                'district': 'Tesorero',
+                'image': 'landing/img/miembros/dr_juan_rivera.jpg'
             },
             {
                 'id': 5,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Arecibo',
+                'name': 'Dr. Guillermo Pastrana',
+                'role': 'Médico Generalista',
+                'district': 'Presidente Fundación Médica',
                 'image': 'landing/img/team/member-5.jpg'
             },
             {
                 'id': 6,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Ponce',
-                'image': 'landing/img/team/member-6.jpg'
+                'name': 'Dr. Edgar Reyes',
+                'role': 'Otorrinolaringólogo, Cirujano Maxilofacial',
+                'district': 'Presidente Instituto de Educación Continua',
+                'image': 'landing/img/miembros/rd_edgar_reyes.jpg'
             },
             {
                 'id': 7,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Mayagüez',
+                'name': 'Dr. Juan Rivera',
+                'role': 'Médico Generalista',
+                'district': 'Vicepresidente',
                 'image': 'landing/img/team/member-7.jpg'
             },
             {
                 'id': 8,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Humacao',
-                'image': 'landing/img/team/member-8.jpg'
+                'name': 'Dra. Érika Rentas',
+                'role': 'Médica Generalista',
+                'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
+                'image': 'landing/img/miembros/dra_erika.jpg'
             }
         ]
         
