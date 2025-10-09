@@ -19,18 +19,20 @@ import requests
 
 
 def send_email_async(registration):
-    """Enviar email en un thread separado para no bloquear la respuesta"""
-    def _send_email():
-        try:
-            register_view = RegisterView()
-            register_view.send_confirmation_email(registration)
-        except Exception as e:
-            print(f"Error enviando email async: {e}")
-            traceback.print_exc()
-    
-    thread = threading.Thread(target=_send_email)
-    thread.daemon = True
-    thread.start()
+    """Enviar email - versión síncrona confiable"""
+    try:
+        print(f"📧 Enviando email a {registration.email}...")
+        register_view = RegisterView()
+        result = register_view.send_confirmation_email(registration)
+        if result:
+            print(f"✅ Email enviado a {registration.email}")
+        else:
+            print(f"❌ Email falló para {registration.email}")
+        return result
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        traceback.print_exc()
+        return False
 
 
 class IndexView(TemplateView):
