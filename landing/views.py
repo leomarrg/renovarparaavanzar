@@ -23,61 +23,19 @@ logger = logging.getLogger(__name__)
 def send_email_async(registration):
     """Enviar email en un thread separado para no bloquear la respuesta"""
     def _send_email():
-        # Espera pequeña para que la respuesta HTTP se complete
-        time.sleep(0.3)
-        
         try:
-            print(f"📧 [EMAIL START] Intentando enviar a: {registration.email}")
-            
-            # Crear conexión explícita con timeout más largo
-            connection = get_connection(
-                backend='django.core.mail.backends.smtp.EmailBackend',
-                host=settings.EMAIL_HOST,
-                port=settings.EMAIL_PORT,
-                username=settings.EMAIL_HOST_USER,
-                password=settings.EMAIL_HOST_PASSWORD,
-                use_tls=True,
-                timeout=30,  # Timeout más largo
-                fail_silently=False,
-            )
-            
-            # Preparar email
-            subject = 'Gracias por el apoyo - Renovar para Avanzar'
-            from_email = settings.EMAIL_HOST_USER
-            to_email = registration.email
-            
-            print(f"📧 [EMAIL] Generando HTML...")
-            html_content = generate_email_html(registration)
-            text_content = strip_tags(html_content)
-            
-            print(f"📧 [EMAIL] Creando mensaje...")
-            email = EmailMultiAlternatives(
-                subject,
-                text_content,
-                from_email,
-                [to_email],
-                connection=connection  # Usar conexión explícita
-            )
-            email.attach_alternative(html_content, "text/html")
-            
-            print(f"📧 [EMAIL] Enviando...")
-            email.send()
-            
-            print(f"✅ [EMAIL SUCCESS] Email enviado a {to_email}")
-            
-            # Cerrar conexión explícitamente
-            connection.close()
-            
+            logger.info(f"Attempting to send email to {registration.email}")
+            register_view = RegisterView()
+            register_view.send_confirmation_email(registration)
+            logger.info(f"Email sent successfully to {registration.email}")
         except Exception as e:
-            print(f"❌ [EMAIL ERROR] Error: {e}")
-            print(f"❌ [EMAIL ERROR] Tipo: {type(e).__name__}")
+            logger.error(f"Error enviando email async: {e}")
+            print(f"Error enviando email async: {e}")
             traceback.print_exc()
     
-    print(f"🚀 [THREAD] Iniciando thread para {registration.email}")
     thread = threading.Thread(target=_send_email)
-    thread.daemon = False  # NO daemon - debe completar su trabajo
+    thread.daemon = True
     thread.start()
-    print(f"🚀 [THREAD] Thread iniciado")
 
 
 class IndexView(TemplateView):
