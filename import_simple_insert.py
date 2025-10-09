@@ -14,7 +14,7 @@ from datetime import datetime
 from tuapp.models import Registration  # ⚠️ CAMBIAR 'tuapp' por el nombre de tu app
 
 # ⚠️ CAMBIAR la ruta a tu archivo CSV
-CSV_PATH = '/home/leomarrg/registros_mendez_sexto_completos.csv'
+CSV_PATH = 'registros_mendez_sexto_completos.csv'
 
 print("🚀 Insertando registros...")
 print("="*60)
