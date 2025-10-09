@@ -317,7 +317,6 @@ def send_email_async(registration):
     thread.daemon = False  # NO daemon - debe completar su trabajo
     thread.start()
     print(f"🚀 [THREAD] Thread iniciado")
-
 class IndexView(TemplateView):
     """Vista principal del landing page - Dr. Méndez Sexto"""
     template_name = 'landing/index.html'
@@ -578,21 +577,12 @@ class RegisterView(IndexView):
     def send_confirmation_email(self, registration):
         """Enviar email de confirmación"""
         try:
-            print(f"📨 [send_confirmation_email] INICIO para {registration.email}")
-            
             subject = 'Gracias por el apoyo - Renovar para Avanzar'
             from_email = settings.EMAIL_HOST_USER if hasattr(settings, 'EMAIL_HOST_USER') else 'noreply@renovarparaavanzar.com'
             to_email = registration.email
             
-            print(f"📨 [send_confirmation_email] From: {from_email}")
-            print(f"📨 [send_confirmation_email] To: {to_email}")
-            print(f"📨 [send_confirmation_email] Subject: {subject}")
-            
-            print(f"📨 [send_confirmation_email] Generando HTML...")
             html_content = self.generate_email_html(registration)
             text_content = strip_tags(html_content)
-            
-            print(f"📨 [send_confirmation_email] HTML generado: {len(html_content)} caracteres")
             
             email = EmailMultiAlternatives(
                 subject,
@@ -602,16 +592,13 @@ class RegisterView(IndexView):
             )
             
             email.attach_alternative(html_content, "text/html")
-            
-            print(f"📨 [send_confirmation_email] Llamando a email.send()...")
             email.send()
+            print(f"Email de confirmación enviado exitosamente a {to_email}")
             
-            print(f"✅ [send_confirmation_email] Email enviado exitosamente a {to_email}")
             return True
         
         except Exception as e:
-            print(f"❌ [send_confirmation_email] ERROR: {e}")
-            print(f"❌ [send_confirmation_email] Tipo de error: {type(e).__name__}")
+            print(f"Error enviando email de confirmación: {e}")
             traceback.print_exc()
             return False
 
