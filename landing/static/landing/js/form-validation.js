@@ -254,21 +254,11 @@
             const email = emailInput.value;
             const validation = validateEmailDomain(email);
             
-            if (validation && validation.type === 'error') {
-                e.preventDefault();
-                emailInput.focus();
+            // Solo muestra el mensaje, NUNCA bloquea
+            if (validation && validation.type !== 'success') {
                 const emailValidation = document.getElementById('emailValidation');
                 showValidation(validation, emailValidation);
-                return false;
-            }
-            
-            if (validation && validation.type === 'warning') {
-                const proceed = confirm(`Posible error en el email. ${validation.message}\n\n¿Deseas continuar?`);
-                if (!proceed) {
-                    e.preventDefault();
-                    emailInput.focus();
-                    return false;
-                }
+                // Pero SIEMPRE permite continuar - no hace preventDefault()
             }
         });
     }
