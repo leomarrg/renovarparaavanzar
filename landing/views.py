@@ -55,7 +55,6 @@ def send_email_async(registration):
     thread.start()
     print(f"🔵 [MAIN] Thread creado: daemon={thread.daemon}, alive={thread.is_alive()}")
 
-
 class IndexView(TemplateView):
     """Vista principal del landing page - Dr. Méndez Sexto"""
     template_name = 'landing/index.html'
