@@ -262,6 +262,150 @@
             </div>
         </div>
     </section> -->
+
+    <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
+<div id="emergency-debug" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgb(0, 0, 0);
+    color: white;
+    padding: 15px;
+    z-index: 999999;
+    font-size: 12px;
+    font-family: monospace;
+    max-height: 250px;
+    overflow-y: auto;
+    border-bottom: 3px solid yellow;
+">
+    <strong style="font-size: 14px;">🚨 DEBUG MÓVIL EMERGENCY</strong>
+    <button onclick="this.parentElement.style.display='none'" style="float: right; background: black; color: white; border: none; padding: 5px 10px;">X</button>
+    <div id="debug-log" style="margin-top: 10px; font-size: 11px;">
+        <div>✓ HTML cargado</div>
+    </div>
+</div>
+
+<script>
+// Función de log inline
+function emergencyLog(msg, type = 'info') {
+    const logDiv = document.getElementById('debug-log');
+    const time = new Date().toLocaleTimeString();
+    let icon = '•';
+    let color = 'white';
+    
+    if (type === 'error') {
+        icon = '❌';
+        color = '#ff6b6b';
+    } else if (type === 'success') {
+        icon = '✅';
+        color = '#51cf66';
+    } else if (type === 'warning') {
+        icon = '⚠️';
+        color = '#ffd43b';
+    }
+    
+    const entry = document.createElement('div');
+    entry.style.color = color;
+    entry.innerHTML = `[${time}] ${icon} ${msg}`;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+    
+    console.log(`[EMERGENCY] ${msg}`);
+}
+
+// Logs iniciales
+emergencyLog('JavaScript está funcionando', 'success');
+emergencyLog('User Agent: ' + navigator.userAgent.substring(0, 60));
+emergencyLog('Pantalla: ' + window.innerWidth + 'x' + window.innerHeight);
+emergencyLog('iOS: ' + /iPhone|iPad|iPod/i.test(navigator.userAgent));
+emergencyLog('Android: ' + /Android/i.test(navigator.userAgent));
+
+// Verificar DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+    emergencyLog('DOMContentLoaded disparado', 'success');
+    
+    // Verificar elementos clave
+    setTimeout(function() {
+        const donate = document.getElementById('donate');
+        const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+        const amountBtns = document.querySelectorAll('.amount-btn');
+        
+        emergencyLog('Sección donate: ' + (donate ? 'SÍ existe' : 'NO existe'), donate ? 'success' : 'error');
+        emergencyLog('Container ATH: ' + (container ? 'SÍ existe' : 'NO existe'), container ? 'success' : 'error');
+        emergencyLog('Botones monto: ' + amountBtns.length + ' encontrados', amountBtns.length > 0 ? 'success' : 'error');
+        
+        if (donate) {
+            const style = window.getComputedStyle(donate);
+            emergencyLog('Sección display: ' + style.display);
+            emergencyLog('Sección visibility: ' + style.visibility);
+        }
+        
+        if (container) {
+            const style = window.getComputedStyle(container);
+            emergencyLog('Container display: ' + style.display);
+            emergencyLog('Container visible: ' + (style.visibility !== 'hidden'));
+        }
+    }, 500);
+});
+
+// Verificar window.load
+window.addEventListener('load', function() {
+    emergencyLog('Window load completo', 'success');
+    emergencyLog('ATHM_Checkout: ' + (typeof ATHM_Checkout !== 'undefined' ? 'CARGADO' : 'NO CARGADO'), 
+                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
+});
+
+// Capturar errores
+window.addEventListener('error', function(e) {
+    emergencyLog('ERROR: ' + e.message, 'error');
+    emergencyLog('Archivo: ' + e.filename, 'error');
+    emergencyLog('Línea: ' + e.lineno, 'error');
+});
+
+// Verificar si los scripts externos se cargan
+setTimeout(function() {
+    emergencyLog('--- Verificación de scripts externos ---');
+    emergencyLog('athmovil_base.js: ' + (typeof ATHM_Checkout !== 'undefined' ? 'OK' : 'FALLO'), 
+                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
+    
+    // Listar todos los scripts cargados
+    const scripts = document.getElementsByTagName('script');
+    emergencyLog('Total scripts en página: ' + scripts.length);
+    
+    let athFound = false;
+    let athPaymentFound = false;
+    
+    for (let i = 0; i < scripts.length; i++) {
+        if (scripts[i].src.includes('athmovil_base.js')) {
+            athFound = true;
+            emergencyLog('✓ athmovil_base.js encontrado en DOM', 'success');
+        }
+        if (scripts[i].src.includes('ath-movil-payment.js')) {
+            athPaymentFound = true;
+            emergencyLog('✓ ath-movil-payment.js encontrado en DOM', 'success');
+        }
+    }
+    
+    if (!athFound) emergencyLog('✗ athmovil_base.js NO está en el DOM', 'error');
+    if (!athPaymentFound) emergencyLog('✗ ath-movil-payment.js NO está en el DOM', 'error');
+    
+}, 2000);
+
+// Test de click en botones de monto
+setTimeout(function() {
+    const amountBtns = document.querySelectorAll('.amount-btn');
+    if (amountBtns.length > 0) {
+        emergencyLog('Configurando listeners en botones...', 'warning');
+        amountBtns.forEach(function(btn, index) {
+            btn.addEventListener('click', function() {
+                emergencyLog('CLICK detectado en botón #' + (index + 1) + ' ($' + btn.dataset.amount + ')', 'success');
+            });
+        });
+        emergencyLog('Listeners configurados. Prueba tocar un botón de monto', 'warning');
+    }
+}, 1000);
+</script>
     
     <!-- Donation Section-->
     <section class="donation-section" id="donate">
