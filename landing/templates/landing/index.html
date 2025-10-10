@@ -321,32 +321,30 @@ emergencyLog('Pantalla: ' + window.innerWidth + 'x' + window.innerHeight);
 emergencyLog('iOS: ' + /iPhone|iPad|iPod/i.test(navigator.userAgent));
 emergencyLog('Android: ' + /Android/i.test(navigator.userAgent));
 
-// Verificar DOMContentLoaded
+// MODIFICAR SOLO ESTA PARTE en tu DOMContentLoaded:
 document.addEventListener('DOMContentLoaded', function() {
-    emergencyLog('DOMContentLoaded disparado', 'success');
+    athDebugger.log('DOM cargado', 'success');
     
-    // Verificar elementos clave
-    setTimeout(function() {
-        const donate = document.getElementById('donate');
-        const container = document.getElementById('ATHMovil_Checkout_Button_payment');
-        const amountBtns = document.querySelectorAll('.amount-btn');
-        
-        emergencyLog('Sección donate: ' + (donate ? 'SÍ existe' : 'NO existe'), donate ? 'success' : 'error');
-        emergencyLog('Container ATH: ' + (container ? 'SÍ existe' : 'NO existe'), container ? 'success' : 'error');
-        emergencyLog('Botones monto: ' + amountBtns.length + ' encontrados', amountBtns.length > 0 ? 'success' : 'error');
-        
-        if (donate) {
-            const style = window.getComputedStyle(donate);
-            emergencyLog('Sección display: ' + style.display);
-            emergencyLog('Sección visibility: ' + style.visibility);
-        }
-        
-        if (container) {
-            const style = window.getComputedStyle(container);
-            emergencyLog('Container display: ' + style.display);
-            emergencyLog('Container visible: ' + (style.visibility !== 'hidden'));
-        }
-    }, 500);
+    // Usar la función global waitForATHMCheckout
+    if (typeof window.waitForATHMCheckout === 'function') {
+        window.waitForATHMCheckout((success) => {
+            if (success) {
+                initializePaymentSystem();
+            } else {
+                athDebugger.log('No se pudo cargar ATH Móvil', 'error');
+                showATHUnavailableMessage();
+            }
+        });
+    } else {
+        // Fallback si la función no existe
+        waitForATH((success) => {
+            if (success) {
+                initializePaymentSystem();
+            } else {
+                showATHUnavailableMessage();
+            }
+        });
+    }
 });
 
 // Verificar window.load
@@ -760,92 +758,46 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-    <!-- ==========================================
-         EXTERNAL JAVASCRIPT FILES
-         ========================================== -->
-    
-<!-- 1. ATH Móvil Base Script (PRIMERO) -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-
+<script 
+    src="https://payments.athmovil.com/api/js/athmovil_base.js" 
+    crossorigin="anonymous"
+    async
+></script>
 
 <script>
-console.log('🔍 Iniciando carga de ATH Móvil...');
+console.log('🔍 Verificando carga de ATH Móvil...');
 
-// Variables de control
-let athLoadAttempts = 0;
-const maxAttempts = 3;
-let athLoaded = false;
-
-// Función para verificar si ATH se cargó
-function checkATHLoaded() {
-    if (typeof ATHM_Checkout !== 'undefined') {
-        console.log('✅ ATHM_Checkout cargado exitosamente');
-        athLoaded = true;
-        return true;
-    }
-    return false;
-}
-
-// Función para mostrar error visual
-function showATHError(message) {
-    const container = document.getElementById('ATHMovil_Checkout_Button_payment');
-    if (container) {
-        container.innerHTML = `
-            <div style="background: #fee; border: 2px solid #f00; border-radius: 10px; padding: 20px; text-align: center;">
-                <div style="font-size: 24px; margin-bottom: 10px;">⚠️</div>
-                <div style="color: #c00; font-weight: bold; margin-bottom: 10px;">Error de Conexión</div>
-                <div style="color: #666; font-size: 14px; margin-bottom: 15px;">${message}</div>
-                <div style="background: #fff; padding: 15px; border-radius: 5px; margin-top: 15px;">
-                    <strong>Alternativa:</strong><br>
-                    Puedes donar directamente desde la app ATH Móvil:<br>
-                    <div style="background: #4DB6AC; color: white; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 18px; font-weight: bold;">
-                        /comitedrmendezsexto
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-}
-
-// Intentar cargar ATH Móvil con reintentos
-function loadATHMobile() {
-    athLoadAttempts++;
-    console.log(`Intento ${athLoadAttempts} de ${maxAttempts} para cargar ATH Móvil...`);
+// Función para esperar a que ATH se cargue
+function waitForATHMCheckout(callback, maxAttempts = 50) {
+    let attempts = 0;
     
-    const script = document.createElement('script');
-    script.src = 'https://payments.athmovil.com/api/js/athmovil_base.js';
-    script.async = false;
-    
-    script.onload = function() {
-        console.log('Script ATH descargado');
-        setTimeout(() => {
-            if (checkATHLoaded()) {
-                console.log('✅ ATH Móvil listo para usar');
-            } else {
-                console.error('❌ Script cargado pero ATHM_Checkout no definido');
-                if (athLoadAttempts < maxAttempts) {
-                    setTimeout(loadATHMobile, 1000);
-                } else {
-                    showATHError('No se pudo conectar con el servicio de ATH Móvil después de varios intentos.');
-                }
+    const checkInterval = setInterval(() => {
+        attempts++;
+        
+        if (typeof ATHM_Checkout !== 'undefined') {
+            clearInterval(checkInterval);
+            console.log('✅ ATHM_Checkout cargado exitosamente');
+            if (typeof emergencyLog !== 'undefined') {
+                emergencyLog('✅ ATHM_Checkout CARGADO', 'success');
             }
-        }, 500);
-    };
-    
-    script.onerror = function() {
-        console.error(`❌ Error al cargar script ATH (intento ${athLoadAttempts})`);
-        if (athLoadAttempts < maxAttempts) {
-            setTimeout(loadATHMobile, 1000);
+            callback(true);
+        } else if (attempts >= maxAttempts) {
+            clearInterval(checkInterval);
+            console.error('❌ Timeout: ATHM_Checkout no se cargó');
+            if (typeof emergencyLog !== 'undefined') {
+                emergencyLog('❌ Timeout: ATHM_Checkout NO se cargó', 'error');
+            }
+            callback(false);
         } else {
-            showATHError('No se pudo cargar el servicio de ATH Móvil. Por favor verifica tu conexión a internet.');
+            if (attempts % 10 === 0) {
+                console.log(`⏳ Esperando ATH... intento ${attempts}/${maxAttempts}`);
+            }
         }
-    };
-    
-    document.head.appendChild(script);
+    }, 200);
 }
 
-// Iniciar carga
-loadATHMobile();
+// Esta función se llama desde el script inline más abajo
+window.waitForATHMCheckout = waitForATHMCheckout;
 </script>
 
 <!-- 2. Otros scripts -->
