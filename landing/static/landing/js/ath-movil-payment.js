@@ -121,7 +121,7 @@ athDebugger.log(`Monto detectado: $${selectedAmount}`, selectedAmount > 0 ? 'suc
 
 const ATHM_Checkout = {
     env: 'production',
-    publicToken: 'TU_PUBLIC_TOKEN_AQUI', // ⚠️ REEMPLAZA CON TU TOKEN REAL
+    publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // ⚠️ REEMPLAZA CON TU TOKEN REAL
     timeout: 600,
     theme: 'btn',
     lang: 'es',
