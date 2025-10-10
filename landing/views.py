@@ -337,7 +337,7 @@ class RegisterView(IndexView):
                 body {{
                     font-family: 'Montserrat', Arial, sans-serif;
                     line-height: 1.6;
-                    color: #fff;
+                    color: #333;
                     max-width: 600px;
                     margin: 0 auto;
                     padding: 0;
@@ -432,7 +432,7 @@ class RegisterView(IndexView):
                 .ath-handle {{
                     font-size: 26px;
                     font-weight: bold;
-                    color: #fff;
+                    color: #FFEB3B;
                     margin: 20px 0;
                     padding: 15px;
                     background: rgba(255, 255, 255, 0.1);
@@ -564,6 +564,7 @@ class RegisterView(IndexView):
         </body>
         </html>
         """
+
 
 
 class DonateView(TemplateView):
