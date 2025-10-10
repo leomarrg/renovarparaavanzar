@@ -311,6 +311,220 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 5;
 }
 
+/* ========== COUNTDOWN HERO SECTION ========== */
+.countdown-hero-section {
+    position: relative;
+    background-image: url('../img/backgrounds/foto_countdown.png');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.countdown-hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.countdown-hero-header {
+    margin-bottom: 60px;
+    animation: fadeInUp 1s ease;
+}
+
+.countdown-hero-header h2 {
+    font-size: 3rem;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-description {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.95);
+    line-height: 1.8;
+    max-width: 700px;
+    margin: 0 auto;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Countdown Display Grande */
+.countdown-display-large {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 50px 0;
+    flex-wrap: wrap;
+    animation: fadeInUp 1s ease 0.3s;
+    animation-fill-mode: both;
+}
+
+.countdown-number-large {
+    display: block;
+    font-size: 4rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-label-large {
+    display: block;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+/* Logo debajo del countdown */
+.countdown-logo {
+    margin-top: 60px;
+    animation: fadeInUp 1s ease 0.6s;
+    animation-fill-mode: both;
+}
+
+.countdown-logo img {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.countdown-logo img:hover {
+    transform: scale(1.05);
+}
+
+/* ========== FOOTER SIMPLIFICADO ========== */
+.footer-simple {
+    background: var(--gray-dark);
+    color: white;
+    padding: 60px 20px 30px;
+    text-align: center;
+}
+
+.footer-content-simple h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.footer-content-simple .subtitle {
+    color: var(--teal-light);
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+}
+
+.social-links {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-link {
+    width: 50px;
+    height: 50px;
+    background: var(--teal-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.3rem;
+}
+
+.social-link:hover {
+    background: var(--orange-accent);
+    transform: translateY(-5px) rotate(360deg);
+}
+
+.copyright {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 0.9rem;
+    color: var(--gray-light);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .countdown-hero-section {
+        padding: 60px 0;
+        min-height: 500px;
+    }
+    
+    .countdown-hero-header h2 {
+        font-size: 2rem;
+    }
+    
+    .countdown-description {
+        font-size: 1rem;
+    }
+    
+    .countdown-display-large {
+        gap: 20px;
+    }
+    
+    .countdown-item-large {
+        padding: 20px 25px;
+        min-width: 120px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2.5rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.85rem;
+    }
+    
+    .countdown-logo img {
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-hero-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .countdown-item-large {
+        padding: 15px 20px;
+        min-width: 100px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ========== COUNTDOWN SECTION ========== */
 .countdown-section {
     position: relative;

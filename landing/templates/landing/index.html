@@ -264,7 +264,7 @@
     </section> -->
     
     <!-- Donation Section-->
-    <section class="donation-section" id="donate">
+    <!-- <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
@@ -274,10 +274,9 @@
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
-                </div>
+                </div> -->
 
-                <div class="donation-content">
-                    <!-- Mensaje de estado -->
+                <!-- <div class="donation-content">
                     <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
                     
                     <div class="amount-options">
@@ -309,9 +308,9 @@
                                 <span class="amount-label">Apoyo Transformador</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
-                    <div class="custom-amount">
+                    <!-- <div class="custom-amount">
                         <p>O ingresa otra cantidad:</p>
                         <div class="custom-input-wrapper">
                             <input 
@@ -324,10 +323,10 @@
                                 step="0.01"
                             >
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Monto seleccionado -->
-                    <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
+                    <!-- <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
                         <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
                         <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
                             $<span id="selectedAmountValue">0</span>
@@ -344,10 +343,10 @@
                             <li>Ingresa tu número de teléfono</li>
                             <li>Abre la app ATH Móvil y confirma</li>
                         </ol>
-                    </div>
+                    </div> -->
 
                     <!-- ATH Móvil Payment Button -->
-                    <div id="ATHMovil_Checkout_Button_payment"></div>
+                    <!-- <div id="ATHMovil_Checkout_Button_payment"></div>
 
                     <div class="donation-info" style="margin-top: 25px;">
                         <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
@@ -364,7 +363,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
     <section class="register-section" id="register">
@@ -510,50 +509,78 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Nueva Sección de Countdown -->
+    <section class="countdown-hero-section">
+        <div class="countdown-hero-overlay"></div>
         <div class="container">
-            <div class="footer-content">
+            <div class="countdown-hero-content">
+                <!-- Header -->
+                <div class="countdown-hero-header">
+                    <h2>Conteo Regresivo para las Elecciones</h2>
+                    <p class="countdown-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                    </p>
+                </div>
+                
+                <!-- Countdown Display -->
+                <div class="countdown-display-large" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="days">{{ countdown.days }}</span>
+                        <span class="countdown-label-large">Días</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="hours">{{ countdown.hours }}</span>
+                        <span class="countdown-label-large">Horas</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="minutes">{{ countdown.minutes }}</span>
+                        <span class="countdown-label-large">Minutos</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="seconds">{{ countdown.seconds }}</span>
+                        <span class="countdown-label-large">Segundos</span>
+                    </div>
+                </div>
+                
+                <!-- Logo -->
+                <div class="countdown-logo">
+                    <img src="{% static 'landing/img/DR_x_RPA@4x.png' %}" alt="Logo Renovar Para Avanzar">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Simplificado -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="footer-content-simple">
                 <h3>{{ candidate.name }}</h3>
                 <p class="subtitle">Candidato a la Presidencia del Colegio de Médicos Cirujanos de Puerto Rico</p>
-                <h4>Conteo Regresivo para elecciones.</h4>
-            </div>
-            
-            <div class="countdown" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">{{ countdown.days }}</span>
-                    <span class="countdown-label">Días</span>
+                
+                <div class="social-links">
+                    {% if social_media.facebook %}
+                    <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    {% endif %}
+                    {% if social_media.twitter %}
+                    <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if social_media.instagram %}
+                    <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">{{ countdown.hours }}</span>
-                    <span class="countdown-label">Horas</span>
+                
+                <div class="copyright">
+                    <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">Powered By Dominio</p>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">{{ countdown.minutes }}</span>
-                    <span class="countdown-label">Minutos</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">{{ countdown.seconds }}</span>
-                    <span class="countdown-label">Segundos</span>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                {% if social_media.facebook %}
-                <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                {% endif %}
-                {% if social_media.twitter %}
-                <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
-                {% endif %}
-                {% if social_media.instagram %}
-                <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
-                {% endif %}
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
-                <p style="margin-top: 10px; font-size: 0.8rem;">
-                    Powered By Dominio
-                </p>
             </div>
         </div>
     </footer>
