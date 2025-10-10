@@ -767,13 +767,411 @@ setTimeout(function() {
 <!-- 1. ATH Móvil Base Script (PRIMERO) -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
+
+<script>
+console.log('🔍 Iniciando carga de ATH Móvil...');
+
+// Variables de control
+let athLoadAttempts = 0;
+const maxAttempts = 3;
+let athLoaded = false;
+
+// Función para verificar si ATH se cargó
+function checkATHLoaded() {
+    if (typeof ATHM_Checkout !== 'undefined') {
+        console.log('✅ ATHM_Checkout cargado exitosamente');
+        athLoaded = true;
+        return true;
+    }
+    return false;
+}
+
+// Función para mostrar error visual
+function showATHError(message) {
+    const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+    if (container) {
+        container.innerHTML = `
+            <div style="background: #fee; border: 2px solid #f00; border-radius: 10px; padding: 20px; text-align: center;">
+                <div style="font-size: 24px; margin-bottom: 10px;">⚠️</div>
+                <div style="color: #c00; font-weight: bold; margin-bottom: 10px;">Error de Conexión</div>
+                <div style="color: #666; font-size: 14px; margin-bottom: 15px;">${message}</div>
+                <div style="background: #fff; padding: 15px; border-radius: 5px; margin-top: 15px;">
+                    <strong>Alternativa:</strong><br>
+                    Puedes donar directamente desde la app ATH Móvil:<br>
+                    <div style="background: #4DB6AC; color: white; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 18px; font-weight: bold;">
+                        /comitedrmendezsexto
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Intentar cargar ATH Móvil con reintentos
+function loadATHMobile() {
+    athLoadAttempts++;
+    console.log(`Intento ${athLoadAttempts} de ${maxAttempts} para cargar ATH Móvil...`);
+    
+    const script = document.createElement('script');
+    script.src = 'https://payments.athmovil.com/api/js/athmovil_base.js';
+    script.async = false;
+    
+    script.onload = function() {
+        console.log('Script ATH descargado');
+        setTimeout(() => {
+            if (checkATHLoaded()) {
+                console.log('✅ ATH Móvil listo para usar');
+            } else {
+                console.error('❌ Script cargado pero ATHM_Checkout no definido');
+                if (athLoadAttempts < maxAttempts) {
+                    setTimeout(loadATHMobile, 1000);
+                } else {
+                    showATHError('No se pudo conectar con el servicio de ATH Móvil después de varios intentos.');
+                }
+            }
+        }, 500);
+    };
+    
+    script.onerror = function() {
+        console.error(`❌ Error al cargar script ATH (intento ${athLoadAttempts})`);
+        if (athLoadAttempts < maxAttempts) {
+            setTimeout(loadATHMobile, 1000);
+        } else {
+            showATHError('No se pudo cargar el servicio de ATH Móvil. Por favor verifica tu conexión a internet.');
+        }
+    };
+    
+    document.head.appendChild(script);
+}
+
+// Iniciar carga
+loadATHMobile();
+</script>
+
 <!-- 2. Otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
 <script src="{% static 'landing/js/form-validation.js' %}"></script>
 <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
 
-<!-- 3. ATH Móvil Payment (DESPUÉS de athmovil_base.js) -->
-<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
+<script>
+// ===============================================
+// ATH MÓVIL PAYMENT - CON MANEJO DE ERRORES
+// ===============================================
+
+class VisualDebugger {
+    constructor() {
+        this.logs = [];
+        this.createDebugPanel();
+    }
+
+    createDebugPanel() {
+        const panel = document.createElement('div');
+        panel.id = 'ath-debug-panel';
+        panel.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 400px;
+            max-height: 500px;
+            background: rgba(0, 0, 0, 0.95);
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 99999;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border: 2px solid #0f0;
+        `;
+
+        const header = document.createElement('div');
+        header.style.cssText = `
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #0f0;
+        `;
+        header.innerHTML = `
+            <strong style="color: #0ff;">🔍 ATH DEBUG</strong>
+            <button id="clear-debug" style="background: #f00; color: #fff; border: none; padding: 2px 8px; cursor: pointer; border-radius: 3px;">X</button>
+        `;
+
+        const logsContainer = document.createElement('div');
+        logsContainer.id = 'debug-logs';
+
+        panel.appendChild(header);
+        panel.appendChild(logsContainer);
+        document.body.appendChild(panel);
+
+        document.getElementById('clear-debug').addEventListener('click', () => {
+            this.logs = [];
+            logsContainer.innerHTML = '';
+        });
+    }
+
+    log(message, type = 'info', data = null) {
+        const timestamp = new Date().toLocaleTimeString();
+        const logsContainer = document.getElementById('debug-logs');
+        if (!logsContainer) return;
+        
+        const logElement = document.createElement('div');
+        
+        let color = '#0f0';
+        let icon = 'ℹ️';
+        
+        switch(type) {
+            case 'success': color = '#0f0'; icon = '✅'; break;
+            case 'error': color = '#f00'; icon = '❌'; break;
+            case 'warning': color = '#ff0'; icon = '⚠️'; break;
+            case 'ath': color = '#0ff'; icon = '🏦'; break;
+            case 'function': color = '#f0f'; icon = '⚙️'; break;
+        }
+
+        logElement.style.cssText = `
+            margin-bottom: 8px;
+            padding: 5px;
+            border-left: 3px solid ${color};
+            background: rgba(255,255,255,0.05);
+        `;
+
+        let html = `
+            <div style="color: #888; font-size: 10px;">[${timestamp}]</div>
+            <div style="color: ${color};">${icon} ${message}</div>
+        `;
+
+        if (data) {
+            html += `<pre style="color: #aaa; font-size: 10px; margin: 5px 0 0 0; overflow-x: auto;">${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        logElement.innerHTML = html;
+        logsContainer.appendChild(logElement);
+        logsContainer.scrollTop = logsContainer.scrollHeight;
+        console.log(`[ATH] ${message}`, data || '');
+    }
+}
+
+const athDebugger = new VisualDebugger();
+let currentAmount = 0;
+let athButtonInstance = null;
+
+athDebugger.log('Script cargado', 'success');
+
+// Esperar a que ATH se cargue completamente
+function waitForATH(callback, maxWait = 10000) {
+    const startTime = Date.now();
+    
+    const checkInterval = setInterval(() => {
+        if (typeof ATHM_Checkout !== 'undefined') {
+            clearInterval(checkInterval);
+            athDebugger.log('✅ ATHM_Checkout disponible', 'success');
+            callback(true);
+        } else if (Date.now() - startTime > maxWait) {
+            clearInterval(checkInterval);
+            athDebugger.log('❌ Timeout esperando ATHM_Checkout', 'error');
+            callback(false);
+        }
+    }, 100);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    athDebugger.log('DOM cargado', 'success');
+    
+    waitForATH((success) => {
+        if (success) {
+            initializePaymentSystem();
+        } else {
+            athDebugger.log('No se pudo cargar ATH Móvil', 'error');
+            showATHUnavailableMessage();
+        }
+    });
+});
+
+function showATHUnavailableMessage() {
+    const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+    if (container) {
+        container.innerHTML = `
+            <div style="background: #fee; border: 2px solid #f00; border-radius: 10px; padding: 20px; text-align: center;">
+                <div style="font-size: 24px; margin-bottom: 10px;">⚠️</div>
+                <div style="color: #c00; font-weight: bold; margin-bottom: 10px;">ATH Móvil no disponible</div>
+                <div style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                    Por favor usa la app ATH Móvil directamente
+                </div>
+                <div style="background: #4DB6AC; color: white; padding: 15px; border-radius: 5px; font-size: 18px; font-weight: bold;">
+                    /comitedrmendezsexto
+                </div>
+            </div>
+        `;
+    }
+}
+
+function initializePaymentSystem() {
+    athDebugger.log('Inicializando sistema', 'function');
+    setupAmountButtons();
+    setupCustomAmountInput();
+}
+
+function setupAmountButtons() {
+    const amountButtons = document.querySelectorAll('.amount-btn');
+    athDebugger.log(`Botones: ${amountButtons.length}`, 'info');
+    
+    amountButtons.forEach((btn) => {
+        btn.addEventListener('click', function() {
+            const amount = parseFloat(this.getAttribute('data-amount'));
+            athDebugger.log(`Click: $${amount}`, 'info');
+            
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const customInput = document.getElementById('customDonationAmount');
+            if (customInput) customInput.value = '';
+            
+            selectAmount(amount);
+        });
+    });
+}
+
+function setupCustomAmountInput() {
+    const customInput = document.getElementById('customDonationAmount');
+    if (!customInput) return;
+    
+    customInput.addEventListener('input', function() {
+        const value = parseFloat(this.value);
+        if (value > 0) {
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('active'));
+            selectAmount(value);
+        }
+    });
+}
+
+function selectAmount(amount) {
+    athDebugger.log(`Seleccionado: $${amount}`, 'function');
+    
+    if (amount <= 0 || amount > 1500) {
+        athDebugger.log('Monto inválido', 'error');
+        return;
+    }
+    
+    currentAmount = amount;
+    updateSelectedAmountDisplay(amount);
+    createATHButton(amount);
+}
+
+function updateSelectedAmountDisplay(amount) {
+    const displayDiv = document.getElementById('selectedAmountDisplay');
+    const valueSpan = document.getElementById('selectedAmountValue');
+    
+    if (displayDiv && valueSpan) {
+        valueSpan.textContent = amount.toFixed(2);
+        displayDiv.style.display = 'block';
+        athDebugger.log('Display actualizado', 'success');
+    }
+}
+
+function createATHButton(amount) {
+    athDebugger.log('Creando botón ATH', 'function', { amount });
+    
+    const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+    if (!container) {
+        athDebugger.log('Container no encontrado', 'error');
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    try {
+        athButtonInstance = new ATHM_Checkout({
+            env: 'production',
+            publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
+            timeout: 600,
+            theme: 'btn',
+            lang: 'es',
+            total: amount,
+            subtotal: amount,
+            tax: 0,
+            metadata1: 'Donacion Campaña',
+            metadata2: 'RenovarParaAvanzar',
+            items: [{
+                name: 'Donación Campaña',
+                description: 'Apoyo a Renovar para Avanzar',
+                quantity: 1,
+                price: amount,
+                tax: 0,
+                metadata: 'Donacion'
+            }]
+        });
+        
+        athDebugger.log('Instancia creada', 'ath');
+        
+        const buttonElement = athButtonInstance.getButton();
+        container.appendChild(buttonElement);
+        
+        athDebugger.log('✅ Botón renderizado', 'success');
+        
+    } catch (error) {
+        athDebugger.log('Error creando botón', 'error', {
+            message: error.message,
+            stack: error.stack
+        });
+    }
+}
+
+async function authorizationATHM() {
+    athDebugger.log('🎉 Pago autorizado', 'ath');
+    try {
+        const response = await authorization();
+        athDebugger.log('Respuesta', 'ath', response);
+        
+        if (response.status === 'success') {
+            showPaymentStatus(`¡Donación de $${response.data.total} completada!`, 'success');
+            setTimeout(() => window.location.href = '/donacion-confirmada/', 3000);
+        }
+    } catch (error) {
+        athDebugger.log('Error', 'error', error);
+    }
+}
+
+async function cancelATHM() {
+    athDebugger.log('❌ Cancelado', 'ath');
+    try {
+        await findPaymentATHM();
+        showPaymentStatus('Pago cancelado', 'error');
+    } catch (error) {
+        athDebugger.log('Error', 'error', error);
+    }
+}
+
+async function expiredATHM() {
+    athDebugger.log('⏰ Expirado', 'ath');
+    try {
+        await findPaymentATHM();
+        showPaymentStatus('Pago expiró', 'error');
+    } catch (error) {
+        athDebugger.log('Error', 'error', error);
+    }
+}
+
+function showPaymentStatus(message, type) {
+    const statusDiv = document.getElementById('paymentStatusDonation');
+    if (!statusDiv) return;
+    
+    statusDiv.className = `payment-status ${type}`;
+    let icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
+    
+    statusDiv.innerHTML = `
+        <div style="font-size: 2rem; margin-bottom: 10px;">${icon}</div>
+        <div style="font-size: 1.1rem; font-weight: 600;">${message}</div>
+    `;
+    statusDiv.style.display = 'block';
+}
+
+window.authorizationATHM = authorizationATHM;
+window.cancelATHM = cancelATHM;
+window.expiredATHM = expiredATHM;
+
+athDebugger.log('Sistema listo', 'success');
+</script>
 
 <!-- 4. Messages Handler (al final) -->
 <script src="{% static 'landing/js/messages-handler.js' %}"></script>
