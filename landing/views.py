@@ -324,7 +324,8 @@ class RegisterView(IndexView):
         """Generar el HTML del email de confirmación"""
         from django.conf import settings
         
-        # URLs de las imágenes
+        # URLs ABSOLUTAS de las imágenes (asegúrate que SITE_URL esté correcta)
+        # Ejemplo: https://tudominio.com o https://leomarrg.pythonanywhere.com
         logos_img = f"{settings.SITE_URL}/static/landing/img/dr_rpa.rev@2x.png"
         ath_logo = f"{settings.SITE_URL}/static/landing/img/ATHM-logo-horizontal.png"
         
@@ -333,19 +334,24 @@ class RegisterView(IndexView):
         <html lang="es">
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
+                * {{
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                }}
                 body {{
-                    font-family: 'Montserrat', Arial, sans-serif;
+                    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
                     line-height: 1.6;
                     color: #333;
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding: 0;
                     background-color: #f4f4f4;
+                    padding: 20px;
                 }}
                 .container {{
                     background: #ffffff;
-                    margin: 20px auto;
+                    max-width: 600px;
+                    margin: 0 auto;
                     border-radius: 10px;
                     overflow: hidden;
                     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -360,25 +366,34 @@ class RegisterView(IndexView):
                     margin: 0;
                     font-size: 24px;
                     font-weight: 700;
+                    color: white;
+                }}
+                .header p {{
+                    margin: 10px 0 0 0;
+                    opacity: 0.9;
+                    color: white;
                 }}
                 .thank-you-box {{
                     background: #377e7c;
                     color: white;
                     padding: 30px 20px;
                     text-align: center;
-                    margin: 0;
                 }}
                 .thank-you-box p {{
                     font-size: 16px;
                     line-height: 1.8;
                     margin: 0 0 25px 0;
                     font-weight: 500;
+                    color: white;
                 }}
                 .thank-you-box img {{
                     max-width: 400px;
                     width: 100%;
                     height: auto;
                     margin-top: 20px;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
                 }}
                 .content {{
                     padding: 30px;
@@ -393,12 +408,14 @@ class RegisterView(IndexView):
                 .info-section h3 {{
                     color: #377e7c;
                     margin-top: 0;
+                    margin-bottom: 15px;
                     font-size: 18px;
                 }}
                 .info-row {{
                     margin: 12px 0;
                     padding: 10px 0;
                     border-bottom: 1px solid #e0e0e0;
+                    color: #333;
                 }}
                 .info-row:last-child {{
                     border-bottom: none;
@@ -408,6 +425,9 @@ class RegisterView(IndexView):
                     color: #377e7c;
                     display: inline-block;
                     min-width: 180px;
+                }}
+                .info-row span:not(.label) {{
+                    color: #333;
                 }}
                 .ath-box {{
                     background: #377e7c;
@@ -432,7 +452,7 @@ class RegisterView(IndexView):
                 .ath-handle {{
                     font-size: 26px;
                     font-weight: bold;
-                    color: #FFEB3B;
+                    color: #FFEB3B !important;
                     margin: 20px 0;
                     padding: 15px;
                     background: rgba(255, 255, 255, 0.1);
@@ -445,6 +465,8 @@ class RegisterView(IndexView):
                 .ath-logo img {{
                     max-width: 150px;
                     height: auto;
+                    display: block;
+                    margin: 0 auto;
                 }}
                 .footer {{
                     background: #2c3e50;
@@ -460,6 +482,28 @@ class RegisterView(IndexView):
                     font-size: 18px;
                     font-weight: bold;
                     margin-top: 10px;
+                    display: block;
+                }}
+                .next-steps-box {{
+                    background: #e8f4f1;
+                    padding: 15px;
+                    border-radius: 8px;
+                    border-left: 4px solid #4DB6AC;
+                    margin: 20px 0;
+                }}
+                .next-steps-box strong {{
+                    color: #377e7c;
+                }}
+                
+                /* Asegurar que todo el texto en boxes azules sea blanco */
+                .thank-you-box * {{
+                    color: white;
+                }}
+                .ath-box * {{
+                    color: white;
+                }}
+                .ath-handle {{
+                    color: #FFEB3B !important;
                 }}
             </style>
         </head>
@@ -467,7 +511,7 @@ class RegisterView(IndexView):
             <div class="container">
                 <div class="header">
                     <h1>Renovar para Avanzar</h1>
-                    <p style="margin: 10px 0 0 0; opacity: 0.9;">Dr. Méndez Sexto - Presidente del Colegio de Médicos</p>
+                    <p>Dr. Méndez Sexto - Presidente del Colegio de Médicos</p>
                 </div>
                 
                 <div class="thank-you-box">
@@ -475,13 +519,17 @@ class RegisterView(IndexView):
                         Gracias por unirte para juntos renovar el Colegio de Médicos Cirujanos de Puerto Rico 
                         y avanzar por nuestra profesión y la salud de Puerto Rico.
                     </p>
-                    <img src="{logos_img}" alt="Logos">
+                    <img src="{logos_img}" alt="Logos" style="max-width: 400px; width: 100%; height: auto;">
                 </div>
                 
                 <div class="content">
-                    <p style="font-size: 16px;">Estimado/a <strong>{registration.name} {registration.last_name}</strong>,</p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">
+                        Estimado/a <strong>{registration.name} {registration.last_name}</strong>,
+                    </p>
                     
-                    <p>Tu registro ha sido confirmado exitosamente. Nos alegra contar contigo en este importante proceso de transformación.</p>
+                    <p style="margin-bottom: 20px;">
+                        Tu registro ha sido confirmado exitosamente. Nos alegra contar contigo en este importante proceso de transformación.
+                    </p>
                     
                     <div class="info-section">
                         <h3>Información Registrada</h3>
@@ -532,17 +580,17 @@ class RegisterView(IndexView):
                         </div>
                     </div>
                     
-                    {f'''<p style="background: #e8f4f1; padding: 15px; border-radius: 8px; border-left: 4px solid #4DB6AC;">
-                        <strong style="color: #377e7c;">Próximos pasos:</strong><br>
+                    {f'''<div class="next-steps-box">
+                        <strong>Próximos pasos:</strong><br>
                         Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.
-                    </p>''' if registration.needs_voting_help else ''}
+                    </div>''' if registration.needs_voting_help else ''}
                     
                     <div class="ath-box">
-                        <h3>Apoya la campaña</h3>
-                        <p>Puedes realizar tu donación a través de<br>ATH Móvil Pay Business</p>
-                        <div class="ath-handle">/comitedrmendezsexto</div>
+                        <h3 style="color: white;">Apoya la campaña</h3>
+                        <p style="color: white;">Puedes realizar tu donación a través de<br>ATH Móvil Pay Business</p>
+                        <div class="ath-handle" style="color: #FFEB3B;">/comitedrmendezsexto</div>
                         <div class="ath-logo">
-                            <img src="{ath_logo}" alt="ATH Móvil">
+                            <img src="{ath_logo}" alt="ATH Móvil" style="max-width: 150px; height: auto;">
                         </div>
                     </div>
                     
@@ -555,7 +603,7 @@ class RegisterView(IndexView):
                     <strong>Dr. Méndez Sexto</strong><br>
                     <em>Renovar para Avanzar</em><br>
                     <small>Colegio de Médicos y Cirujanos de Puerto Rico</small>
-                    <div class="hashtag">#RenovarParaAvanzar</div>
+                    <span class="hashtag">#RenovarParaAvanzar</span>
                     <p style="font-size: 11px; color: #95a5a6; margin-top: 20px;">
                         Pagado por el Comité Dr. Méndez Sexto
                     </p>
