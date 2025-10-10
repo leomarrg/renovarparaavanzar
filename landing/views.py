@@ -638,17 +638,6 @@ class DonateView(TemplateView):
         
         return context
 
-
-# Al inicio del archivo, asegúrate de tener estos imports
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-import requests
-import json
-
-# ... tus otras vistas ...
-
-# Después de tu IndexView, agrega estas vistas:
-
 @method_decorator(csrf_exempt, name='dispatch')
 class ATHPaymentView(View):
     """Endpoint para crear el pago en ATH Móvil"""

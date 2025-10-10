@@ -128,11 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # ============================================
 
 # Public Token de ATH Business (obligatorio)
-# Obtén este token desde tu app ATH Business > Configuración
 ATH_MOVIL_PUBLIC_TOKEN = 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763'
 
 # Private Token para operaciones de backend (opcional)
-# Solo necesario si vas a hacer refunds o consultas desde el servidor
 #ATH_MOVIL_PRIVATE_TOKEN = 'tu_private_token_aqui'
 
 # Ambiente: 'production' o 'sandbox' (actualmente solo hay production)
