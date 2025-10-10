@@ -4,12 +4,35 @@ from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.conf import settings
 from django.utils import timezone
 import json
 from datetime import datetime, timedelta
 import traceback
+import threading
+import requests
+
+
+def send_email_async(registration):
+    """Enviar email - versión síncrona confiable"""
+    try:
+        print(f"📧 Enviando email a {registration.email}...")
+        register_view = RegisterView()
+        result = register_view.send_confirmation_email(registration)
+        if result:
+            print(f"✅ Email enviado a {registration.email}")
+        else:
+            print(f"❌ Email falló para {registration.email}")
+        return result
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        traceback.print_exc()
+        return False
 
 
 class IndexView(TemplateView):
@@ -48,59 +71,59 @@ class IndexView(TemplateView):
         context['team_members'] = [
             {
                 'id': 1,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. San Juan 1',
-                'image': 'landing/img/team/member-1.jpg'
+                'name': 'Dr. Méndez Sexto',
+                'role': 'Médico Generalista',
+                'district': 'Presidente',
+                'image': 'landing/img/miembros/'
             },
             {
                 'id': 2,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado', 
-                'district': 'Dist. San Juan 2',
-                'image': 'landing/img/team/member-2.jpg'
+                'name': 'Dra. Sharon Millán Aponte',
+                'role': 'Médico Generalista', 
+                'district': 'Secretaria',
+                'image': 'landing/img/miembros/dra_sharon_milan.jpg'
             },
             {
                 'id': 3,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Bayamón',
+                'name': 'Dra. Kimberly Ramos',
+                'role': 'Médico Generalista',
+                'district': 'Presidenta del Senado',
                 'image': 'landing/img/team/member-3.jpg'
             },
             {
                 'id': 4,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Caguas',
-                'image': 'landing/img/team/member-4.jpg'
+                'name': 'Dr. Juan Rodríguez Vélez',
+                'role': 'Psiquiatra',
+                'district': 'Tesorero',
+                'image': 'landing/img/miembros/dr_juan_rivera.jpg'
             },
             {
                 'id': 5,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Arecibo',
+                'name': 'Dr. Guillermo Pastrana',
+                'role': 'Médico Generalista',
+                'district': 'Presidente Fundación Médica',
                 'image': 'landing/img/team/member-5.jpg'
             },
             {
                 'id': 6,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Ponce',
-                'image': 'landing/img/team/member-6.jpg'
+                'name': 'Dr. Edgar Reyes',
+                'role': 'Otorrinolaringólogo, Cirujano Maxilofacial',
+                'district': 'Presidente Instituto de Educación Continua',
+                'image': 'landing/img/miembros/rd_edgar_reyes.jpg'
             },
             {
                 'id': 7,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Mayagüez',
+                'name': 'Dr. Juan Rivera',
+                'role': 'Médico Generalista',
+                'district': 'Vicepresidente',
                 'image': 'landing/img/team/member-7.jpg'
             },
             {
                 'id': 8,
-                'name': 'Juan del Pueblo',
-                'role': 'Candidato a Delegado',
-                'district': 'Dist. Humacao',
-                'image': 'landing/img/team/member-8.jpg'
+                'name': 'Dra. Érika Rentas',
+                'role': 'Médica Generalista',
+                'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
+                'image': 'landing/img/miembros/dra_erika.jpg'
             }
         ]
         
@@ -151,7 +174,7 @@ class IndexView(TemplateView):
             'title': 'Dr. Méndez Sexto - Renovar para Avanzar',
             'description': 'Únete al movimiento de transformación del Colegio de Médicos y Cirujanos de Puerto Rico',
             'keywords': 'Dr. Méndez Sexto, Colegio de Médicos, Puerto Rico, elecciones, salud',
-            'og_image': 'landing/img/og-image.jpg'
+            'og_image': 'landing/img/logo-renovar.png'
         }
         
         return context
@@ -162,7 +185,7 @@ class IndexWithRegistrationView(IndexView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['scroll_to_register'] = True  # Flag para hacer scroll automático
+        context['scroll_to_register'] = True
         return context
 
 
@@ -187,15 +210,11 @@ class RegisterAPIView(View):
                 registration = form.save(commit=False)
                 registration.save()
                 
-                # Intentar enviar email si se proporcionó
+                # Enviar email de forma asíncrona si se proporcionó
                 email_sent = False
                 if registration.email:
-                    try:
-                        # Usar el método de la clase RegisterView
-                        register_view = RegisterView()
-                        email_sent = register_view.send_confirmation_email(registration)
-                    except Exception as e:
-                        print(f"Error enviando email: {e}")
+                    send_email_async(registration)
+                    email_sent = True
                 
                 return JsonResponse({
                     'success': True,
@@ -225,13 +244,12 @@ class RegisterAPIView(View):
 
 
 class RegisterView(IndexView):
-    """Vista para registro de voluntarios y simpatizantes - adaptada de ponchapr_app"""
-
+    """Vista para registro de voluntarios y simpatizantes"""
 
     def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            context['scroll_to_register'] = True
-            return context
+        context = super().get_context_data(**kwargs)
+        context['scroll_to_register'] = True
+        return context
     
     def post(self, request):
         try:
@@ -247,27 +265,17 @@ class RegisterView(IndexView):
             try:
                 registration = form.save()
                 
-                email_sent = False
-                email_status = ""
-                
+                # Enviar email de forma asíncrona
                 if registration.email:
-                    try:
-                        email_sent = self.send_confirmation_email(registration)
-                        if email_sent:
-                            email_status = "Se ha enviado un correo de confirmación a tu email."
-                    except Exception as email_error:
-                        print(f"Error enviando correo: {email_error}")
+                    send_email_async(registration)
+                    email_status = "Se ha enviado un correo de confirmación a tu email."
+                else:
+                    email_status = ""
                 
-                success_message = f'''
-                ¡Registro exitoso! {registration.name} {registration.last_name} ha sido registrado. 
-                <br><br>
-                <div style="background: #FFF3CD; border: 2px solid #FFC107; border-radius: 10px; padding: 15px; margin: 10px 0;">
-                    <strong style="font-size: 1.2em;">Tu código de confirmación es:</strong><br>
-                    <span style="font-size: 2em; color: #FF7043; font-weight: bold;">{registration.unique_id}</span><br>
-                    <small>Por favor guárdalo para futuras referencias</small>
-                </div>
-                {email_status}
-                '''
+                # Crear mensaje simple de éxito
+                success_message = f'¡Registro exitoso! {registration.name} {registration.last_name} ha sido registrado.'
+                if email_status:
+                    success_message += f' {email_status}'
                 
                 messages.success(request, success_message)
                 return redirect('landing:index')
@@ -287,7 +295,7 @@ class RegisterView(IndexView):
     def send_confirmation_email(self, registration):
         """Enviar email de confirmación"""
         try:
-            subject = 'Gracias por el apoyo - Renovar para Avanzar'  # CAMBIADO
+            subject = 'Gracias por el apoyo - Renovar para Avanzar'
             from_email = settings.EMAIL_HOST_USER if hasattr(settings, 'EMAIL_HOST_USER') else 'noreply@renovarparaavanzar.com'
             to_email = registration.email
             
@@ -317,8 +325,8 @@ class RegisterView(IndexView):
         from django.conf import settings
         
         # URLs de las imágenes
-        logos_img = f"{settings.SITE_URL}/static/landing/img/logos-combinados.png"
-        ath_logo = f"{settings.SITE_URL}/static/landing/img/ath-logo.png"
+        logos_img = f"{settings.SITE_URL}/static/landing/img/dr_rpa.rev@2x.png"
+        ath_logo = f"{settings.SITE_URL}/static/landing/img/ATHM-logo-horizontal.png"
         
         return f"""
         <!DOCTYPE html>
@@ -329,7 +337,7 @@ class RegisterView(IndexView):
                 body {{
                     font-family: 'Montserrat', Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #fff;
                     max-width: 600px;
                     margin: 0 auto;
                     padding: 0;
@@ -424,7 +432,7 @@ class RegisterView(IndexView):
                 .ath-handle {{
                     font-size: 26px;
                     font-weight: bold;
-                    color: #FFEB3B;
+                    color: #fff;
                     margin: 20px 0;
                     padding: 15px;
                     background: rgba(255, 255, 255, 0.1);
@@ -558,33 +566,230 @@ class RegisterView(IndexView):
         """
 
 
-class DonateView(View):
-    """Vista para procesar donaciones (redirige a ATH Móvil)"""
+class DonateView(TemplateView):
+    """Vista principal de donación con ATH Móvil E-commerce"""
+    template_name = 'landing/donate.html'
     
-    def get(self, request):
-        # Aquí puedes registrar el intento de donación
-        return redirect('https://athmovilpr.com/pay/comitedrmendezsexto')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Configuración de ATH Móvil para el frontend
+        context['ath_config'] = {
+            'public_token': settings.ATH_MOVIL_PUBLIC_TOKEN,
+            'env': settings.ATH_MOVIL_ENV,
+            'timeout': settings.ATH_MOVIL_TIMEOUT,
+            'site_url': settings.SITE_URL,
+        }
+        
+        # Información de la campaña
+        context['candidate'] = {
+            'name': 'Dr. Méndez Sexto',
+            'campaign_slogan': 'Renovar para Avanzar',
+        }
+        
+        return context
+
+
+# Al inicio del archivo, asegúrate de tener estos imports
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+import requests
+import json
+
+# ... tus otras vistas ...
+
+# Después de tu IndexView, agrega estas vistas:
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHPaymentView(View):
+    """Endpoint para crear el pago en ATH Móvil"""
     
     def post(self, request):
-        # Para procesar donaciones vía formulario si es necesario
         try:
             data = json.loads(request.body)
-            amount = data.get('amount')
-            donor_email = data.get('email')
             
-            # Aquí puedes guardar la información en la base de datos
-            # Por ahora solo retornamos success
+            amount = float(data.get('amount', 0))
+            metadata1 = data.get('metadata1', 'Donacion Campaña')
+            metadata2 = data.get('metadata2', 'RenovarParaAvanzar')
             
-            return JsonResponse({
-                'success': True,
-                'message': 'Gracias por tu apoyo. Serás redirigido a ATH Móvil.'
-            })
+            if amount <= 0:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Monto inválido'
+                }, status=400)
             
+            # Preparar datos para ATH Móvil
+            payment_data = {
+                'publicToken': settings.ATH_MOVIL_PUBLIC_TOKEN,
+                'timeout': settings.ATH_MOVIL_TIMEOUT,
+                'total': amount,
+                'subtotal': amount,
+                'tax': 0,
+                'metadata1': metadata1,
+                'metadata2': metadata2,
+                'items': [{
+                    'name': 'Donación Campaña',
+                    'description': f'Donación para {metadata2}',
+                    'quantity': 1,
+                    'price': amount,
+                    'tax': 0,
+                    'metadata': metadata1
+                }]
+            }
+            
+            # Llamar a la API de ATH Móvil
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/payment',
+                json=payment_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                return JsonResponse(result)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al crear el pago',
+                    'details': response.text
+                }, status=response.status_code)
+                
         except Exception as e:
+            print(f"Error en ATHPaymentView: {str(e)}")
+            traceback.print_exc()
             return JsonResponse({
-                'success': False,
-                'message': 'Hubo un error procesando tu solicitud.'
-            })
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHUpdatePhoneView(View):
+    """Endpoint para actualizar el teléfono"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            ecommerce_id = data.get('ecommerceId')
+            phone_number = data.get('phoneNumber')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
+            
+            update_data = {
+                'ecommerceId': ecommerce_id,
+                'phoneNumber': phone_number,
+                'publicToken': public_token
+            }
+            
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/update-phone-number',
+                json=update_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                return JsonResponse(response.json())
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al actualizar teléfono'
+                }, status=response.status_code)
+                
+        except Exception as e:
+            print(f"Error en ATHUpdatePhoneView: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHAuthorizationView(View):
+    """Endpoint para autorizar el pago"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            ecommerce_id = data.get('ecommerceId')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
+            
+            auth_data = {
+                'ecommerceId': ecommerce_id,
+                'publicToken': public_token
+            }
+            
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/authorization',
+                json=auth_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                # Si el pago fue exitoso, log
+                if result.get('status') == 'success':
+                    payment_data = result.get('data', {})
+                    print(f"✅ Pago exitoso: {payment_data.get('referenceNumber')}")
+                
+                return JsonResponse(result)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al autorizar'
+                }, status=response.status_code)
+                
+        except Exception as e:
+            print(f"Error en ATHAuthorizationView: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ATHFindPaymentView(View):
+    """Endpoint para consultar estado del pago"""
+    
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            
+            ecommerce_id = data.get('ecommerceId')
+            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
+            
+            find_data = {
+                'ecommerceId': ecommerce_id,
+                'publicToken': public_token
+            }
+            
+            response = requests.post(
+                'https://payments.athmovil.com/api/business-transaction/ecommerce/business/findPayment',
+                json=find_data,
+                headers={'Content-Type': 'application/json'},
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                return JsonResponse(response.json())
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Error al buscar pago'
+                }, status=response.status_code)
+                
+        except Exception as e:
+            print(f"Error en ATHFindPaymentView: {str(e)}")
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=500)
+    
+
 
 
 class TeamView(TemplateView):
@@ -595,7 +800,6 @@ class TeamView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Nuestro Equipo'
         
-        # Aquí puedes agregar información más detallada del equipo
         context['team_details'] = {
             'leader': {
                 'name': 'Dr. Méndez Sexto',
@@ -603,7 +807,7 @@ class TeamView(TemplateView):
                 'bio': 'Con más de 25 años de experiencia en el campo de la medicina...',
                 'image': 'landing/img/dr-mendez.png'
             },
-            'members': []  # Lista completa de miembros
+            'members': []
         }
         
         return context
@@ -626,14 +830,12 @@ class ContactView(View):
         return render(request, self.template_name, context)
     
     def post(self, request):
-        # Procesar formulario de contacto
         name = request.POST.get('name')
         email = request.POST.get('email')
         subject = request.POST.get('subject', 'Consulta desde el sitio web')
         message = request.POST.get('message')
         
         try:
-            # Enviar email
             email_message = f"""
             Nuevo mensaje de contacto:
             
@@ -644,14 +846,6 @@ class ContactView(View):
             Mensaje:
             {message}
             """
-            
-            # send_mail(
-            #     subject=f'Contacto Web: {subject}',
-            #     message=email_message,
-            #     from_email=settings.DEFAULT_FROM_EMAIL,
-            #     recipient_list=['info@renovarparaavanzar.com'],
-            #     fail_silently=False,
-            # )
             
             messages.success(request, '¡Mensaje enviado! Te responderemos pronto.')
             return redirect('landing:contact')
@@ -665,7 +859,7 @@ class CountdownAPIView(View):
     """API endpoint para obtener el countdown actualizado"""
     
     def get(self, request):
-        election_date = datetime(2025, 12, 12, 12, 0, 0)  # Fecha de elección
+        election_date = datetime(2025, 12, 12, 12, 0, 0)
         now = datetime.now()
         time_remaining = election_date - now
         
@@ -682,3 +876,13 @@ class CountdownAPIView(View):
             'minutes': (time_remaining.seconds % 3600) // 60,
             'seconds': time_remaining.seconds % 60
         })
+    
+
+class TermsView(TemplateView):
+    """Vista para Términos y Condiciones"""
+    template_name = 'landing/terms.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Términos y Condiciones'
+        return context
