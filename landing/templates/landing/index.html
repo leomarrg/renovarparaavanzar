@@ -758,20 +758,26 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-<!-- 1. Cargar script de ATH Móvil PRIMERO -->
+<!-- 1. Script de ATH Móvil PRIMERO -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
-<!-- 2. Declarar objeto ATHM_Checkout GLOBAL con monto inicial -->
+<!-- 2. Declarar objeto ATHM_Checkout GLOBAL -->
 <script type="text/javascript">
-    // Objeto global que ATH Móvil lee automáticamente
+    // Leer monto desde URL o usar valor por defecto
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedAmount = parseFloat(urlParams.get('amount')) || 0;
+    
+    console.log('Monto para ATH:', selectedAmount);
+    
+    // OBJETO GLOBAL que ATH Móvil lee automáticamente
     const ATHM_Checkout = {
         env: 'production',
         publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
         timeout: 600,
         theme: 'btn',
         lang: 'es',
-        total: 25,        // Monto inicial por defecto
-        subtotal: 25,
+        total: selectedAmount,
+        subtotal: selectedAmount,
         tax: 0,
         metadata1: 'Donacion Campaña',
         metadata2: 'RenovarParaAvanzar',
@@ -780,7 +786,7 @@ setTimeout(function() {
                 "name": "Donación Campaña",
                 "description": "Apoyo a Renovar para Avanzar",
                 "quantity": 1,
-                "price": 25,
+                "price": selectedAmount,
                 "tax": 0,
                 "metadata": "Donacion"
             }
@@ -788,15 +794,17 @@ setTimeout(function() {
         phoneNumber: ""
     };
     
-    // Callbacks requeridos
+    // CALLBACKS REQUERIDOS según documentación
     async function authorizationATHM() {
-        console.log('🎉 Pago autorizado');
+        console.log('🎉 authorizationATHM llamado');
         const responseAuth = await authorization();
         console.log('Respuesta:', responseAuth);
         
         if (responseAuth.status === 'success') {
-            alert('¡Donación completada! Gracias por tu apoyo.');
-            // Redirigir después de 2 segundos
+            const data = responseAuth.data;
+            alert(`¡Donación de $${data.total} completada! Gracias por tu apoyo.`);
+            
+            // Redirigir a confirmación
             setTimeout(() => {
                 window.location.href = '/donacion-confirmada/';
             }, 2000);
@@ -804,126 +812,49 @@ setTimeout(function() {
     }
     
     async function cancelATHM() {
-        console.log('❌ Pago cancelado');
+        console.log('❌ cancelATHM llamado');
         const responseCancel = await findPaymentATHM();
         console.log('Respuesta:', responseCancel);
         alert('El pago fue cancelado');
     }
     
     async function expiredATHM() {
-        console.log('⏰ Pago expirado');
+        console.log('⏰ expiredATHM llamado');
         const responseExpired = await findPaymentATHM();
         console.log('Respuesta:', responseExpired);
         alert('El pago expiró. Por favor intenta nuevamente.');
     }
-</script>
-
-<!-- 3. Script para manejar selección de montos -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Inicializando sistema de donaciones...');
     
-    // Verificar que ATH esté disponible
-    if (typeof ATHM_Checkout === 'undefined') {
-        console.error('❌ ATHM_Checkout no está definido');
-        return;
-    }
-    
-    console.log('✅ ATHM_Checkout disponible');
-    
-    // Botones de monto predefinido
-    const amountButtons = document.querySelectorAll('.amount-btn');
-    amountButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const amount = parseFloat(this.getAttribute('data-amount'));
-            console.log(`Monto seleccionado: $${amount}`);
-            
-            // Actualizar botones activos
-            amountButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Limpiar input personalizado
-            const customInput = document.getElementById('customDonationAmount');
-            if (customInput) customInput.value = '';
-            
-            // Actualizar monto
-            updateAmount(amount);
-        });
-    });
-    
-    // Input de monto personalizado
-    const customInput = document.getElementById('customDonationAmount');
-    if (customInput) {
-        customInput.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            if (value > 0) {
-                amountButtons.forEach(btn => btn.classList.remove('active'));
-                updateAmount(value);
+    // Si no hay monto, ocultar el botón y mostrar instrucciones
+    if (selectedAmount === 0) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+            if (container) {
+                container.innerHTML = `
+                    <div style="background: #E3F2FD; border: 2px solid #2196F3; border-radius: 12px; padding: 25px; text-align: center;">
+                        <div style="font-size: 24px; margin-bottom: 15px;">👆</div>
+                        <div style="color: #1565C0; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem;">
+                            Selecciona un Monto Arriba
+                        </div>
+                        <div style="color: #666; font-size: 0.95rem;">
+                            Elige uno de los montos predefinidos o ingresa una cantidad personalizada
+                        </div>
+                    </div>
+                `;
             }
         });
     }
-    
-    function updateAmount(amount) {
-        console.log(`Actualizando a $${amount}`);
-        
-        // Validar monto
-        if (amount <= 0 || amount > 1500) {
-            alert('El monto debe estar entre $1 y $1,500');
-            return;
-        }
-        
-        // Actualizar objeto global ATHM_Checkout
-        ATHM_Checkout.total = amount;
-        ATHM_Checkout.subtotal = amount;
-        ATHM_Checkout.items[0].price = amount;
-        
-        // Actualizar display
-        const displayDiv = document.getElementById('selectedAmountDisplay');
-        const valueSpan = document.getElementById('selectedAmountValue');
-        if (displayDiv && valueSpan) {
-            valueSpan.textContent = amount.toFixed(2);
-            displayDiv.style.display = 'block';
-        }
-        
-        // CRÍTICO: Forzar recarga del botón ATH
-        reloadATHButton();
-        
-        console.log('✅ Monto actualizado:', ATHM_Checkout);
-    }
-    
-    function reloadATHButton() {
-        // Limpiar y recrear el contenedor del botón
-        const container = document.getElementById('ATHMovil_Checkout_Button_payment');
-        if (!container) {
-            console.error('Container no encontrado');
-            return;
-        }
-        
-        // Limpiar contenedor
-        container.innerHTML = '';
-        
-        // Crear un nuevo div para forzar la recreación
-        const newDiv = document.createElement('div');
-        newDiv.id = 'ATHMovil_Checkout_Button_payment';
-        container.parentNode.replaceChild(newDiv, container);
-        
-        // Disparar evento para que ATH recree el botón
-        if (typeof window.ATHM_Checkout_Button !== 'undefined') {
-            window.ATHM_Checkout_Button.reload();
-        }
-        
-        // Si no funciona lo anterior, recargar la página (última opción)
-        // location.reload();
-        
-        console.log('Botón ATH recargado');
-    }
-});
 </script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
 <script src="{% static 'landing/js/form-validation.js' %}"></script>
 <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+
+<!-- 4. Script de manejo de interfaz (sin crear botones ATH) -->
+<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
+
+
 <script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 </body>
