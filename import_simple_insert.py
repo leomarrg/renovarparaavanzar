@@ -11,7 +11,7 @@ USO EN DJANGO SHELL (PythonAnywhere):
 import csv
 from django.utils import timezone
 from datetime import datetime
-from tuapp.models import Registration  # ⚠️ CAMBIAR 'tuapp' por el nombre de tu app
+from landing.models import Registration  # ⚠️ CAMBIAR 'tuapp' por el nombre de tu app
 
 # ⚠️ CAMBIAR la ruta a tu archivo CSV
 CSV_PATH = 'registros_mendez_sexto_completos.csv'
