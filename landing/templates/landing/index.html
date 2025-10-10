@@ -264,7 +264,7 @@
     </section> -->
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
-<div id="emergency-debug" style="
+<!-- <div id="emergency-debug" style="
     position: fixed;
     top: 0;
     left: 0;
@@ -403,7 +403,7 @@ setTimeout(function() {
         emergencyLog('Listeners configurados. Prueba tocar un botón de monto', 'warning');
     }
 }, 1000);
-</script>
+</script> -->
     
     <!-- Donation Section-->
     <section class="donation-section" id="donate">
@@ -761,134 +761,6 @@ setTimeout(function() {
 <!-- 1. Script de ATH Móvil PRIMERO -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
-<!-- 2. Objeto ATHM_Checkout GLOBAL -->
-<script type="text/javascript">
-    // Leer monto desde URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedAmount = parseFloat(urlParams.get('amount')) || 0;
-    
-    console.log('💰 Monto configurado:', selectedAmount);
-    
-    // Objeto global que ATH Móvil lee automáticamente
-    const ATHM_Checkout = {
-        env: 'production',
-        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
-        timeout: 600,
-        theme: 'btn',
-        lang: 'es',
-        total: selectedAmount,
-        subtotal: selectedAmount,
-        tax: 0,
-        metadata1: 'Donacion Campaña',
-        metadata2: 'RenovarParaAvanzar',
-        items: [{
-            "name": "Donación Campaña",
-            "description": "Apoyo a Renovar para Avanzar",
-            "quantity": 1,
-            "price": selectedAmount,
-            "tax": 0,
-            "metadata": "Donacion"
-        }],
-        phoneNumber: ""
-    };
-    
-    // Callbacks requeridos
-    async function authorizationATHM() {
-        console.log('🎉 Pago autorizado');
-        try {
-            const responseAuth = await authorization();
-            console.log('Respuesta:', responseAuth);
-            
-            if (responseAuth.status === 'success') {
-                const data = responseAuth.data;
-                
-                // Mostrar mensaje de éxito
-                const statusDiv = document.getElementById('paymentStatusDonation');
-                if (statusDiv) {
-                    statusDiv.className = 'payment-status success';
-                    statusDiv.innerHTML = `
-                        <div style="font-size: 2rem; margin-bottom: 10px;">✅</div>
-                        <div style="font-size: 1.1rem; font-weight: 600;">
-                            ¡Donación de $${data.total} completada! Gracias por tu apoyo.
-                        </div>
-                    `;
-                    statusDiv.style.display = 'block';
-                }
-                
-                // Redirigir después de 3 segundos
-                setTimeout(() => {
-                    window.location.href = '/donacion-confirmada/';
-                }, 3000);
-            }
-        } catch (error) {
-            console.error('Error en autorización:', error);
-        }
-    }
-    
-    async function cancelATHM() {
-        console.log('❌ Pago cancelado');
-        try {
-            const responseCancel = await findPaymentATHM();
-            console.log('Respuesta:', responseCancel);
-            
-            const statusDiv = document.getElementById('paymentStatusDonation');
-            if (statusDiv) {
-                statusDiv.className = 'payment-status error';
-                statusDiv.innerHTML = `
-                    <div style="font-size: 2rem; margin-bottom: 10px;">❌</div>
-                    <div style="font-size: 1.1rem; font-weight: 600;">
-                        El pago fue cancelado. Puedes intentar nuevamente.
-                    </div>
-                `;
-                statusDiv.style.display = 'block';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-    
-    async function expiredATHM() {
-        console.log('⏰ Pago expirado');
-        try {
-            const responseExpired = await findPaymentATHM();
-            console.log('Respuesta:', responseExpired);
-            
-            const statusDiv = document.getElementById('paymentStatusDonation');
-            if (statusDiv) {
-                statusDiv.className = 'payment-status error';
-                statusDiv.innerHTML = `
-                    <div style="font-size: 2rem; margin-bottom: 10px;">⏰</div>
-                    <div style="font-size: 1.1rem; font-weight: 600;">
-                        El tiempo expiró. Por favor intenta nuevamente.
-                    </div>
-                `;
-                statusDiv.style.display = 'block';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-    
-    // Si no hay monto, mostrar mensaje
-    if (selectedAmount === 0) {
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('ATHMovil_Checkout_Button_payment');
-            if (container) {
-                container.innerHTML = `
-                    <div style="background: #E3F2FD; border: 2px solid #2196F3; border-radius: 12px; padding: 25px; text-align: center; margin: 20px 0;">
-                        <div style="font-size: 28px; margin-bottom: 15px;">👆</div>
-                        <div style="color: #1565C0; font-weight: bold; margin-bottom: 10px; font-size: 1.2rem;">
-                            Selecciona un Monto Arriba
-                        </div>
-                        <div style="color: #666; font-size: 0.95rem; line-height: 1.6;">
-                            Elige uno de los montos predefinidos o ingresa una cantidad personalizada para continuar
-                        </div>
-                    </div>
-                `;
-            }
-        });
-    }
-</script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
