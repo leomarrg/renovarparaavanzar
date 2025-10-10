@@ -758,18 +758,16 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-<!-- 1. Script de ATH Móvil PRIMERO -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+<!-- 1. FIRST: Define ATHM_Checkout and callbacks -->
+<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
 
+<!-- 2. SECOND: Load ATH Móvil's script (it reads ATHM_Checkout and creates button) -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
 <script src="{% static 'landing/js/form-validation.js' %}"></script>
 <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
-
-<!-- 4. Script de manejo de interfaz (sin crear botones ATH) -->
-<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
-
 
 <script src="{% static 'landing/js/messages-handler.js' %}"></script>
 

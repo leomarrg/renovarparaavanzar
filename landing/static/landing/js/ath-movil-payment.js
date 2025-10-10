@@ -1,6 +1,6 @@
 // ===============================================
-// ATH MÓVIL PAYMENT - SEGÚN DOCUMENTACIÓN OFICIAL
-// GitHub: https://github.com/evertec/athmovil-javascript-api
+// ATH MÓVIL PAYMENT - OFFICIAL IMPLEMENTATION
+// Based on: https://github.com/evertec/athmovil-javascript-api
 // ===============================================
 
 // Debug Logger Visual
@@ -102,43 +102,146 @@ const athDebugger = new VisualDebugger();
 
 athDebugger.log('Script cargado', 'success');
 athDebugger.log('⚠️ NOTA: ATH Móvil NO soporta cambio dinámico de monto', 'warning');
-athDebugger.log('Solución: Se recargará la página al cambiar monto', 'info');
 
 // ===============================================
-// INICIALIZACIÓN
+// CONFIGURAR ATHM_Checkout SEGÚN EL MONTO EN URL
 // ===============================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    athDebugger.log('DOM cargado', 'success');
-    
-    // Verificar si hay un monto en la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlAmount = urlParams.get('amount');
-    
-    if (urlAmount) {
-        const amount = parseFloat(urlAmount);
-        athDebugger.log(`Monto desde URL: $${amount}`, 'success');
-        
-        // Marcar el botón correspondiente como activo
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-            if (parseFloat(btn.getAttribute('data-amount')) === amount) {
-                btn.classList.add('active');
-            }
-        });
-        
-        // Actualizar display
-        updateSelectedAmountDisplay(amount);
-    }
-    
-    // Configurar botones
-    setupAmountButtons();
-    setupCustomAmountInput();
-    
-    athDebugger.log('Sistema inicializado', 'success');
+// Obtener monto de la URL
+const urlParams = new URLSearchParams(window.location.search);
+const urlAmount = urlParams.get('amount');
+const selectedAmount = urlAmount ? parseFloat(urlAmount) : 0;
+
+athDebugger.log(`Monto detectado: $${selectedAmount}`, selectedAmount > 0 ? 'success' : 'warning');
+
+// ===============================================
+// DEFINIR ATHM_Checkout GLOBALMENTE
+// Según documentación oficial de ATH Móvil
+// ===============================================
+
+const ATHM_Checkout = {
+    env: 'production',
+    publicToken: 'TU_PUBLIC_TOKEN_AQUI', // ⚠️ REEMPLAZA CON TU TOKEN REAL
+    timeout: 600,
+    theme: 'btn',
+    lang: 'es',
+    total: selectedAmount,
+    subtotal: selectedAmount,
+    tax: 0,
+    metadata1: 'Donacion Campaña',
+    metadata2: `Monto: $${selectedAmount}`,
+    items: [
+        {
+            name: "Donación",
+            description: "Apoyo a la campaña",
+            quantity: 1,
+            price: selectedAmount,
+            tax: 0,
+            metadata: "Donacion"
+        }
+    ],
+    phoneNumber: ""
+};
+
+athDebugger.log('ATHM_Checkout configurado', 'ath', {
+    total: ATHM_Checkout.total,
+    publicToken: ATHM_Checkout.publicToken.substring(0, 10) + '...'
 });
 
 // ===============================================
-// CONFIGURAR BOTONES
+// CALLBACKS OBLIGATORIOS (Documentación Oficial)
+// ===============================================
+
+/**
+ * Se ejecuta cuando el pago es autorizado exitosamente
+ */
+async function authorizationATHM() {
+    athDebugger.log('→ authorizationATHM() - PAGO AUTORIZADO ✅', 'success');
+    
+    try {
+        const responseAuth = await authorization();
+        athDebugger.log('Respuesta de autorización:', 'success', responseAuth);
+        
+        // Mostrar mensaje de éxito
+        showPaymentStatus('success', '¡Donación exitosa! Gracias por tu apoyo.');
+        
+        // Aquí puedes enviar los datos a tu servidor Django
+        // sendPaymentToServer(responseAuth);
+        
+    } catch (error) {
+        athDebugger.log('Error en autorización', 'error', error);
+        showPaymentStatus('error', 'Hubo un error al procesar el pago.');
+    }
+}
+
+/**
+ * Se ejecuta cuando el usuario cancela el pago
+ */
+async function cancelATHM() {
+    athDebugger.log('→ cancelATHM() - PAGO CANCELADO ❌', 'warning');
+    
+    try {
+        const responseCancel = await findPaymentATHM();
+        athDebugger.log('Pago cancelado:', 'warning', responseCancel);
+        
+        showPaymentStatus('error', 'El pago fue cancelado.');
+        
+    } catch (error) {
+        athDebugger.log('Error al verificar cancelación', 'error', error);
+    }
+}
+
+/**
+ * Se ejecuta cuando el pago expira por timeout
+ */
+async function expiredATHM() {
+    athDebugger.log('→ expiredATHM() - PAGO EXPIRADO ⏱️', 'warning');
+    
+    try {
+        const responseExpired = await findPaymentATHM();
+        athDebugger.log('Pago expirado:', 'warning', responseExpired);
+        
+        showPaymentStatus('error', 'El tiempo para completar el pago expiró.');
+        
+    } catch (error) {
+        athDebugger.log('Error al verificar expiración', 'error', error);
+    }
+}
+
+// ===============================================
+// FUNCIONES DE UI
+// ===============================================
+
+function showPaymentStatus(type, message) {
+    const statusDiv = document.getElementById('paymentStatusDonation');
+    if (!statusDiv) {
+        athDebugger.log('Elemento paymentStatusDonation no encontrado', 'warning');
+        return;
+    }
+    
+    statusDiv.className = 'payment-status ' + type;
+    statusDiv.textContent = message;
+    statusDiv.style.display = 'block';
+    
+    // Scroll hacia el mensaje
+    statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    athDebugger.log(`Estado mostrado: ${type} - ${message}`, 'info');
+}
+
+function updateSelectedAmountDisplay(amount) {
+    const displayDiv = document.getElementById('selectedAmountDisplay');
+    const valueSpan = document.getElementById('selectedAmountValue');
+    
+    if (displayDiv && valueSpan) {
+        valueSpan.textContent = amount.toFixed(2);
+        displayDiv.style.display = 'block';
+        athDebugger.log('Display actualizado', 'success');
+    }
+}
+
+// ===============================================
+// CONFIGURAR BOTONES DE SELECCIÓN DE MONTO
 // ===============================================
 
 function setupAmountButtons() {
@@ -150,9 +253,9 @@ function setupAmountButtons() {
     amountButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const amount = parseFloat(this.getAttribute('data-amount'));
-            athDebugger.log(`Click: $${amount}`, 'info');
+            athDebugger.log(`Click en botón: $${amount}`, 'info');
             
-            // Redirigir a la misma página con el monto en la URL
+            // Redirigir con el nuevo monto
             const currentUrl = window.location.pathname;
             window.location.href = `${currentUrl}?amount=${amount}#donate`;
         });
@@ -168,11 +271,12 @@ function setupCustomAmountInput() {
         return;
     }
     
-    // Agregar botón "Continuar" junto al input
-    const wrapper = customInput.parentElement;
+    // Verificar si ya existe el botón
     let continueBtn = document.getElementById('customAmountContinue');
     
     if (!continueBtn) {
+        // Crear botón "Continuar"
+        const wrapper = customInput.parentElement;
         continueBtn = document.createElement('button');
         continueBtn.id = 'customAmountContinue';
         continueBtn.textContent = 'Continuar';
@@ -186,7 +290,14 @@ function setupCustomAmountInput() {
             cursor: pointer;
             font-weight: 600;
             font-size: 1rem;
+            transition: all 0.3s ease;
         `;
+        continueBtn.onmouseover = function() {
+            this.style.background = '#3d9d94';
+        };
+        continueBtn.onmouseout = function() {
+            this.style.background = '#4DB6AC';
+        };
         wrapper.appendChild(continueBtn);
     }
     
@@ -194,12 +305,17 @@ function setupCustomAmountInput() {
         const value = parseFloat(customInput.value);
         
         if (!value || value <= 0) {
-            alert('Por favor ingresa un monto válido');
+            alert('Por favor ingresa un monto válido mayor a $0');
+            return;
+        }
+        
+        if (value < 1) {
+            alert('El monto mínimo es $1.00');
             return;
         }
         
         if (value > 1500) {
-            alert('El monto máximo es $1,500');
+            alert('El monto máximo es $1,500.00');
             return;
         }
         
@@ -211,24 +327,39 @@ function setupCustomAmountInput() {
     });
 }
 
-function updateSelectedAmountDisplay(amount) {
-    const displayDiv = document.getElementById('selectedAmountDisplay');
-    const valueSpan = document.getElementById('selectedAmountValue');
+// ===============================================
+// INICIALIZACIÓN AL CARGAR EL DOM
+// ===============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    athDebugger.log('DOM cargado', 'success');
     
-    if (displayDiv && valueSpan) {
-        valueSpan.textContent = amount.toFixed(2);
-        displayDiv.style.display = 'block';
-        athDebugger.log('Display actualizado', 'success');
+    // Marcar botón activo si hay monto en URL
+    if (selectedAmount > 0) {
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            if (parseFloat(btn.getAttribute('data-amount')) === selectedAmount) {
+                btn.classList.add('active');
+            }
+        });
+        
+        updateSelectedAmountDisplay(selectedAmount);
+        athDebugger.log('Botón de monto marcado como activo', 'success');
     }
-}
+    
+    // Configurar botones
+    setupAmountButtons();
+    setupCustomAmountInput();
+    
+    athDebugger.log('Sistema inicializado ✅', 'success');
+});
 
 // ===============================================
-// NOTA IMPORTANTE SOBRE ATH MÓVIL
+// NOTAS IMPORTANTES
 // ===============================================
 
 athDebugger.log('═══════════════════════════════', 'warning');
-athDebugger.log('⚠️ LIMITACIÓN DE ATH MÓVIL:', 'warning');
-athDebugger.log('El botón ATH se crea UNA SOLA VEZ al cargar', 'warning');
-athDebugger.log('NO se puede cambiar el monto dinámicamente', 'warning');
-athDebugger.log('Solución implementada: Recarga con URL param', 'warning');
+athDebugger.log('📋 INSTRUCCIONES:', 'warning');
+athDebugger.log('1. Reemplaza TU_PUBLIC_TOKEN_AQUI', 'warning');
+athDebugger.log('2. El script athmovil_base.js crea el botón automáticamente', 'warning');
+athDebugger.log('3. Para cambiar monto, se recarga la página', 'warning');
 athDebugger.log('═══════════════════════════════', 'warning');
