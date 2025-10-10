@@ -620,15 +620,19 @@
          EXTERNAL JAVASCRIPT FILES
          ========================================== -->
     
-    <!-- 1. ATH Móvil Base Script (DEBE IR PRIMERO) -->
-    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-    
-    <!-- 2. Custom JavaScript Modules -->
-    <script src="{% static 'landing/js/page-interactions.js' %}"></script>
-    <script src="{% static 'landing/js/form-validation.js' %}"></script>
-    <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
-    <script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
-    <script src="{% static 'landing/js/messages-handler.js' %}"></script>
+<!-- 1. ATH Móvil Base Script (PRIMERO) -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+
+<!-- 2. Otros scripts -->
+<script src="{% static 'landing/js/page-interactions.js' %}"></script>
+<script src="{% static 'landing/js/form-validation.js' %}"></script>
+<script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+
+<!-- 3. ATH Móvil Payment (DESPUÉS de athmovil_base.js) -->
+<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
+
+<!-- 4. Messages Handler (al final) -->
+<script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 </body>
 </html>
