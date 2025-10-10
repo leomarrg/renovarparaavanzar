@@ -25,13 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
 # DEBUG = config('DEBUG', default='False', cast=bool)
 
-SECRET_KEY = 'django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu('
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
+DEBUG = config('DEBUG', default='False', cast=bool)
 ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     'leomarrg.pythonanywhere.com',
-    '127.0.0.1',
     # 'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
 
