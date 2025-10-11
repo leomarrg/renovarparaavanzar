@@ -134,7 +134,7 @@
     </div>
     
     <!-- Header -->
-    <!-- <header class="header" id="header">
+    <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
                 <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
@@ -142,10 +142,10 @@
             <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
-        </nav> -->
+        </nav>
         
          <!-- Mobile Menu -->
-        <!-- <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
             <a href="#plan">Plan Estratégico</a>
@@ -153,10 +153,10 @@
             <a href="#register">Registrarse</a>
             <a href="#contact">Contacto</a>
         </div>
-    </header> -->
+    </header>
     
     <!-- Hero Section -->
-    <!-- <section class="hero" id="hero">
+    <section class="hero" id="hero">
         <div class="hero-content">
             <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
 
@@ -164,10 +164,10 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
         </div>
-    </section> -->
+    </section>
 
     <!-- Countdown Section -->
-    <!-- <section class="countdown-section">
+    <section class="countdown-section">
         <div class="countdown-wrapper">
             <h2 class="countdown-title">Lorem ipsum dolor</h2>
             
@@ -177,23 +177,23 @@
                         <span class="countdown-value" id="days-mini">{{ countdown.days }}</span>
                         <span class="countdown-label">Días</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="hours-mini">{{ countdown.hours }}</span>
                         <span class="countdown-label">Horas</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="minutes-mini">{{ countdown.minutes }}</span>
                         <span class="countdown-label">Minutos</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="seconds-mini">{{ countdown.seconds }}</span>
                         <span class="countdown-label">Segundos</span>
@@ -201,10 +201,10 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Team Section -->
-    <!-- <section class="team-section" id="team">
+    <section class="team-section" id="team">
         <div class="section-header">
             <div class="section-header-content">
                 <h2>Nuestro</h2>
@@ -226,10 +226,10 @@
                     <p class="role">{{ member.role }}</p>
                     <p class="district">{{ member.district }}</p>
                 </div>
-                {% endfor %} -->
+                {% endfor %}
                 
                 <!-- Featured Member -->
-                <!-- <div class="team-member juan-destacado animate-on-scroll">
+                <div class="team-member juan-destacado animate-on-scroll">
                     <div class="team-member-image">
                         {% if featured_member.image %}
                         <img src="{% static featured_member.image %}" alt="{{ featured_member.name }}">
@@ -243,10 +243,10 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Strategic Plan Section -->
-    <!-- <section class="strategic-plan" id="plan">
+    <section class="strategic-plan" id="plan">
         <div class="container">
             <h2>Plan</h2>
             <div class="script">Estratégico</div>
@@ -261,7 +261,7 @@
                 {% endfor %}
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
 <!-- <div id="emergency-debug" style="
@@ -758,11 +758,54 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-<!-- 1. FIRST: Define ATHM_Checkout and callbacks -->
-<script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
-
-<!-- 2. SECOND: Load ATH Móvil's script (it reads ATHM_Checkout and creates button) -->
+<!-- 2. SEGUNDO: Script de ATH Móvil Base -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+
+<!-- 3. TERCERO: Tu configuración y callbacks -->
+<script type="text/javascript">
+    const ATHM_Checkout = {
+        env: 'production',
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // Reemplaza con tu token real
+        timeout: 600,
+        theme: 'btn',
+        lang: 'es',
+        total: 1, // Este valor se actualiza con el monto de la URL
+        subtotal: 1,
+        tax: 0,
+        metadata1: 'Donacion Campaña',
+        metadata2: 'Monto: $1',
+        items: [
+            {
+                name: "Donación",
+                description: "Apoyo a la campaña",
+                quantity: 1,
+                price: 1,
+                tax: 0,
+                metadata: "Donacion"
+            }
+        ],
+        phoneNumber: ""
+    };
+
+    // Callbacks obligatorios
+    async function authorizationATHM() {
+        const responseAuth = await authorization();
+        console.log('✅ PAGO COMPLETADO:', responseAuth);
+        // Aquí mostrar mensaje de éxito al usuario
+    }
+
+    async function cancelATHM() {
+        const responseCancel = await findPaymentATHM();
+        console.log('❌ PAGO CANCELADO:', responseCancel);
+        // Aquí mostrar mensaje de cancelación
+    }
+
+    async function expiredATHM() {
+        const responseExpired = await findPaymentATHM();
+        console.log('⏱️ PAGO EXPIRADO:', responseExpired);
+        // Aquí mostrar mensaje de expiración
+    }
+</script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
