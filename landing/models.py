@@ -85,3 +85,18 @@ class Registration(models.Model):
         if not self.unique_id:
             self.unique_id = self.generate_unique_id()
         super().save(*args, **kwargs)
+
+class PlanEstrategico(models.Model):
+    titulo = models.CharField(max_length=200, default="Descarga el Plan de Acción!")
+    archivo_pdf = models.FileField(upload_to='plan_estrategico/', help_text="Archivo PDF del Plan Estratégico")
+    descripcion = models.TextField(blank=True, help_text="Descripción breve del plan")
+    activo = models.BooleanField(default=True)
+    creado_en = models.DateTimeField(auto_now_add=True)
+    actualizado_en = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Plan Estratégico'
+        verbose_name_plural = 'Planes Estratégicos'
+    
+    def __str__(self):
+        return self.titulo

@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 import traceback
 import threading
 import requests
-
+from .models import PlanEstrategico
 
 def send_email_async(registration):
     """Enviar email - versión síncrona confiable"""
@@ -124,30 +124,29 @@ class IndexView(TemplateView):
                 'role': 'Médica Generalista',
                 'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
                 'image': 'landing/img/miembros/dra_erika.jpg'
-            }
+            },
         ]
         
         # Miembro destacado (Juan del Pueblo - Vocal)
         context['featured_member'] = {
-            'name': 'Juan del Pueblo',
-            'role': 'Candidato a Vocal',
-            'district': 'Junta de Gobierno',
-            'image': 'landing/img/team/juan-featured.jpg'
+            'name': 'Dra. Erika',
+            'role': 'Médica Generalista',
+            'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
+            'image': 'landing/img/miembros/dra_erika.jpg'
         }
         
-        # Plan Estratégico
-        context['strategic_plans'] = [
-            {
-                'title': 'Transformación Digital',
-                'description': 'Modernización completa de los sistemas del Colegio de Médicos para brindar mejores servicios a nuestros colegiados.',
-                'icon': 'digital'
-            },
-            {
-                'title': 'Educación Continua',
-                'description': 'Programa robusto de educación médica continua con alianzas internacionales para mantener a nuestros médicos actualizados.',
-                'icon': 'education'
-            }
-        ]
+        plan_estrategico = PlanEstrategico.objects.filter(activo=True).first()
+
+        # DEBUG
+        print("=" * 50)
+        print(f"Plan Estratégico: {plan_estrategico}")
+        if plan_estrategico:
+            print(f"  ✓ Título: {plan_estrategico.titulo}")
+            print(f"  ✓ PDF: {plan_estrategico.archivo_pdf}")
+        print("=" * 50)
+
+        context['plan_estrategico'] = plan_estrategico
+
         
         # Countdown para las elecciones
         election_date = datetime(2024, 3, 15, 18, 0, 0)
@@ -174,7 +173,7 @@ class IndexView(TemplateView):
             'title': 'Dr. Méndez Sexto - Renovar para Avanzar',
             'description': 'Únete al movimiento de transformación del Colegio de Médicos y Cirujanos de Puerto Rico',
             'keywords': 'Dr. Méndez Sexto, Colegio de Médicos, Puerto Rico, elecciones, salud',
-            'og_image': 'landing/img/logo-renovar.png'
+            'og_image': 'landing/img/logo-renovar.png',
         }
         
         return context
@@ -780,3 +779,4 @@ class TermsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Términos y Condiciones'
         return context
+    

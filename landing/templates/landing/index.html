@@ -134,7 +134,7 @@
     </div>
     
     <!-- Header -->
-    <!-- <header class="header" id="header">
+    <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
                 <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
@@ -142,10 +142,10 @@
             <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
-        </nav> -->
+        </nav>
         
-         <!-- Mobile Menu -->
-        <!-- <div class="mobile-menu" id="mobileMenu">
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
             <a href="#plan">Plan Estratégico</a>
@@ -153,10 +153,10 @@
             <a href="#register">Registrarse</a>
             <a href="#contact">Contacto</a>
         </div>
-    </header> -->
+    </header>
     
     <!-- Hero Section -->
-    <!-- <section class="hero" id="hero">
+    <section class="hero" id="hero">
         <div class="hero-content">
             <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
 
@@ -164,12 +164,12 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             </p>
         </div>
-    </section> -->
+    </section>
 
     <!-- Countdown Section -->
-    <!-- <section class="countdown-section">
+    <section class="countdown-section">
         <div class="countdown-wrapper">
-            <h2 class="countdown-title">Lorem ipsum dolor</h2>
+            <h2 class="countdown-title">Conteo Regresivo</h2>
             
             <div class="countdown-display">
                 <div class="countdown-row">
@@ -201,10 +201,49 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
+
+    <section class="doctor-intro-section">
+        <div class="container">
+            <div class="doctor-intro-content">
+                <!-- Logo centrado -->
+                <div class="doctor-intro-logo-wrapper">
+                    <img src="{% static 'landing/img/logo-mendez.png' %}" 
+                        alt="Dr. Méndez Sexto" 
+                        class="doctor-intro-logo">
+                </div>
+
+                <div class="doctor-intro-image-wrapper">
+                        <img src="{% static 'landing/img/dr_cutout.png' %}" 
+                            alt="Dr. Méndez Sexto" 
+                            class="doctor-intro-photo">
+                    </div>
+                <!-- Contenido principal: Texto y foto lado a lado -->
+                <div class="doctor-intro-main">
+                    <div class="doctor-intro-text-column">
+                        <h2 class="doctor-intro-section-title" style="margin-bottom: 20px; color: #377e7c;">Dr. Ramón Méndez Sexto</h2>
+                        <ul class="doctor-intro-list">
+                            Médico generalista con más de 40 años de experiencia, radicado en Guaynabo, Puerto Rico. Sus áreas de práctica incluyen medicina familiar, geriatría, medicina ocupacional y medicina integrativa.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            Graduado en 1981 de la San Juan Bautista School of Medicine, ha mantenido su licencia médica vigente en Puerto Rico.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            Fue presidente de la Junta de Licenciamiento y Disciplina Médica (JLDM) entre 2021 y 2025, periodo en el que se destacó por su participación en temas de regulación médica. En marzo de 2023, expresó su desacuerdo con una propuesta para aumentar la puntuación mínima de recertificación.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            En agosto de 2025 anunció su aspiración a la presidencia del Colegio de Médicos Cirujanos de Puerto Rico. Su trayectoria refleja compromiso con la profesión médica y el fortalecimiento de la práctica ética en la isla.
+                        </ul>
+                        
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Team Section -->
-    <!-- <section class="team-section" id="team">
+    <section class="team-section" id="team">
         <div class="section-header">
             <div class="section-header-content">
                 <h2>Nuestro</h2>
@@ -229,7 +268,7 @@
                 {% endfor %}
                 
                 <!-- Featured Member -->
-                <!--<div class="team-member juan-destacado animate-on-scroll">
+                <div class="team-member juan-destacado animate-on-scroll">
                     <div class="team-member-image">
                         {% if featured_member.image %}
                         <img src="{% static featured_member.image %}" alt="{{ featured_member.name }}">
@@ -243,25 +282,194 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Strategic Plan Section -->
-    <!-- <section class="strategic-plan" id="plan">
+    <section class="strategic-plan" id="plan">
         <div class="container">
-            <h2>Plan</h2>
-            <div class="script">Estratégico</div>
-            
-            <div class="plan-cards">
-                {% for plan in strategic_plans %}
-                <div class="plan-card animate-on-scroll">
-                    <h3>{{ plan.title }}</h3>
-                    <p>{{ plan.description }}</p>
-                    <a href="#" class="btn btn-teal-outline">Leer más</a>
+            <div class="strategic-plan-header">
+                <div class="strategic-plan-title">
+                    <h2 class="plan-word">Plan</h2>
+                    <div class="estrategico-word">Estratégico</div>
                 </div>
-                {% endfor %}
+            </div>
+            
+            <div class="strategic-plan-content">
+                <p class="strategic-plan-text">
+                    El Plan de Trabajo <span class="plan-name">"Renovar para Avanzar"</span> propone una transformación estratégica del Colegio de Médicos y Cirujanos de Puerto Rico, orientada a <span class="bold-text">recuperar su credibilidad, unificar a la clase médica y posicionarla como fuerza decisiva en la política pública de salud.</span> La propuesta plantea modernizar la gestión institucional, fortalecer la defensa de la profesión y crear una estructura sólida, participativa y transparente que devuelva al Colegio su rol protagónico. <span class="bold-text">Renovar es rescatar la esencia. Avanzar es proyectar el futuro.</span>
+                </p>
+                
+                {% if plan_estrategico %}
+                <div class="plan-pdf-card">
+                    <div class="pdf-icon"></div>
+                    <h3 class="pdf-title">{{ plan_estrategico.titulo }}</h3>
+                    
+                    <div class="plan-buttons">
+                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
+                        target="_blank" 
+                        class="plan-btn plan-btn-primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Documento
+                        </a>
+                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
+                        download 
+                        class="plan-btn plan-btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Descargar PDF
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div style="background: #ffcccc; padding: 20px; border: 2px solid red; margin: 20px 0;">
+                    <p style="color: red; font-weight: bold;">❌ No se encontró plan_estrategico en el contexto</p>
+                </div>
+                {% endif %}
             </div>
         </div>
-    </section> -->
+    </section>
+
+    <!-- Sección de Portavoces - Agregar después de la sección de Team -->
+    <section class="spokespersons-section" id="portavoces">
+        <div class="spokespersons-header">
+            <div class="spokespersons-header-content">
+                <h2 style="font-size: 3rem;">Portavoces</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="spokespersons-grid">
+                <!-- San Juan -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Ramón Vidal</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> San Juan</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7872091227">(787) 209-1227</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:revidalmd@gmail.com">revidalmd@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bayamón -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Carlos Santiago</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Bayamón</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7874792539">(787) 479-2539</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:carlossantiago@hotmail.com">carlossantiago@hotmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arecibo -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Héctor Cott</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Arecibo</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7875861372">(787) 586-1372</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:h_cott@yahoo.com">h_cott@yahoo.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aguadilla -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Luigi</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Aguadilla</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:9399691661">(939) 969-1661</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:ortholuigi@gmail.com">ortholuigi@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mayagüez -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Roberto Tirado</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Mayagüez</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:9393392976">(939) 339-2976</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:michaelmdrt@hotmail.com">michaelmdrt@hotmail.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ponce -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. José Toro</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Ponce</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7873187870">(787) 318-7870</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:drjatoro@yahoo.com">drjatoro@yahoo.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carolina -->
+                <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dra. Lourdes Rodríguez Galarza</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Carolina</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7876478991">(787) 647-8991</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:mrgalarza04@yahoo.com">mrgalarza04@yahoo.com</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Humacao - Vacante -->
+                <div class="spokesperson-card vacant animate-on-scroll">
+                    <h3 class="spokesperson-name">Vacante</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Humacao</p>
+                    <div class="spokesperson-contact">
+                        <p class="vacant-text">Próximamente</p>
+                    </div>
+                </div>
+
+                <!-- Caguas - Vacante -->
+                <div class="spokesperson-card vacant animate-on-scroll">
+                    <h3 class="spokesperson-name">Vacante</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Caguas</p>
+                    <div class="spokesperson-contact">
+                        <p class="vacant-text">Próximamente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
 <!-- <div id="emergency-debug" style="
@@ -416,9 +624,9 @@ setTimeout(function() {
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
-                </div>
+                </div> -->
 
-                <div class="donation-content">
+                <!-- <div class="donation-content">
                     <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
                     
                     <div class="amount-options">
@@ -488,9 +696,9 @@ setTimeout(function() {
                     </div> -->
 
                     <!-- ATH Móvil Payment Button -->
-                    <!--<div id="ATHMovil_Checkout_Button_payment"></div>
+                    <!--<div id="ATHMovil_Checkout_Button_payment"></div>-->
 
-                    <div class="donation-info" style="margin-top: 25px;">
+                    <!-- <div class="donation-info" style="margin-top: 25px;">
                         <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
                             Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
                         </p>
@@ -505,7 +713,35 @@ setTimeout(function() {
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>  -->
+
+    <!-- Donation Section TEMPORERA -->
+    <section class="donation-section" id="donate">
+        <div class="container">
+            <div class="donation-wrapper">
+                <div class="donation-header">
+                    <div class="title-main">Haz tu</div>
+                    <div class="title-script">donación</div>
+                    <p class="subtitle-text">
+                        Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
+                    </p>
+                </div>
+
+                <div class="donation-info">
+                    <p class="donation-method-text">
+                        Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
+                    </p>
+                    <div class="ath-handle">/comitedrmendezsexto</div>
+                </div>
+
+                <p class="donation-disclaimer">
+                    Este comité está debidamente registrado como una entidad sin fines de lucro.
+                </p>
+
+                <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+            </div>
+        </div>
+    </section>
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
     <section class="register-section" id="register">
