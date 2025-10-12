@@ -1411,13 +1411,8 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
     font-size: 0.9rem;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     opacity: 0.9;
-}
-
-.region-label {
-    font-weight: 700;
-    opacity: 1;
 }
 
 .spokesperson-contact {
@@ -1801,7 +1796,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 } */
 
-
 /* ========== DONATION SECTION TEMPORERA ========== */
 .donation-section {
     position: relative;
@@ -1881,24 +1875,25 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .donation-info {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
     margin: 30px 0;
     text-align: center;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .donation-method-text {
-    color: #377e7c;
+    color: white;
     margin-bottom: 20px;
     font-size: 1rem;
+    opacity: 0.9;
 }
 
 .donation-method-text strong {
     font-weight: 700;
-    color: #377e7c;
+    color: white;
 }
 
 .ath-handle {
@@ -1906,6 +1901,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 2rem;
     font-weight: 700;
     margin: 15px 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .donation-disclaimer {
@@ -1919,7 +1915,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .campaign-hashtag {
     text-align: center;
-    color: white !important;
+    color: white;
     font-size: 1.6rem;
     font-weight: 700;
     margin-top: 40px;
