@@ -144,7 +144,7 @@
             </button>
         </nav> -->
         
-         <!-- Mobile Menu -->
+        <!-- Mobile Menu -->
         <!-- <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
@@ -169,7 +169,7 @@
     <!-- Countdown Section -->
     <!-- <section class="countdown-section">
         <div class="countdown-wrapper">
-            <h2 class="countdown-title">Lorem ipsum dolor</h2>
+            <h2 class="countdown-title">Conteo Regresivo</h2>
             
             <div class="countdown-display">
                 <div class="countdown-row">
@@ -177,26 +177,65 @@
                         <span class="countdown-value" id="days-mini">{{ countdown.days }}</span>
                         <span class="countdown-label">Días</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="hours-mini">{{ countdown.hours }}</span>
                         <span class="countdown-label">Horas</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="minutes-mini">{{ countdown.minutes }}</span>
                         <span class="countdown-label">Minutos</span>
                     </div>
-                </div> -->
+                </div>
                 
-                <!-- <div class="countdown-row">
+                <div class="countdown-row">
                     <div class="countdown-unit">
                         <span class="countdown-value" id="seconds-mini">{{ countdown.seconds }}</span>
                         <span class="countdown-label">Segundos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="doctor-intro-section">
+        <div class="container">
+            <div class="doctor-intro-content"> -->
+                <!-- Logo centrado -->
+                <!-- <div class="doctor-intro-logo-wrapper">
+                    <img src="{% static 'landing/img/logo-mendez.png' %}" 
+                        alt="Dr. Méndez Sexto" 
+                        class="doctor-intro-logo">
+                </div>
+
+                <div class="doctor-intro-image-wrapper">
+                        <img src="{% static 'landing/img/dr_cutout.png' %}" 
+                            alt="Dr. Méndez Sexto" 
+                            class="doctor-intro-photo">
+                    </div> -->
+                <!-- Contenido principal: Texto y foto lado a lado -->
+                <!-- <div class="doctor-intro-main">
+                    <div class="doctor-intro-text-column">
+                        <h2 class="doctor-intro-section-title" style="margin-bottom: 20px; color: #377e7c;">Dr. Ramón Méndez Sexto</h2>
+                        <ul class="doctor-intro-list">
+                            Médico generalista con más de 40 años de experiencia, radicado en Guaynabo, Puerto Rico. Sus áreas de práctica incluyen medicina familiar, geriatría, medicina ocupacional y medicina integrativa.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            Graduado en 1981 de la San Juan Bautista School of Medicine, ha mantenido su licencia médica vigente en Puerto Rico.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            Fue presidente de la Junta de Licenciamiento y Disciplina Médica (JLDM) entre 2021 y 2025, periodo en el que se destacó por su participación en temas de regulación médica. En marzo de 2023, expresó su desacuerdo con una propuesta para aumentar la puntuación mínima de recertificación.
+                        </ul>
+                        <ul class="doctor-intro-list">
+                            En agosto de 2025 anunció su aspiración a la presidencia del Colegio de Médicos Cirujanos de Puerto Rico. Su trayectoria refleja compromiso con la profesión médica y el fortalecimiento de la práctica ética en la isla.
+                        </ul>
+                        
+                    
                     </div>
                 </div>
             </div>
@@ -248,23 +287,334 @@
     <!-- Strategic Plan Section -->
     <!-- <section class="strategic-plan" id="plan">
         <div class="container">
-            <h2>Plan</h2>
-            <div class="script">Estratégico</div>
-            
-            <div class="plan-cards">
-                {% for plan in strategic_plans %}
-                <div class="plan-card animate-on-scroll">
-                    <h3>{{ plan.title }}</h3>
-                    <p>{{ plan.description }}</p>
-                    <a href="#" class="btn btn-teal-outline">Leer más</a>
+            <div class="strategic-plan-header">
+                <div class="strategic-plan-title">
+                    <h2 class="plan-word">Plan</h2>
+                    <div class="estrategico-word">Estratégico</div>
                 </div>
-                {% endfor %}
+            </div>
+            
+            <div class="strategic-plan-content">
+                <p class="strategic-plan-text">
+                    El Plan de Trabajo <span class="plan-name">"Renovar para Avanzar"</span> propone una transformación estratégica del Colegio de Médicos y Cirujanos de Puerto Rico, orientada a <span class="bold-text">recuperar su credibilidad, unificar a la clase médica y posicionarla como fuerza decisiva en la política pública de salud.</span> La propuesta plantea modernizar la gestión institucional, fortalecer la defensa de la profesión y crear una estructura sólida, participativa y transparente que devuelva al Colegio su rol protagónico. <span class="bold-text">Renovar es rescatar la esencia. Avanzar es proyectar el futuro.</span>
+                </p>
+                
+                {% if plan_estrategico %}
+                <div class="plan-pdf-card">
+                    <div class="pdf-icon"></div>
+                    <h3 class="pdf-title">{{ plan_estrategico.titulo }}</h3>
+                    
+                    <div class="plan-buttons">
+                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
+                        target="_blank" 
+                        class="plan-btn plan-btn-primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Documento
+                        </a>
+                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
+                        download 
+                        class="plan-btn plan-btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Descargar PDF
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div style="background: #ffcccc; padding: 20px; border: 2px solid red; margin: 20px 0;">
+                    <p style="color: red; font-weight: bold;">❌ No se encontró plan_estrategico en el contexto</p>
+                </div>
+                {% endif %}
             </div>
         </div>
     </section> -->
+
+    <!-- Sección de Portavoces - Agregar después de la sección de Team -->
+    <!-- <section class="spokespersons-section" id="portavoces">
+        <div class="spokespersons-header">
+            <div class="spokespersons-header-content">
+                <h2 style="font-size: 3rem;">Portavoces</h2>
+            </div>
+        </div>
+        <div class="container">
+            <div class="spokespersons-grid"> -->
+                <!-- San Juan -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Ramón Vidal</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> San Juan</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7872091227">(787) 209-1227</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:revidalmd@gmail.com">revidalmd@gmail.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Bayamón -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Carlos Santiago</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Bayamón</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7874792539">(787) 479-2539</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:carlossantiago@hotmail.com">carlossantiago@hotmail.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Arecibo -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Héctor Cott</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Arecibo</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7875861372">(787) 586-1372</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:h_cott@yahoo.com">h_cott@yahoo.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Aguadilla -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Luigi</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Aguadilla</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:9399691661">(939) 969-1661</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:ortholuigi@gmail.com">ortholuigi@gmail.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Mayagüez -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. Roberto Tirado</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Mayagüez</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:9393392976">(939) 339-2976</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:michaelmdrt@hotmail.com">michaelmdrt@hotmail.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Ponce -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dr. José Toro</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Ponce</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7873187870">(787) 318-7870</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:drjatoro@yahoo.com">drjatoro@yahoo.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Carolina -->
+                <!-- <div class="spokesperson-card animate-on-scroll">
+                    <h3 class="spokesperson-name">Dra. Lourdes Rodríguez Galarza</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Carolina</p>
+                    <div class="spokesperson-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:7876478991">(787) 647-8991</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:mrgalarza04@yahoo.com">mrgalarza04@yahoo.com</a>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- Humacao - Vacante -->
+                <!-- <div class="spokesperson-card vacant animate-on-scroll">
+                    <h3 class="spokesperson-name">Vacante</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Humacao</p>
+                    <div class="spokesperson-contact">
+                        <p class="vacant-text">Próximamente</p>
+                    </div>
+                </div> -->
+
+                <!-- Caguas - Vacante -->
+                <!-- <div class="spokesperson-card vacant animate-on-scroll">
+                    <h3 class="spokesperson-name">Vacante</h3>
+                    <p class="spokesperson-region"><span class="region-label">Región:</span> Caguas</p>
+                    <div class="spokesperson-contact">
+                        <p class="vacant-text">Próximamente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+    <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
+<!-- <div id="emergency-debug" style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgb(0, 0, 0);
+    color: white;
+    padding: 15px;
+    z-index: 999999;
+    font-size: 12px;
+    font-family: monospace;
+    max-height: 250px;
+    overflow-y: auto;
+    border-bottom: 3px solid yellow;
+">
+    <strong style="font-size: 14px;">🚨 DEBUG MÓVIL EMERGENCY</strong>
+    <button onclick="this.parentElement.style.display='none'" style="float: right; background: black; color: white; border: none; padding: 5px 10px;">X</button>
+    <div id="debug-log" style="margin-top: 10px; font-size: 11px;">
+        <div>✓ HTML cargado</div>
+    </div>
+</div>
+
+<script>
+// Función de log inline
+function emergencyLog(msg, type = 'info') {
+    const logDiv = document.getElementById('debug-log');
+    const time = new Date().toLocaleTimeString();
+    let icon = '•';
+    let color = 'white';
+    
+    if (type === 'error') {
+        icon = '❌';
+        color = '#ff6b6b';
+    } else if (type === 'success') {
+        icon = '✅';
+        color = '#51cf66';
+    } else if (type === 'warning') {
+        icon = '⚠️';
+        color = '#ffd43b';
+    }
+    
+    const entry = document.createElement('div');
+    entry.style.color = color;
+    entry.innerHTML = `[${time}] ${icon} ${msg}`;
+    logDiv.appendChild(entry);
+    logDiv.scrollTop = logDiv.scrollHeight;
+    
+    console.log(`[EMERGENCY] ${msg}`);
+}
+
+// Logs iniciales
+emergencyLog('JavaScript está funcionando', 'success');
+emergencyLog('User Agent: ' + navigator.userAgent.substring(0, 60));
+emergencyLog('Pantalla: ' + window.innerWidth + 'x' + window.innerHeight);
+emergencyLog('iOS: ' + /iPhone|iPad|iPod/i.test(navigator.userAgent));
+emergencyLog('Android: ' + /Android/i.test(navigator.userAgent));
+
+// MODIFICAR SOLO ESTA PARTE en tu DOMContentLoaded:
+document.addEventListener('DOMContentLoaded', function() {
+    athDebugger.log('DOM cargado', 'success');
+    
+    // Usar la función global waitForATHMCheckout
+    if (typeof window.waitForATHMCheckout === 'function') {
+        window.waitForATHMCheckout((success) => {
+            if (success) {
+                initializePaymentSystem();
+            } else {
+                athDebugger.log('No se pudo cargar ATH Móvil', 'error');
+                showATHUnavailableMessage();
+            }
+        });
+    } else {
+        // Fallback si la función no existe
+        waitForATH((success) => {
+            if (success) {
+                initializePaymentSystem();
+            } else {
+                showATHUnavailableMessage();
+            }
+        });
+    }
+});
+
+// Verificar window.load
+window.addEventListener('load', function() {
+    emergencyLog('Window load completo', 'success');
+    emergencyLog('ATHM_Checkout: ' + (typeof ATHM_Checkout !== 'undefined' ? 'CARGADO' : 'NO CARGADO'), 
+                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
+});
+
+// Capturar errores
+window.addEventListener('error', function(e) {
+    emergencyLog('ERROR: ' + e.message, 'error');
+    emergencyLog('Archivo: ' + e.filename, 'error');
+    emergencyLog('Línea: ' + e.lineno, 'error');
+});
+
+// Verificar si los scripts externos se cargan
+setTimeout(function() {
+    emergencyLog('--- Verificación de scripts externos ---');
+    emergencyLog('athmovil_base.js: ' + (typeof ATHM_Checkout !== 'undefined' ? 'OK' : 'FALLO'), 
+                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
+    
+    // Listar todos los scripts cargados
+    const scripts = document.getElementsByTagName('script');
+    emergencyLog('Total scripts en página: ' + scripts.length);
+    
+    let athFound = false;
+    let athPaymentFound = false;
+    
+    for (let i = 0; i < scripts.length; i++) {
+        if (scripts[i].src.includes('athmovil_base.js')) {
+            athFound = true;
+            emergencyLog('✓ athmovil_base.js encontrado en DOM', 'success');
+        }
+        if (scripts[i].src.includes('ath-movil-payment.js')) {
+            athPaymentFound = true;
+            emergencyLog('✓ ath-movil-payment.js encontrado en DOM', 'success');
+        }
+    }
+    
+    if (!athFound) emergencyLog('✗ athmovil_base.js NO está en el DOM', 'error');
+    if (!athPaymentFound) emergencyLog('✗ ath-movil-payment.js NO está en el DOM', 'error');
+    
+}, 2000);
+
+// Test de click en botones de monto
+setTimeout(function() {
+    const amountBtns = document.querySelectorAll('.amount-btn');
+    if (amountBtns.length > 0) {
+        emergencyLog('Configurando listeners en botones...', 'warning');
+        amountBtns.forEach(function(btn, index) {
+            btn.addEventListener('click', function() {
+                emergencyLog('CLICK detectado en botón #' + (index + 1) + ' ($' + btn.dataset.amount + ')', 'success');
+            });
+        });
+        emergencyLog('Listeners configurados. Prueba tocar un botón de monto', 'warning');
+    }
+}, 1000);
+</script> -->
     
     <!-- Donation Section-->
-    <section class="donation-section" id="donate">
+    <!-- <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
@@ -274,10 +624,9 @@
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
-                </div>
+                </div> -->
 
-                <div class="donation-content">
-                    <!-- Mensaje de estado -->
+                <!-- <div class="donation-content">
                     <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
                     
                     <div class="amount-options">
@@ -324,10 +673,10 @@
                                 step="0.01"
                             >
                         </div>
-                    </div>
+                    </div>-->
 
                     <!-- Monto seleccionado -->
-                    <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
+                    <!-- <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
                         <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
                         <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
                             $<span id="selectedAmountValue">0</span>
@@ -344,12 +693,12 @@
                             <li>Ingresa tu número de teléfono</li>
                             <li>Abre la app ATH Móvil y confirma</li>
                         </ol>
-                    </div>
+                    </div> -->
 
                     <!-- ATH Móvil Payment Button -->
-                    <div id="ATHMovil_Checkout_Button_payment"></div>
+                    <!--<div id="ATHMovil_Checkout_Button_payment"></div>-->
 
-                    <div class="donation-info" style="margin-top: 25px;">
+                    <!-- <div class="donation-info" style="margin-top: 25px;">
                         <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
                             Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
                         </p>
@@ -364,7 +713,35 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>  -->
+
+    <!-- Donation Section TEMPORERA -->
+    <!-- <section class="donation-section" id="donate">
+        <div class="container">
+            <div class="donation-wrapper">
+                <div class="donation-header">
+                    <div class="title-main">Haz tu Donacion</div>
+                    <div class="title-script">donación</div>
+                    <p class="subtitle-text">
+                        Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
+                    </p>
+                </div>
+
+                <div class="donation-info">
+                    <p class="donation-method-text">
+                        Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
+                    </p>
+                    <div class="ath-handle">/comitedrmendezsexto</div>
+                </div>
+
+                <p class="donation-disclaimer">
+                    Este comité está debidamente registrado como una entidad sin fines de lucro.
+                </p>
+
+                <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+            </div>
+        </div>
+    </section> -->
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
     <section class="register-section" id="register">
@@ -510,50 +887,78 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Nueva Sección de Countdown -->
+    <section class="countdown-hero-section">
+        <div class="countdown-hero-overlay"></div>
         <div class="container">
-            <div class="footer-content">
+            <div class="countdown-hero-content">
+                <!-- Header -->
+                <div class="countdown-hero-header">
+                    <h2>Conteo Regresivo para las Elecciones</h2>
+                    <!-- <p class="countdown-description">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+                    </p> -->
+                </div>
+                
+                <!-- Countdown Display -->
+                <div class="countdown-display-large" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="days">{{ countdown.days }}</span>
+                        <span class="countdown-label-large">Días</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="hours">{{ countdown.hours }}</span>
+                        <span class="countdown-label-large">Horas</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="minutes">{{ countdown.minutes }}</span>
+                        <span class="countdown-label-large">Minutos</span>
+                    </div>
+                    <div class="countdown-item-large">
+                        <span class="countdown-number-large" id="seconds">{{ countdown.seconds }}</span>
+                        <span class="countdown-label-large">Segundos</span>
+                    </div>
+                </div>
+                
+                <!-- Logo -->
+                <div class="countdown-logo">
+                    <img src="{% static 'landing/img/DR_x_RPA@4x.png' %}" alt="Logo Renovar Para Avanzar">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Simplificado -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="footer-content-simple">
                 <h3>{{ candidate.name }}</h3>
                 <p class="subtitle">Candidato a la Presidencia del Colegio de Médicos Cirujanos de Puerto Rico</p>
-                <h4>Conteo Regresivo para elecciones.</h4>
-            </div>
-            
-            <div class="countdown" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">{{ countdown.days }}</span>
-                    <span class="countdown-label">Días</span>
+                
+                <div class="social-links">
+                    {% if social_media.facebook %}
+                    <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    {% endif %}
+                    {% if social_media.twitter %}
+                    <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if social_media.instagram %}
+                    <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">{{ countdown.hours }}</span>
-                    <span class="countdown-label">Horas</span>
+                
+                <div class="copyright">
+                    <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">Powered By Dominio</p>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">{{ countdown.minutes }}</span>
-                    <span class="countdown-label">Minutos</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">{{ countdown.seconds }}</span>
-                    <span class="countdown-label">Segundos</span>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                {% if social_media.facebook %}
-                <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                {% endif %}
-                {% if social_media.twitter %}
-                <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link"><i class="fab fa-x-twitter"></i></a>
-                {% endif %}
-                {% if social_media.instagram %}
-                <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
-                {% endif %}
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
-                <p style="margin-top: 10px; font-size: 0.8rem;">
-                    Powered By Dominio
-                </p>
             </div>
         </div>
     </footer>
@@ -589,19 +994,61 @@
     </script>
     {% endif %}
 
-    <!-- ==========================================
-         EXTERNAL JAVASCRIPT FILES
-         ========================================== -->
-    
-    <!-- 1. ATH Móvil Base Script (DEBE IR PRIMERO) -->
-    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-    
-    <!-- 2. Custom JavaScript Modules -->
-    <script src="{% static 'landing/js/page-interactions.js' %}"></script>
-    <script src="{% static 'landing/js/form-validation.js' %}"></script>
-    <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
-    <script src="{% static 'landing/js/ath-movil-payment.js' %}"></script>
-    <script src="{% static 'landing/js/messages-handler.js' %}"></script>
+<!-- 2. SEGUNDO: Script de ATH Móvil Base -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+
+<!-- 3. TERCERO: Tu configuración y callbacks -->
+<script type="text/javascript">
+    const ATHM_Checkout = {
+        env: 'production',
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // Reemplaza con tu token real
+        timeout: 600,
+        theme: 'btn',
+        lang: 'es',
+        total: 1, // Este valor se actualiza con el monto de la URL
+        subtotal: 1,
+        tax: 0,
+        metadata1: 'Donacion Campaña',
+        metadata2: 'Monto: $1',
+        items: [
+            {
+                name: "Donación",
+                description: "Apoyo a la campaña",
+                quantity: 1,
+                price: 1,
+                tax: 0,
+                metadata: "Donacion"
+            }
+        ],
+        phoneNumber: ""
+    };
+
+    // Callbacks obligatorios
+    async function authorizationATHM() {
+        const responseAuth = await authorization();
+        console.log('✅ PAGO COMPLETADO:', responseAuth);
+        // Aquí mostrar mensaje de éxito al usuario
+    }
+
+    async function cancelATHM() {
+        const responseCancel = await findPaymentATHM();
+        console.log('❌ PAGO CANCELADO:', responseCancel);
+        // Aquí mostrar mensaje de cancelación
+    }
+
+    async function expiredATHM() {
+        const responseExpired = await findPaymentATHM();
+        console.log('⏱️ PAGO EXPIRADO:', responseExpired);
+        // Aquí mostrar mensaje de expiración
+    }
+</script>
+
+<!-- 4. Tus otros scripts -->
+<script src="{% static 'landing/js/page-interactions.js' %}"></script>
+<script src="{% static 'landing/js/form-validation.js' %}"></script>
+<script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+
+<script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 </body>
 </html>

@@ -25,13 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
 # DEBUG = config('DEBUG', default='False', cast=bool)
 
-SECRET_KEY = 'django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu('
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-d57po^#kt%w6ipo$hmbwf*q*p@@4@*#1pob@77r_vtuva%rgu(')
+DEBUG = False
 ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
-    'leomarrg.pythonanywhere.com',
-    '127.0.0.1',
+    '3.88.157.222',
+     #'127.0.0.1',
     # 'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
 
@@ -128,11 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # ============================================
 
 # Public Token de ATH Business (obligatorio)
-# Obtén este token desde tu app ATH Business > Configuración
 ATH_MOVIL_PUBLIC_TOKEN = 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763'
 
 # Private Token para operaciones de backend (opcional)
-# Solo necesario si vas a hacer refunds o consultas desde el servidor
 #ATH_MOVIL_PRIVATE_TOKEN = 'tu_private_token_aqui'
 
 # Ambiente: 'production' o 'sandbox' (actualmente solo hay production)
@@ -167,14 +165,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 # Al final del archivo, cambiar STATIC configuración:
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'landing' / 'static',
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files (si las necesitas en el futuro)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

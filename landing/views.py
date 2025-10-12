@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 import traceback
 import threading
 import requests
-
+from .models import PlanEstrategico
 
 def send_email_async(registration):
     """Enviar email - versión síncrona confiable"""
@@ -124,30 +124,29 @@ class IndexView(TemplateView):
                 'role': 'Médica Generalista',
                 'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
                 'image': 'landing/img/miembros/dra_erika.jpg'
-            }
+            },
         ]
         
         # Miembro destacado (Juan del Pueblo - Vocal)
         context['featured_member'] = {
-            'name': 'Juan del Pueblo',
-            'role': 'Candidato a Vocal',
-            'district': 'Junta de Gobierno',
-            'image': 'landing/img/team/juan-featured.jpg'
+            'name': 'Dra. Erika',
+            'role': 'Médica Generalista',
+            'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
+            'image': 'landing/img/miembros/dra_erika.jpg'
         }
         
-        # Plan Estratégico
-        context['strategic_plans'] = [
-            {
-                'title': 'Transformación Digital',
-                'description': 'Modernización completa de los sistemas del Colegio de Médicos para brindar mejores servicios a nuestros colegiados.',
-                'icon': 'digital'
-            },
-            {
-                'title': 'Educación Continua',
-                'description': 'Programa robusto de educación médica continua con alianzas internacionales para mantener a nuestros médicos actualizados.',
-                'icon': 'education'
-            }
-        ]
+        plan_estrategico = PlanEstrategico.objects.filter(activo=True).first()
+
+        # DEBUG
+        print("=" * 50)
+        print(f"Plan Estratégico: {plan_estrategico}")
+        if plan_estrategico:
+            print(f"  ✓ Título: {plan_estrategico.titulo}")
+            print(f"  ✓ PDF: {plan_estrategico.archivo_pdf}")
+        print("=" * 50)
+
+        context['plan_estrategico'] = plan_estrategico
+
         
         # Countdown para las elecciones
         election_date = datetime(2024, 3, 15, 18, 0, 0)
@@ -174,7 +173,7 @@ class IndexView(TemplateView):
             'title': 'Dr. Méndez Sexto - Renovar para Avanzar',
             'description': 'Únete al movimiento de transformación del Colegio de Médicos y Cirujanos de Puerto Rico',
             'keywords': 'Dr. Méndez Sexto, Colegio de Médicos, Puerto Rico, elecciones, salud',
-            'og_image': 'landing/img/logo-renovar.png'
+            'og_image': 'landing/img/logo-renovar.png',
         }
         
         return context
@@ -324,7 +323,8 @@ class RegisterView(IndexView):
         """Generar el HTML del email de confirmación"""
         from django.conf import settings
         
-        # URLs de las imágenes
+        # URLs ABSOLUTAS de las imágenes (asegúrate que SITE_URL esté correcta)
+        # Ejemplo: https://tudominio.com o https://leomarrg.pythonanywhere.com
         logos_img = f"{settings.SITE_URL}/static/landing/img/dr_rpa.rev@2x.png"
         ath_logo = f"{settings.SITE_URL}/static/landing/img/ATHM-logo-horizontal.png"
         
@@ -333,19 +333,24 @@ class RegisterView(IndexView):
         <html lang="es">
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
-                body {{
-                    font-family: 'Montserrat', Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #fff;
-                    max-width: 600px;
-                    margin: 0 auto;
+                * {{
+                    margin: 0;
                     padding: 0;
+                    box-sizing: border-box;
+                }}
+                body {{
+                    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
                     background-color: #f4f4f4;
+                    padding: 20px;
                 }}
                 .container {{
                     background: #ffffff;
-                    margin: 20px auto;
+                    max-width: 600px;
+                    margin: 0 auto;
                     border-radius: 10px;
                     overflow: hidden;
                     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -360,25 +365,34 @@ class RegisterView(IndexView):
                     margin: 0;
                     font-size: 24px;
                     font-weight: 700;
+                    color: white;
+                }}
+                .header p {{
+                    margin: 10px 0 0 0;
+                    opacity: 0.9;
+                    color: white;
                 }}
                 .thank-you-box {{
                     background: #377e7c;
                     color: white;
                     padding: 30px 20px;
                     text-align: center;
-                    margin: 0;
                 }}
                 .thank-you-box p {{
                     font-size: 16px;
                     line-height: 1.8;
                     margin: 0 0 25px 0;
                     font-weight: 500;
+                    color: white;
                 }}
                 .thank-you-box img {{
                     max-width: 400px;
                     width: 100%;
                     height: auto;
                     margin-top: 20px;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
                 }}
                 .content {{
                     padding: 30px;
@@ -393,12 +407,14 @@ class RegisterView(IndexView):
                 .info-section h3 {{
                     color: #377e7c;
                     margin-top: 0;
+                    margin-bottom: 15px;
                     font-size: 18px;
                 }}
                 .info-row {{
                     margin: 12px 0;
                     padding: 10px 0;
                     border-bottom: 1px solid #e0e0e0;
+                    color: #333;
                 }}
                 .info-row:last-child {{
                     border-bottom: none;
@@ -408,6 +424,9 @@ class RegisterView(IndexView):
                     color: #377e7c;
                     display: inline-block;
                     min-width: 180px;
+                }}
+                .info-row span:not(.label) {{
+                    color: #333;
                 }}
                 .ath-box {{
                     background: #377e7c;
@@ -432,7 +451,7 @@ class RegisterView(IndexView):
                 .ath-handle {{
                     font-size: 26px;
                     font-weight: bold;
-                    color: #fff;
+                    color: #FFEB3B !important;
                     margin: 20px 0;
                     padding: 15px;
                     background: rgba(255, 255, 255, 0.1);
@@ -445,6 +464,8 @@ class RegisterView(IndexView):
                 .ath-logo img {{
                     max-width: 150px;
                     height: auto;
+                    display: block;
+                    margin: 0 auto;
                 }}
                 .footer {{
                     background: #2c3e50;
@@ -460,6 +481,28 @@ class RegisterView(IndexView):
                     font-size: 18px;
                     font-weight: bold;
                     margin-top: 10px;
+                    display: block;
+                }}
+                .next-steps-box {{
+                    background: #e8f4f1;
+                    padding: 15px;
+                    border-radius: 8px;
+                    border-left: 4px solid #4DB6AC;
+                    margin: 20px 0;
+                }}
+                .next-steps-box strong {{
+                    color: #377e7c;
+                }}
+                
+                /* Asegurar que todo el texto en boxes azules sea blanco */
+                .thank-you-box * {{
+                    color: white;
+                }}
+                .ath-box * {{
+                    color: white;
+                }}
+                .ath-handle {{
+                    color: #FFEB3B !important;
                 }}
             </style>
         </head>
@@ -467,7 +510,7 @@ class RegisterView(IndexView):
             <div class="container">
                 <div class="header">
                     <h1>Renovar para Avanzar</h1>
-                    <p style="margin: 10px 0 0 0; opacity: 0.9;">Dr. Méndez Sexto - Presidente del Colegio de Médicos</p>
+                    <p>Dr. Méndez Sexto - Presidente del Colegio de Médicos</p>
                 </div>
                 
                 <div class="thank-you-box">
@@ -475,13 +518,17 @@ class RegisterView(IndexView):
                         Gracias por unirte para juntos renovar el Colegio de Médicos Cirujanos de Puerto Rico 
                         y avanzar por nuestra profesión y la salud de Puerto Rico.
                     </p>
-                    <img src="{logos_img}" alt="Logos">
+                    <img src="{logos_img}" alt="Logos" style="max-width: 400px; width: 100%; height: auto;">
                 </div>
                 
                 <div class="content">
-                    <p style="font-size: 16px;">Estimado/a <strong>{registration.name} {registration.last_name}</strong>,</p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">
+                        Estimado/a <strong>{registration.name} {registration.last_name}</strong>,
+                    </p>
                     
-                    <p>Tu registro ha sido confirmado exitosamente. Nos alegra contar contigo en este importante proceso de transformación.</p>
+                    <p style="margin-bottom: 20px;">
+                        Tu registro ha sido confirmado exitosamente. Nos alegra contar contigo en este importante proceso de transformación.
+                    </p>
                     
                     <div class="info-section">
                         <h3>Información Registrada</h3>
@@ -532,17 +579,17 @@ class RegisterView(IndexView):
                         </div>
                     </div>
                     
-                    {f'''<p style="background: #e8f4f1; padding: 15px; border-radius: 8px; border-left: 4px solid #4DB6AC;">
-                        <strong style="color: #377e7c;">Próximos pasos:</strong><br>
+                    {f'''<div class="next-steps-box">
+                        <strong>Próximos pasos:</strong><br>
                         Nuestro equipo se pondrá en contacto contigo próximamente para coordinar la asistencia con el voto adelantado.
-                    </p>''' if registration.needs_voting_help else ''}
+                    </div>''' if registration.needs_voting_help else ''}
                     
                     <div class="ath-box">
-                        <h3>Apoya la campaña</h3>
-                        <p>Puedes realizar tu donación a través de<br>ATH Móvil Pay Business</p>
-                        <div class="ath-handle">/comitedrmendezsexto</div>
+                        <h3 style="color: white;">Apoya la campaña</h3>
+                        <p style="color: white;">Puedes realizar tu donación a través de<br>ATH Móvil Pay Business</p>
+                        <div class="ath-handle" style="color: #FFEB3B;">/comitedrmendezsexto</div>
                         <div class="ath-logo">
-                            <img src="{ath_logo}" alt="ATH Móvil">
+                            <img src="{ath_logo}" alt="ATH Móvil" style="max-width: 150px; height: auto;">
                         </div>
                     </div>
                     
@@ -555,7 +602,7 @@ class RegisterView(IndexView):
                     <strong>Dr. Méndez Sexto</strong><br>
                     <em>Renovar para Avanzar</em><br>
                     <small>Colegio de Médicos y Cirujanos de Puerto Rico</small>
-                    <div class="hashtag">#RenovarParaAvanzar</div>
+                    <span class="hashtag">#RenovarParaAvanzar</span>
                     <p style="font-size: 11px; color: #95a5a6; margin-top: 20px;">
                         Pagado por el Comité Dr. Méndez Sexto
                     </p>
@@ -564,6 +611,7 @@ class RegisterView(IndexView):
         </body>
         </html>
         """
+
 
 
 class DonateView(TemplateView):
@@ -589,201 +637,46 @@ class DonateView(TemplateView):
         
         return context
 
-
-# Al inicio del archivo, asegúrate de tener estos imports
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-import requests
-import json
-
-# ... tus otras vistas ...
-
-# Después de tu IndexView, agrega estas vistas:
-
 @method_decorator(csrf_exempt, name='dispatch')
-class ATHPaymentView(View):
-    """Endpoint para crear el pago en ATH Móvil"""
+class SaveDonationView(View):
+    """
+    Endpoint opcional para guardar donaciones completadas en tu base de datos.
+    ATH Móvil ya procesó el pago - esto es solo para tu registro interno.
+    """
     
     def post(self, request):
         try:
             data = json.loads(request.body)
             
-            amount = float(data.get('amount', 0))
-            metadata1 = data.get('metadata1', 'Donacion Campaña')
-            metadata2 = data.get('metadata2', 'RenovarParaAvanzar')
+            # Extraer datos de la transacción
+            reference_number = data.get('reference_number')
+            amount = data.get('amount')
+            transaction_date = data.get('transaction_date')
+            ecommerce_id = data.get('ecommerce_id')
+            metadata1 = data.get('metadata1')
+            metadata2 = data.get('metadata2')
             
-            if amount <= 0:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'Monto inválido'
-                }, status=400)
+            # Aquí puedes guardar en tu modelo de Donation
+            # Por ejemplo:
+            # Donation.objects.create(
+            #     reference_number=reference_number,
+            #     amount=amount,
+            #     transaction_date=transaction_date,
+            #     ecommerce_id=ecommerce_id,
+            #     metadata1=metadata1,
+            #     metadata2=metadata2
+            # )
             
-            # Preparar datos para ATH Móvil
-            payment_data = {
-                'publicToken': settings.ATH_MOVIL_PUBLIC_TOKEN,
-                'timeout': settings.ATH_MOVIL_TIMEOUT,
-                'total': amount,
-                'subtotal': amount,
-                'tax': 0,
-                'metadata1': metadata1,
-                'metadata2': metadata2,
-                'items': [{
-                    'name': 'Donación Campaña',
-                    'description': f'Donación para {metadata2}',
-                    'quantity': 1,
-                    'price': amount,
-                    'tax': 0,
-                    'metadata': metadata1
-                }]
-            }
+            # Por ahora solo lo registramos en logs
+            print(f"✅ Donación guardada: {reference_number} - ${amount}")
             
-            # Llamar a la API de ATH Móvil
-            response = requests.post(
-                'https://payments.athmovil.com/api/business-transaction/ecommerce/payment',
-                json=payment_data,
-                headers={'Content-Type': 'application/json'},
-                timeout=30
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                return JsonResponse(result)
-            else:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'Error al crear el pago',
-                    'details': response.text
-                }, status=response.status_code)
-                
-        except Exception as e:
-            print(f"Error en ATHPaymentView: {str(e)}")
-            traceback.print_exc()
             return JsonResponse({
-                'status': 'error',
-                'message': str(e)
-            }, status=500)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class ATHUpdatePhoneView(View):
-    """Endpoint para actualizar el teléfono"""
-    
-    def post(self, request):
-        try:
-            data = json.loads(request.body)
+                'status': 'success',
+                'message': 'Donación guardada correctamente'
+            })
             
-            ecommerce_id = data.get('ecommerceId')
-            phone_number = data.get('phoneNumber')
-            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
-            
-            update_data = {
-                'ecommerceId': ecommerce_id,
-                'phoneNumber': phone_number,
-                'publicToken': public_token
-            }
-            
-            response = requests.post(
-                'https://payments.athmovil.com/api/business-transaction/ecommerce/update-phone-number',
-                json=update_data,
-                headers={'Content-Type': 'application/json'},
-                timeout=30
-            )
-            
-            if response.status_code == 200:
-                return JsonResponse(response.json())
-            else:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'Error al actualizar teléfono'
-                }, status=response.status_code)
-                
         except Exception as e:
-            print(f"Error en ATHUpdatePhoneView: {str(e)}")
-            return JsonResponse({
-                'status': 'error',
-                'message': str(e)
-            }, status=500)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class ATHAuthorizationView(View):
-    """Endpoint para autorizar el pago"""
-    
-    def post(self, request):
-        try:
-            data = json.loads(request.body)
-            
-            ecommerce_id = data.get('ecommerceId')
-            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
-            
-            auth_data = {
-                'ecommerceId': ecommerce_id,
-                'publicToken': public_token
-            }
-            
-            response = requests.post(
-                'https://payments.athmovil.com/api/business-transaction/ecommerce/authorization',
-                json=auth_data,
-                headers={'Content-Type': 'application/json'},
-                timeout=30
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                
-                # Si el pago fue exitoso, log
-                if result.get('status') == 'success':
-                    payment_data = result.get('data', {})
-                    print(f"✅ Pago exitoso: {payment_data.get('referenceNumber')}")
-                
-                return JsonResponse(result)
-            else:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'Error al autorizar'
-                }, status=response.status_code)
-                
-        except Exception as e:
-            print(f"Error en ATHAuthorizationView: {str(e)}")
-            return JsonResponse({
-                'status': 'error',
-                'message': str(e)
-            }, status=500)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class ATHFindPaymentView(View):
-    """Endpoint para consultar estado del pago"""
-    
-    def post(self, request):
-        try:
-            data = json.loads(request.body)
-            
-            ecommerce_id = data.get('ecommerceId')
-            public_token = settings.ATH_MOVIL_PUBLIC_TOKEN
-            
-            find_data = {
-                'ecommerceId': ecommerce_id,
-                'publicToken': public_token
-            }
-            
-            response = requests.post(
-                'https://payments.athmovil.com/api/business-transaction/ecommerce/business/findPayment',
-                json=find_data,
-                headers={'Content-Type': 'application/json'},
-                timeout=30
-            )
-            
-            if response.status_code == 200:
-                return JsonResponse(response.json())
-            else:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': 'Error al buscar pago'
-                }, status=response.status_code)
-                
-        except Exception as e:
-            print(f"Error en ATHFindPaymentView: {str(e)}")
+            print(f"❌ Error guardando donación: {str(e)}")
             return JsonResponse({
                 'status': 'error',
                 'message': str(e)
@@ -886,3 +779,4 @@ class TermsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Términos y Condiciones'
         return context
+    

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from django.http import HttpResponse
-from .models import Registration
+from .models import Registration, PlanEstrategico
 import csv
 
 @admin.register(Registration)
@@ -251,3 +251,17 @@ class RegistrationAdmin(admin.ModelAdmin):
         })
         
         return super().changelist_view(request, extra_context=extra_context)
+    
+@admin.register(PlanEstrategico)
+class PlanEstrategicoAdmin(admin.ModelAdmin):
+    list_display = ['titulo', 'activo', 'creado_en']
+    list_filter = ['activo']
+    
+    fieldsets = (
+        ('Información Principal', {
+            'fields': ('titulo', 'archivo_pdf')
+        }),
+        ('Configuración', {
+            'fields': ('activo',)
+        }),
+    )

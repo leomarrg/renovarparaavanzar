@@ -18,11 +18,7 @@ urlpatterns = [
     # path('donar/', views.DonateView.as_view(), name='donate'),
     # path('donacion-confirmada/', views.DonationConfirmationView.as_view(), name='donation_confirmation'),
     
-    # API endpoints de ATH Móvil
-    path('api/ath/payment/', views.ATHPaymentView.as_view(), name='ath-payment'),
-    path('api/ath/update-phone/', views.ATHUpdatePhoneView.as_view(), name='ath-update-phone'),
-    path('api/ath/authorization/', views.ATHAuthorizationView.as_view(), name='ath-authorization'),
-    path('api/ath/find-payment/', views.ATHFindPaymentView.as_view(), name='ath-find-payment'),
+    path('api/save-donation/', views.SaveDonationView.as_view(), name='save-donation'),
 
     # Términos
     path('terminos/', views.TermsView.as_view(), name='terms'),
