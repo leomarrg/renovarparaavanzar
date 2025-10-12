@@ -30,7 +30,7 @@ DEBUG = False
 ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
-    'leomarrg.pythonanywhere.com',
+    '3.88.157.222',
     '127.0.0.1',
     # 'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
