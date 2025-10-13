@@ -127,6 +127,7 @@
 
 </style>
 </head>
+
 <body>
     <!-- Loader -->
      <div class="loader" id="loader">
@@ -134,7 +135,7 @@
     </div>
     
     <!-- Header -->
-    <!-- <header class="header" id="header">
+    <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
                 <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
@@ -142,34 +143,33 @@
             <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
-        </nav> -->
+        </nav>
         
         <!-- Mobile Menu -->
-        <!-- <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu" id="mobileMenu">
             <a href="#hero">Inicio</a>
             <a href="#team">Equipo</a>
             <a href="#plan">Plan Estratégico</a>
             <a href="#donate">Donar</a>
             <a href="#register">Registrarse</a>
-            <a href="#contact">Contacto</a>
         </div>
-    </header> -->
+    </header>
     
     <!-- Hero Section -->
-    <!-- <section class="hero" id="hero">
+    <section class="hero" id="hero">
         <div class="hero-content">
             <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
 
             <p class="hero-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                "Cuando los médicos nos unimos... Puerto Rico sana." <span class="hero-author">- Dr. Méndez Sexto</span>
             </p>
         </div>
-    </section> -->
+    </section>
 
     <!-- Countdown Section -->
-    <!-- <section class="countdown-section">
+    <section class="countdown-section">
         <div class="countdown-wrapper">
-            <h2 class="countdown-title">Conteo Regresivo</h2>
+            <h3 class="countdown-title" style="font-size: 1.2rem;">Conteo regresivo para las elecciones:</h3>
             
             <div class="countdown-display">
                 <div class="countdown-row">
@@ -205,9 +205,9 @@
 
     <section class="doctor-intro-section">
         <div class="container">
-            <div class="doctor-intro-content"> -->
+            <div class="doctor-intro-content">
                 <!-- Logo centrado -->
-                <!-- <div class="doctor-intro-logo-wrapper">
+                <div class="doctor-intro-logo-wrapper">
                     <img src="{% static 'landing/img/logo-mendez.png' %}" 
                         alt="Dr. Méndez Sexto" 
                         class="doctor-intro-logo">
@@ -217,21 +217,18 @@
                         <img src="{% static 'landing/img/dr_cutout.png' %}" 
                             alt="Dr. Méndez Sexto" 
                             class="doctor-intro-photo">
-                    </div> -->
+                    </div>
                 <!-- Contenido principal: Texto y foto lado a lado -->
-                <!-- <div class="doctor-intro-main">
+                <div class="doctor-intro-main">
                     <div class="doctor-intro-text-column">
                         <h2 class="doctor-intro-section-title" style="margin-bottom: 20px; color: #377e7c;">Dr. Ramón Méndez Sexto</h2>
                         <ul class="doctor-intro-list">
                             Médico generalista con más de 40 años de experiencia, radicado en Guaynabo, Puerto Rico. Sus áreas de práctica incluyen medicina familiar, geriatría, medicina ocupacional y medicina integrativa.
-                        </ul>
-                        <ul class="doctor-intro-list">
+                        
                             Graduado en 1981 de la San Juan Bautista School of Medicine, ha mantenido su licencia médica vigente en Puerto Rico.
-                        </ul>
-                        <ul class="doctor-intro-list">
+                        
                             Fue presidente de la Junta de Licenciamiento y Disciplina Médica (JLDM) entre 2021 y 2025, periodo en el que se destacó por su participación en temas de regulación médica. En marzo de 2023, expresó su desacuerdo con una propuesta para aumentar la puntuación mínima de recertificación.
-                        </ul>
-                        <ul class="doctor-intro-list">
+                        
                             En agosto de 2025 anunció su aspiración a la presidencia del Colegio de Médicos Cirujanos de Puerto Rico. Su trayectoria refleja compromiso con la profesión médica y el fortalecimiento de la práctica ética en la isla.
                         </ul>
                         
@@ -240,10 +237,10 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Team Section -->
-    <!-- <section class="team-section" id="team">
+    <section class="team-section" id="team">
         <div class="section-header">
             <div class="section-header-content">
                 <h2>Nuestro</h2>
@@ -255,37 +252,29 @@
                 {% for member in team_members %}
                 <div class="team-member animate-on-scroll">
                     <div class="team-member-image">
-                        {% if member.image %}
-                        <img src="{% static member.image %}" alt="{{ member.name }}">
-                        {% else %}
-                        <img src="{% static 'landing/img/placeholder-avatar.jpg' %}" alt="{{ member.name }}">
-                        {% endif %}
+                        <i class="fas fa-user-md fa-8x"></i>
                     </div>
                     <h3>{{ member.name }}</h3>
                     <p class="role">{{ member.role }}</p>
                     <p class="district">{{ member.district }}</p>
                 </div>
-                {% endfor %} -->
+                {% endfor %}
                 
                 <!-- Featured Member -->
                 <!-- <div class="team-member juan-destacado animate-on-scroll">
                     <div class="team-member-image">
-                        {% if featured_member.image %}
-                        <img src="{% static featured_member.image %}" alt="{{ featured_member.name }}">
-                        {% else %}
-                        <img src="{% static 'landing/img/placeholder-avatar.jpg' %}" alt="{{ featured_member.name }}">
-                        {% endif %}
+                        <i class="fas fa-user-md fa-8x"></i>
                     </div>
                     <h3>{{ featured_member.name }}</h3>
                     <p class="role">{{ featured_member.role }}</p>
                     <p class="district">{{ featured_member.district }}</p>
-                </div>
+                </div> -->
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Strategic Plan Section -->
-    <!-- <section class="strategic-plan" id="plan">
+    <section class="strategic-plan" id="plan">
         <div class="container">
             <div class="strategic-plan-header">
                 <div class="strategic-plan-title">
@@ -326,19 +315,19 @@
                 {% endif %}
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- Sección de Portavoces - Agregar después de la sección de Team -->
-    <!-- <section class="spokespersons-section" id="portavoces">
+    <section class="spokespersons-section" id="portavoces">
         <div class="spokespersons-header">
             <div class="spokespersons-header-content">
                 <h2 style="font-size: 3rem;">Portavoces</h2>
             </div>
         </div>
         <div class="container">
-            <div class="spokespersons-grid"> -->
+            <div class="spokespersons-grid">
                 <!-- San Juan -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Ramón Vidal</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> San Juan</p>
                     <div class="spokesperson-contact">
@@ -351,10 +340,10 @@
                             <a href="mailto:revidalmd@gmail.com">revidalmd@gmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Bayamón -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Carlos Santiago</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Bayamón</p>
                     <div class="spokesperson-contact">
@@ -367,10 +356,10 @@
                             <a href="mailto:carlossantiago@hotmail.com">carlossantiago@hotmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Arecibo -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Héctor Cott</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Arecibo</p>
                     <div class="spokesperson-contact">
@@ -383,10 +372,10 @@
                             <a href="mailto:h_cott@yahoo.com">h_cott@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Aguadilla -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Luigi</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Aguadilla</p>
                     <div class="spokesperson-contact">
@@ -399,10 +388,10 @@
                             <a href="mailto:ortholuigi@gmail.com">ortholuigi@gmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Mayagüez -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Roberto Tirado</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Mayagüez</p>
                     <div class="spokesperson-contact">
@@ -415,10 +404,10 @@
                             <a href="mailto:michaelmdrt@hotmail.com">michaelmdrt@hotmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Ponce -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. José Toro</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Ponce</p>
                     <div class="spokesperson-contact">
@@ -431,10 +420,10 @@
                             <a href="mailto:drjatoro@yahoo.com">drjatoro@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Carolina -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dra. Lourdes Rodríguez Galarza</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Carolina</p>
                     <div class="spokesperson-contact">
@@ -447,7 +436,7 @@
                             <a href="mailto:mrgalarza04@yahoo.com">mrgalarza04@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Humacao - Vacante -->
                 <!-- <div class="spokesperson-card vacant animate-on-scroll">
@@ -465,10 +454,10 @@
                     <div class="spokesperson-contact">
                         <p class="vacant-text">Próximamente</p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
-    </section> -->
+    </section>
 
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
@@ -624,9 +613,9 @@ setTimeout(function() {
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
-                </div> -->
+                </div>
 
-                <!-- <div class="donation-content">
+                <div class="donation-content">
                     <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
                     
                     <div class="amount-options">
@@ -673,7 +662,7 @@ setTimeout(function() {
                                 step="0.01"
                             >
                         </div>
-                    </div>-->
+                    </div> -->
 
                     <!-- Monto seleccionado -->
                     <!-- <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
@@ -696,9 +685,9 @@ setTimeout(function() {
                     </div> -->
 
                     <!-- ATH Móvil Payment Button -->
-                    <!--<div id="ATHMovil_Checkout_Button_payment"></div>-->
+                    <!-- <div id="ATHMovil_Checkout_Button_payment"></div>
 
-                    <!-- <div class="donation-info" style="margin-top: 25px;">
+                    <div class="donation-info" style="margin-top: 25px;">
                         <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
                             Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
                         </p>
@@ -716,15 +705,20 @@ setTimeout(function() {
     </section>  -->
 
     <!-- Donation Section TEMPORERA -->
-    <!-- <section class="donation-section" id="donate">
+    <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
-                    <div class="title-main">Haz tu Donacion</div>
+                    <div class="title-main">Haz tu</div>
                     <div class="title-script">donación</div>
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
+                </div>
+
+                <!-- Imagen centralizada -->
+                <div class="donation-image-wrapper">
+                    <img src="{% static 'landing/img/ATHM.png' %}" alt="ATH Móvil" class="donation-image">
                 </div>
 
                 <div class="donation-info">
@@ -741,14 +735,14 @@ setTimeout(function() {
                 <div class="campaign-hashtag">#RenovarParaAvanzar</div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
     <section class="register-section" id="register">
         <div class="container">
             <div class="register-wrapper">
                 <div class="register-header">
-                    <div class="header-badge">Registro</div>
+                    <div class="header-badge">¡Regístrate!</div>
                     
                     <div class="title-section">
                         <div class="title-main">¡Iniciemos la</div>
@@ -880,7 +874,7 @@ setTimeout(function() {
                             </label>
                         </div>
                         
-                        <button type="submit" class="register-submit-btn">Someter</button>
+                        <button type="submit" class="register-submit-btn" style="font-family: monts;">Someter</button>
                     </form>
                 </div>
             </div>
@@ -894,7 +888,7 @@ setTimeout(function() {
             <div class="countdown-hero-content">
                 <!-- Header -->
                 <div class="countdown-hero-header">
-                    <h2>Conteo Regresivo para las Elecciones</h2>
+                    <h2>Conteo regresivo para las elecciones</h2>
                     <!-- <p class="countdown-description">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                         Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -997,6 +991,8 @@ setTimeout(function() {
 <!-- 2. SEGUNDO: Script de ATH Móvil Base -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
+
+
 <!-- 3. TERCERO: Tu configuración y callbacks -->
 <script type="text/javascript">
     const ATHM_Checkout = {
@@ -1049,6 +1045,8 @@ setTimeout(function() {
 <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
 
 <script src="{% static 'landing/js/messages-handler.js' %}"></script>
+
+
 
 </body>
 </html>

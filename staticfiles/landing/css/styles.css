@@ -124,20 +124,46 @@ h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
+/* ========== MENU TOGGLE - HAMBURGUESA A X ========== */
 .menu-toggle {
     background: none;
     border: none;
     font-size: 28px;
     color: #b8b8b8;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, color 0.3s ease;
+    padding: 5px;
+    min-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estado activo del botón */
+.menu-toggle.active {
+    color: #377e7c;
+    transform: none; /* Quitamos la rotación de 90 grados */
 }
 
 .menu-toggle:hover {
-    transform: rotate(90deg);
+    color: #377e7c;
+    transform: scale(1.1); /* Cambiamos de rotate a scale para mejor efecto */
 }
 
-/* Mobile Menu */
+/* El span dentro del botón para suavizar la transición del texto */
+.menu-toggle span {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* Cuando está activo, el span rota ligeramente */
+.menu-toggle.active span {
+    transform: rotate(180deg);
+}
+
+/* Mobile Menu - sin cambios en tu estilo actual */
 .mobile-menu {
     position: fixed;
     top: 70px;
@@ -149,6 +175,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: right 0.3s ease;
     z-index: 999;
     padding: 30px;
+    overflow-y: auto;
 }
 
 .mobile-menu.active {
@@ -158,7 +185,7 @@ h1, h2, h3, h4, h5, h6 {
 .mobile-menu a {
     display: block;
     padding: 15px 0;
-    color: var(--gray-dark);
+    color: #000 !important;
     text-decoration: none;
     font-weight: 500;
     border-bottom: 1px solid var(--gray-light);
@@ -166,97 +193,129 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-menu a:hover {
-    color: var(--teal-primary);
+    color: var(--teal-primary) !important;
+}
+
+.mobile-menu a:last-child {
+    border-bottom: none;
+}
+
+/* Opcional: Prevenir scroll del body cuando el menú está abierto */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Opcional: Overlay oscuro cuando el menú está abierto */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* ========== HERO SECTION ========== */
-        .hero {
-            margin-top: 45px;
-            background: linear-gradient(to top, rgba(255, 255, 255, 1) 60%, rgba(241, 241, 241, 1) 100%);
-            color: rgb(0, 0, 0);
-            padding: 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            padding-bottom: 56.25%; /* Ratio 16:9 - ajusta según tu imagen */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 300px;
-        }
+    .hero {
+        margin-top: 25px;
+        background: linear-gradient(to top, rgba(255, 255, 255, 1) 60%, rgba(241, 241, 241, 1) 100%);
+        color: rgb(0, 0, 0);
+        padding: 0;
+        padding-bottom: 150px; /* CAMBIAR: Un valor fijo para el espacio blanco abajo */
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 600px; /* La altura total del hero */
+    }
 
-        /* Si tu imagen tiene un ratio diferente, usa estos ejemplos:
-           - Para 4:3 usa: padding-bottom: 75%;
-           - Para 21:9 usa: padding-bottom: 42.85%;
-           - Para 3:2 usa: padding-bottom: 66.67%;
-           - Para calcular manualmente: (altura / anchura) * 100%
-        */
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 7%;
+        left: 0;
+        right: 0;
+        height: 400px; /* AGREGAR: Altura fija para la imagen, así no crece */
+        background-image: url("../img/backgrounds/foto_home.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 0;
+    }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("../img/backgrounds/doctors-group.jpg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.4;
-            z-index: 0;
-        }
+    .hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background: linear-gradient(
+            to top, 
+            rgba(255, 255, 255, 1) 30%,
+            rgba(255, 255, 255, 0.7) 50%,
+            rgba(255, 255, 255, 0) 70%
+        );
+        z-index: 1;
+        pointer-events: none;
+    }
 
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(
-                to top, 
-                rgba(255, 255, 255, 1) 12%,      /* blanco sólido abajo */
-                rgba(255, 255, 255, 0.7) 30%,   /* blanco semi-transparente */
-                rgba(255, 255, 255, 0) 70%      /* transparente arriba */
-            );
-            z-index: 1;
-            pointer-events: none;
-        }
+    .hero-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        padding: 40px 20px;
+    }
 
-        .hero-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            padding: 40px 20px;
-        }
+    .hero-logo {
+        max-width: 350px;
+        margin-top: 206px;
+        width: 95%;
+        height: auto;
+        animation: fadeInScale 1s ease;
+    }
 
-        .hero-logo {
-            max-width: 275px;
-            margin-top: 50px;
-            width: 90%;
-            height: auto;
-            animation: fadeInScale 1s ease;
-        }
+    .hero-text {
+        font-size: 1.7rem;
+        line-height: 2.8;
+        font-weight: 500;
+        font-style: italic;
+        color: #2C3E50;
+        max-width: 500px;
+        animation: fadeInUp 1s ease 0.3s;
+        animation-fill-mode: both;
+        z-index: 4;
+        text-align: center;
+    }
 
-        .hero-text {
-            font-size: 1.3rem;
-            line-height: 1.8;
-            font-weight: 600;
-            max-width: 300px;
-            animation: fadeInUp 1s ease 0.3s;
-            animation-fill-mode: both;
-            z-index: 4;
-        }
+    .hero-author {
+        display: block;
+        font-size: 1.2rem;
+        color: #377e7c;
+        font-weight: 700;
+        text-align: center;
+        font-style: normal;
+        margin-top: 10px;
+    }
 
         @keyframes fadeInScale {
             from {
@@ -303,7 +362,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-text {
-    font-size: .95rem;
+    font-size: 1.2rem;
     line-height: 1.7;
     margin-bottom: 30px;
     animation: fadeInUp 1s ease 0.4s;
@@ -1411,13 +1470,8 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
     font-size: 0.9rem;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     opacity: 0.9;
-}
-
-.region-label {
-    font-weight: 700;
-    opacity: 1;
 }
 
 .spokesperson-contact {
@@ -1460,6 +1514,11 @@ h1, h2, h3, h4, h5, h6 {
     margin: 20px 0;
     font-size: 1rem;
     opacity: 0.8;
+}
+
+.team-member-image i {
+    font-size: 70px; /* Usa px para más control preciso */
+    color: white;
 }
 
 /* Responsive */
@@ -1801,7 +1860,6 @@ h1, h2, h3, h4, h5, h6 {
     }
 } */
 
-
 /* ========== DONATION SECTION TEMPORERA ========== */
 .donation-section {
     position: relative;
@@ -1881,28 +1939,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .donation-info {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 30px;
     margin: 30px 0;
     text-align: center;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .donation-method-text {
-    color: #377e7c;
+    color: white;
     margin-bottom: 20px;
     font-size: 1rem;
+    opacity: 0.9;
 }
 
 .donation-method-text strong {
     font-weight: 700;
-    color: #377e7c;
+    color: white;
 }
 
 .ath-handle {
-    color: #c06737;
+    color: #ffffff;
     font-size: 2rem;
     font-weight: 700;
     margin: 15px 0;

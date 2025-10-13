@@ -129,9 +129,9 @@ class IndexView(TemplateView):
         
         # Miembro destacado (Juan del Pueblo - Vocal)
         context['featured_member'] = {
-            'name': 'Dra. Erika',
-            'role': 'Médica Generalista',
-            'district': 'Presidenta del Fideicomiso de Ayuda al Colegiado',
+            'name': 'TBA',
+            'role': 'TBA',
+            'district': 'TBA',
             'image': 'landing/img/miembros/dra_erika.jpg'
         }
         

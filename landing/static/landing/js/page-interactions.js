@@ -1,5 +1,5 @@
 // ==========================================
-// PAGE INTERACTIONS MODULE
+// PAGE INTERACTIONS MODULE - VERSIÓN ACTUALIZADA
 // Maneja loader, menu, scroll y animaciones
 // ==========================================
 
@@ -23,7 +23,7 @@
     }
     
     // ==========================================
-    // MOBILE MENU
+    // MOBILE MENU - ACTUALIZADO CON HAMBURGUESA A X
     // ==========================================
     
     function initMobileMenu() {
@@ -32,15 +32,77 @@
         
         if (!menuToggle || !mobileMenu) return;
         
-        menuToggle.addEventListener('click', function() {
+        // Toggle menu con cambio de ícono
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Toggle del menú
             mobileMenu.classList.toggle('active');
+            
+            // Cambiar el ícono de hamburguesa a X
+            const span = menuToggle.querySelector('span');
+            if (span) {
+                if (mobileMenu.classList.contains('active')) {
+                    span.textContent = '✕';
+                    menuToggle.classList.add('active');
+                } else {
+                    span.textContent = '☰';
+                    menuToggle.classList.remove('active');
+                }
+            }
         });
         
-        // Close mobile menu when clicking on a link
+        // Cerrar menú al hacer click en un enlace
         document.querySelectorAll('.mobile-menu a').forEach(link => {
             link.addEventListener('click', function() {
                 mobileMenu.classList.remove('active');
+                
+                // Volver al ícono de hamburguesa
+                const span = menuToggle.querySelector('span');
+                if (span) {
+                    span.textContent = '☰';
+                    menuToggle.classList.remove('active');
+                }
             });
+        });
+        
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    
+                    // Volver al ícono de hamburguesa
+                    const span = menuToggle.querySelector('span');
+                    if (span) {
+                        span.textContent = '☰';
+                        menuToggle.classList.remove('active');
+                    }
+                }
+            }
+        });
+        
+        // Cerrar menú al hacer scroll
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Si el scroll es significativo, cerrar el menú
+            if (Math.abs(scrollTop - lastScrollTop) > 50) {
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    
+                    // Volver al ícono de hamburguesa
+                    const span = menuToggle.querySelector('span');
+                    if (span) {
+                        span.textContent = '☰';
+                        menuToggle.classList.remove('active');
+                    }
+                }
+            }
+            
+            lastScrollTop = scrollTop;
         });
     }
     
