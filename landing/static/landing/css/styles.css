@@ -2362,6 +2362,7 @@ body.menu-open {
     letter-spacing: 1px;
     margin: 30px auto 0;  /* ← Esta línea lo centra */
     display: block;
+    font-family: var(--font-primary);
 
 }
 
