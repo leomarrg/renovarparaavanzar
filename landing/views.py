@@ -323,10 +323,9 @@ class RegisterView(IndexView):
         """Generar el HTML del email de confirmación"""
         from django.conf import settings
         
-        # URLs ABSOLUTAS de las imágenes (asegúrate que SITE_URL esté correcta)
-        # Ejemplo: https://tudominio.com o https://leomarrg.pythonanywhere.com
-        logos_img = f"{settings.SITE_URL}/static/landing/img/dr_rpa.rev@2x.png"
-        ath_logo = f"{settings.SITE_URL}/static/landing/img/ATHM-logo-horizontal.png"
+        site_url = settings.SITE_URL.rstrip('/')
+        logos_img = f"{site_url}/static/landing/img/dr_rpa.rev@2x.png"
+        ath_logo = f"{site_url}/static/landing/img/ATHM-logo-horizontal.png"
         
         return f"""
         <!DOCTYPE html>
