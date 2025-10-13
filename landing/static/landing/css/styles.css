@@ -1903,11 +1903,6 @@ body.menu-open {
     z-index: 2;
 }
 
-.donation-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-}
-
 .donation-header {
     text-align: center;
     margin-bottom: 25px;
