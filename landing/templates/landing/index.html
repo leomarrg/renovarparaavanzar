@@ -140,19 +140,30 @@
             <div class="logo-container">
                 <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
             </div>
+            
+            <!-- Desktop Navigation - visible solo en desktop -->
+            <div class="desktop-nav">
+                <a href="#hero" style="color: black !important;">Inicio</a>
+                <a href="#team" style="color: black !important;">Equipo</a>
+                <a href="#plan" style="color: black !important;">Plan Estratégico</a>
+                <a href="#donate" style="color: black !important;">Donar</a>
+                <a href="#register" style="color: black !important;">Registrarse</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle - visible solo en móvil -->
             <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
         </nav>
-        
-        <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="#hero">Inicio</a>
-            <a href="#team">Equipo</a>
-            <a href="#plan">Plan Estratégico</a>
-            <a href="#donate">Donar</a>
-            <a href="#register">Registrarse</a>
-        </div>
+            
+            <!-- Mobile Menu -->
+            <div class="mobile-menu" id="mobileMenu">
+                <a href="#hero">Inicio</a>
+                <a href="#team">Equipo</a>
+                <a href="#plan">Plan Estratégico</a>
+                <a href="#donate">Donar</a>
+                <a href="#register">Registrarse</a>
+            </div>
     </header>
     
     <!-- Hero Section -->
@@ -957,7 +968,7 @@ setTimeout(function() {
                 
                 <div class="copyright">
                     <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
-                    <p style="margin-top: 10px; font-size: 0.8rem;">Comité Dr. Méndez Sexto</p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">Pagado por Comité Dr. Méndez Sexto</p>
                 </div>
             </div>
         </div>

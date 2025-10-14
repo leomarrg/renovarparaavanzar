@@ -124,6 +124,106 @@ h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
+/* Desktop Navigation - oculto en móvil */
+.desktop-nav {
+    display: none;
+}
+
+/* Mobile menu toggle - visible en móvil */
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #b8b8b8;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    padding: 5px;
+    min-width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle.active {
+    color: #377e7c;
+    transform: none;
+}
+
+.menu-toggle:hover {
+    color: #377e7c;
+    transform: scale(1.1);
+}
+
+.menu-toggle span {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.menu-toggle.active span {
+    transform: rotate(180deg);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    top: 70px;
+    right: -100%;
+    width: 280px;
+    height: calc(100vh - 70px);
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 999;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    right: 0;
+}
+
+.mobile-menu a {
+    display: block;
+    padding: 15px 0;
+    color: #000 !important;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid var(--gray-light);
+    transition: color 0.3s ease;
+}
+
+.mobile-menu a:hover {
+    color: var(--teal-primary) !important;
+}
+
+.mobile-menu a:last-child {
+    border-bottom: none;
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* Desktop Navigation */
 @media (min-width: 1024px) {
     .header {
@@ -138,15 +238,17 @@ h1, h2, h3, h4, h5, h6 {
         height: 50px;
     }
     
+    /* Ocultar hamburger en desktop */
     .menu-toggle {
         display: none;
     }
     
+    /* Ocultar mobile menu en desktop */
     .mobile-menu {
         display: none;
     }
     
-    /* Desktop Menu Horizontal */
+    /* Mostrar Desktop Menu Horizontal */
     .desktop-nav {
         display: flex;
         gap: 30px;

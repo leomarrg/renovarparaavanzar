@@ -111,6 +111,8 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     align-items: center;
     padding: 5px 15px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .logo-container {
@@ -124,65 +126,12 @@ h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
-/* Desktop Navigation */
-@media (min-width: 1024px) {
-    .header {
-        padding: 15px 0;
-    }
-    
-    .navbar {
-        padding: 5px 30px;
-    }
-    
-    .logo-img {
-        height: 50px;
-    }
-    
-    .menu-toggle {
-        display: none;
-    }
-    
-    .mobile-menu {
-        display: none;
-    }
-    
-    /* Desktop Menu Horizontal */
-    .desktop-nav {
-        display: flex;
-        gap: 30px;
-        align-items: center;
-    }
-    
-    .desktop-nav a {
-        color: var(--gray-dark);
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: color 0.3s ease;
-        position: relative;
-    }
-    
-    .desktop-nav a::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--teal-primary);
-        transition: width 0.3s ease;
-    }
-    
-    .desktop-nav a:hover {
-        color: var(--teal-primary);
-    }
-    
-    .desktop-nav a:hover::after {
-        width: 100%;
-    }
+/* Desktop Navigation - oculto por defecto (móvil) */
+.desktop-nav {
+    display: none;
 }
 
-/* ========== MENU TOGGLE - HAMBURGUESA A X (MOBILE) ========== */
+/* ========== MENU TOGGLE - HAMBURGUESA (MOBILE) ========== */
 .menu-toggle {
     background: none;
     border: none;
@@ -275,6 +224,67 @@ body.menu-open {
 .menu-overlay.active {
     opacity: 1;
     visibility: visible;
+}
+
+/* ========== DESKTOP NAVIGATION ========== */
+@media (min-width: 1024px) {
+    .header {
+        padding: 15px 0;
+    }
+    
+    .navbar {
+        padding: 5px 30px;
+    }
+    
+    .logo-img {
+        height: 50px;
+    }
+    
+    /* Ocultar hamburger en desktop */
+    .menu-toggle {
+        display: none !important;
+    }
+    
+    /* Ocultar mobile menu en desktop */
+    .mobile-menu {
+        display: none !important;
+    }
+    
+    /* Mostrar Desktop Menu Horizontal */
+    .desktop-nav {
+        display: flex !important;
+        gap: 30px;
+        align-items: center;
+    }
+    
+    .desktop-nav a {
+        color: var(--gray-dark);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        position: relative;
+        padding: 5px 0;
+    }
+    
+    .desktop-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--teal-primary);
+        transition: width 0.3s ease;
+    }
+    
+    .desktop-nav a:hover {
+        color: var(--teal-primary);
+    }
+    
+    .desktop-nav a:hover::after {
+        width: 100%;
+    }
 }
 
 /* ========== HERO SECTION ========== */
