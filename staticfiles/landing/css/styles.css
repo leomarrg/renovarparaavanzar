@@ -1,6 +1,6 @@
 /* ==============================================
    RENOVAR PARA AVANZAR - DR. MÉNDEZ SEXTO
-   Estilos Personalizados
+   Estilos Personalizados - Mobile First & Desktop
    ============================================== */
 
 
@@ -124,7 +124,65 @@ h1, h2, h3, h4, h5, h6 {
     width: auto;
 }
 
-/* ========== MENU TOGGLE - HAMBURGUESA A X ========== */
+/* Desktop Navigation */
+@media (min-width: 1024px) {
+    .header {
+        padding: 15px 0;
+    }
+    
+    .navbar {
+        padding: 5px 30px;
+    }
+    
+    .logo-img {
+        height: 50px;
+    }
+    
+    .menu-toggle {
+        display: none;
+    }
+    
+    .mobile-menu {
+        display: none;
+    }
+    
+    /* Desktop Menu Horizontal */
+    .desktop-nav {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+    }
+    
+    .desktop-nav a {
+        color: var(--gray-dark);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+        position: relative;
+    }
+    
+    .desktop-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--teal-primary);
+        transition: width 0.3s ease;
+    }
+    
+    .desktop-nav a:hover {
+        color: var(--teal-primary);
+    }
+    
+    .desktop-nav a:hover::after {
+        width: 100%;
+    }
+}
+
+/* ========== MENU TOGGLE - HAMBURGUESA A X (MOBILE) ========== */
 .menu-toggle {
     background: none;
     border: none;
@@ -139,18 +197,16 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
 }
 
-/* Estado activo del botón */
 .menu-toggle.active {
     color: #377e7c;
-    transform: none; /* Quitamos la rotación de 90 grados */
+    transform: none;
 }
 
 .menu-toggle:hover {
     color: #377e7c;
-    transform: scale(1.1); /* Cambiamos de rotate a scale para mejor efecto */
+    transform: scale(1.1);
 }
 
-/* El span dentro del botón para suavizar la transición del texto */
 .menu-toggle span {
     display: inline-block;
     transition: transform 0.3s ease, opacity 0.2s ease;
@@ -158,12 +214,11 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1;
 }
 
-/* Cuando está activo, el span rota ligeramente */
 .menu-toggle.active span {
     transform: rotate(180deg);
 }
 
-/* Mobile Menu - sin cambios en tu estilo actual */
+/* Mobile Menu */
 .mobile-menu {
     position: fixed;
     top: 70px;
@@ -200,12 +255,10 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: none;
 }
 
-/* Opcional: Prevenir scroll del body cuando el menú está abierto */
 body.menu-open {
     overflow: hidden;
 }
 
-/* Opcional: Overlay oscuro cuando el menú está abierto */
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -225,119 +278,147 @@ body.menu-open {
 }
 
 /* ========== HERO SECTION ========== */
+.hero {
+    margin-top: 25px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 60%, rgba(241, 241, 241, 1) 100%);
+    color: rgb(0, 0, 0);
+    padding: 0;
+    padding-bottom: 150px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 600px;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 7%;
+    left: 0;
+    right: 0;
+    height: 400px;
+    background-image: url("../img/backgrounds/foto_home.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 0;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+        to top, 
+        rgba(255, 255, 255, 1) 30%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+}
+
+.hero-logo {
+    max-width: 350px;
+    margin-top: 206px;
+    width: 95%;
+    height: auto;
+    animation: fadeInScale 1s ease;
+}
+
+.hero-text {
+    font-size: 1.7rem;
+    line-height: 2.8;
+    font-weight: 500;
+    font-style: italic;
+    color: #2C3E50;
+    max-width: 500px;
+    animation: fadeInUp 1s ease 0.3s;
+    animation-fill-mode: both;
+    z-index: 4;
+    text-align: center;
+}
+
+.hero-author {
+    display: block;
+    font-size: 1.2rem;
+    color: #377e7c;
+    font-weight: 700;
+    text-align: center;
+    font-style: normal;
+    margin-top: 10px;
+}
+
+/* Desktop Hero */
+@media (min-width: 1024px) {
     .hero {
-        margin-top: 25px;
-        background: linear-gradient(to top, rgba(255, 255, 255, 1) 60%, rgba(241, 241, 241, 1) 100%);
-        color: rgb(0, 0, 0);
-        padding: 0;
-        padding-bottom: 150px; /* CAMBIAR: Un valor fijo para el espacio blanco abajo */
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 600px; /* La altura total del hero */
+        margin-top: 70px;
+        min-height: 800px;
+        padding-bottom: 200px;
     }
-
+    
     .hero::before {
-        content: '';
-        position: absolute;
-        top: 7%;
-        left: 0;
-        right: 0;
-        height: 400px; /* AGREGAR: Altura fija para la imagen, así no crece */
-        background-image: url("../img/backgrounds/foto_home.png");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        z-index: 0;
+        height: 600px;
+        top: 10%;
     }
-
-    .hero::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100%;
-        background: linear-gradient(
-            to top, 
-            rgba(255, 255, 255, 1) 30%,
-            rgba(255, 255, 255, 0.7) 50%,
-            rgba(255, 255, 255, 0) 70%
-        );
-        z-index: 1;
-        pointer-events: none;
-    }
-
-    .hero-content {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 30px;
-        padding: 40px 20px;
-    }
-
+    
     .hero-logo {
-        max-width: 350px;
-        margin-top: 206px;
-        width: 95%;
-        height: auto;
-        animation: fadeInScale 1s ease;
-    }
-
-    .hero-text {
-        font-size: 1.7rem;
-        line-height: 2.8;
-        font-weight: 500;
-        font-style: italic;
-        color: #2C3E50;
         max-width: 500px;
-        animation: fadeInUp 1s ease 0.3s;
-        animation-fill-mode: both;
-        z-index: 4;
-        text-align: center;
+        margin-top: 250px;
     }
-
+    
+    .hero-text {
+        font-size: 2.2rem;
+        max-width: 700px;
+    }
+    
     .hero-author {
-        display: block;
-        font-size: 1.2rem;
-        color: #377e7c;
-        font-weight: 700;
-        text-align: center;
-        font-style: normal;
-        margin-top: 10px;
+        font-size: 1.5rem;
     }
+}
 
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @keyframes float-pattern {
     0% { transform: translateX(0) translateY(0); }
@@ -380,6 +461,7 @@ body.menu-open {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 80px 20px;
 }
 
 .countdown-hero-content {
@@ -412,7 +494,6 @@ body.menu-open {
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Countdown Display Grande */
 .countdown-display-large {
     display: flex;
     justify-content: center;
@@ -442,7 +523,6 @@ body.menu-open {
     font-weight: 600;
 }
 
-/* Logo debajo del countdown */
 .countdown-logo {
     margin-top: 60px;
     animation: fadeInUp 1s ease 0.6s;
@@ -459,6 +539,38 @@ body.menu-open {
 
 .countdown-logo img:hover {
     transform: scale(1.05);
+}
+
+/* Desktop Countdown Hero */
+@media (min-width: 1024px) {
+    .countdown-hero-section {
+        padding: 120px 40px;
+        min-height: 700px;
+    }
+    
+    .countdown-hero-header h2 {
+        font-size: 4rem;
+    }
+    
+    .countdown-description {
+        font-size: 1.4rem;
+    }
+    
+    .countdown-display-large {
+        gap: 60px;
+    }
+    
+    .countdown-number-large {
+        font-size: 6rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 1.2rem;
+    }
+    
+    .countdown-logo img {
+        max-width: 400px;
+    }
 }
 
 /* ========== FOOTER SIMPLIFICADO ========== */
@@ -515,6 +627,32 @@ body.menu-open {
     color: var(--gray-light);
 }
 
+/* Desktop Footer */
+@media (min-width: 1024px) {
+    .footer-simple {
+        padding: 80px 40px 40px;
+    }
+    
+    .footer-content-simple h3 {
+        font-size: 2.5rem;
+    }
+    
+    .footer-content-simple .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .social-links {
+        gap: 20px;
+    }
+    
+    .social-link {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* ========== DOCTOR INTRO SECTION ========== */
 .doctor-intro-section {
     background: linear-gradient(to bottom, #ffffff 0%, #f7fafc 100%);
     padding: 80px 20px;
@@ -528,24 +666,6 @@ body.menu-open {
     padding: 0 15px;
 }
 
-/* Patrón de fondo sutil
-.doctor-intro-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 35px,
-        rgba(77, 182, 172, 0.02) 35px,
-        rgba(77, 182, 172, 0.02) 70px
-    );
-    pointer-events: none;
-} */
-
 .doctor-intro-content {
     max-width: 100%;
     width: 100%;
@@ -554,7 +674,6 @@ body.menu-open {
     z-index: 1;
 }
 
-/* Logo centrado */
 .doctor-intro-logo-wrapper {
     text-align: center;
     margin-bottom: 30px;
@@ -569,7 +688,6 @@ body.menu-open {
     display: inline-block;
 }
 
-/* Main content: Texto y foto lado a lado */
 .doctor-intro-main {
     display: flex;
     gap: 20px;
@@ -632,7 +750,6 @@ body.menu-open {
     font-weight: 500;
 }
 
-/* Columna Derecha */
 .doctor-intro-right {
     display: none;
 }
@@ -641,191 +758,52 @@ body.menu-open {
     display: none;
 }
 
-.doctor-intro-text {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: #4A5568;
-    margin-bottom: 25px;
-    text-align: left;
-}
-
-.doctor-intro-highlight {
-    background: linear-gradient(135deg, #E8F5F4 0%, #D4EBE9 100%);
-    padding: 25px 30px;
-    border-left: 4px solid #4DB6AC;
-    border-radius: 0 15px 15px 0;
-    position: relative;
-    margin-top: 30px;
-}
-
-.doctor-intro-highlight i {
-    font-size: 2rem;
-    color: #4DB6AC;
-    opacity: 0.3;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-}
-
-.doctor-intro-highlight p {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #2C3E50;
-    font-style: italic;
-    margin: 0;
-    padding-left: 35px;
-    font-weight: 500;
-}
-
-/* Columna Derecha */
-.doctor-intro-right {
-    display: none;
-}
-
-.doctor-intro-decoration {
-    display: none;
-}
-
-/* Animaciones */
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
+/* Desktop Doctor Intro */
+@media (min-width: 1024px) {
+    .doctor-intro-section {
+        padding: 120px 40px;
     }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 968px) {
-    .doctor-intro-main {
-        flex-direction: column;
-        align-items: center;
+    
+    .doctor-intro-content {
+        max-width: 1400px;
     }
     
     .doctor-intro-logo {
-        max-width: 260px;
+        max-width: 400px;
+        width: 60%;
     }
     
-    .doctor-intro-image-wrapper {
-        width: 100%;
-        max-width: 100%;
-    }
-    
-    .doctor-intro-photo {
-        max-width: 100%;
+    .doctor-intro-main {
+        gap: 60px;
+        flex-direction: row;
     }
     
     .doctor-intro-text-column {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .doctor-intro-section {
-        padding: 50px 15px;
-    }
-    
-    .doctor-intro-logo-wrapper {
-        margin-bottom: 20px;
-    }
-    
-    .doctor-intro-logo {
-        max-width: 220px;
+        flex: 1.5;
     }
     
     .doctor-intro-image-wrapper {
-        width: 100%;
-        max-width: 100%;
+        width: 500px;
+        max-width: 500px;
     }
     
     .doctor-intro-photo {
-        max-width: 100%;
+        max-width: 500px;
     }
     
     .doctor-intro-text {
-        font-size: 0.9rem;
-        line-height: 1.6;
+        font-size: 1.1rem;
+        line-height: 2;
     }
     
     .doctor-intro-highlight {
-        padding: 15px 20px;
+        padding: 35px 40px;
+        margin-top: 40px;
     }
     
     .doctor-intro-highlight p {
-        font-size: 0.85rem;
-        padding-left: 25px;
-    }
-}
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-    .countdown-hero-section {
-        padding: 60px 0;
-        min-height: 500px;
-    }
-    
-    .countdown-hero-header h2 {
-        font-size: 2rem;
-    }
-    
-    .countdown-description {
-        font-size: 1rem;
-    }
-    
-    .countdown-display-large {
-        gap: 20px;
-    }
-    
-    .countdown-item-large {
-        padding: 20px 25px;
-        min-width: 120px;
-    }
-    
-    .countdown-number-large {
-        font-size: 2.5rem;
-    }
-    
-    .countdown-label-large {
-        font-size: 0.85rem;
-    }
-    
-    .countdown-logo img {
-        max-width: 320px;
-    }
-}
-
-@media (max-width: 480px) {
-    .countdown-hero-header h2 {
-        font-size: 1.6rem;
-    }
-    
-    .countdown-item-large {
-        padding: 15px 20px;
-        min-width: 100px;
-    }
-    
-    .countdown-number-large {
-        font-size: 2rem;
-    }
-    
-    .countdown-label-large {
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-    }
-}
-
-/* Animaciones */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+        font-size: 1.1rem;
+        padding-left: 45px;
     }
 }
 
@@ -833,15 +811,13 @@ body.menu-open {
 .countdown-section {
     position: relative;
     padding: 0;
-    height: 200px; /* Altura fija como en tu imagen */
+    height: 200px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Fondo con patrón */
-/* Fondo con patrón - sin gradiente, muestra lo que se vea */
 .countdown-section::before {
     content: "";
     position: absolute;
@@ -853,16 +829,13 @@ body.menu-open {
     z-index: 1;
 }
 
-/* Gradiente blanco de abajo hacia arriba */
 .countdown-section::after {
     content: "";
     position: absolute;
     inset: 0;
-
     z-index: 2;
 }
 
-/* Contenido encima de los fondos */
 .countdown-section > * {
     position: relative;
     z-index: 3;
@@ -927,48 +900,34 @@ body.menu-open {
     display: inline-block;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
+/* Desktop Countdown */
+@media (min-width: 1024px) {
     .countdown-section {
-        padding: 40px 15px;
+        height: 250px;
+    }
+    
+    .countdown-section::before {
+        background-size: 400%;
+    }
+    
+    .countdown-wrapper {
+        gap: 50px;
     }
     
     .countdown-title {
-        font-size: 1.2rem;
+        font-size: 2rem;
     }
     
     .countdown-value {
-        font-size: 1.5rem;
+        font-size: 3rem;
     }
     
     .countdown-label {
-        font-size: 0.7rem;
+        font-size: 1rem;
     }
     
     .countdown-display {
-        gap: 10px;
-    }
-    
-    .countdown-row {
-        gap: 5px;
-    }
-}
-
-@media (min-width: 768px) {
-    .countdown-section {
-        padding: 80px 20px;
-    }
-    
-    .countdown-title {
-        font-size: 1.8rem;
-    }
-    
-    .countdown-value {
-        font-size: 2.5rem;
-    }
-    
-    .countdown-label {
-        font-size: 0.95rem;
+        gap: 25px;
     }
 }
 
@@ -1040,6 +999,14 @@ body.menu-open {
     color: white;
 }
 
+/* Desktop Buttons */
+@media (min-width: 1024px) {
+    .btn {
+        padding: 18px 45px;
+        font-size: 1.1rem;
+    }
+}
+
 /* ========== TEAM SECTION ========== */
 .team-section {
     background: linear-gradient(to bottom, #4dabaa 0%, #377e7c 60%);
@@ -1049,25 +1016,21 @@ body.menu-open {
     padding-bottom: 30px;
 }
 
-
 .section-header {
     text-align: center;
     margin-bottom: 50px;
     background: linear-gradient(to right, #377e7c 0%, #4dabaa 60%);
     padding: 30px 20px;
     border-radius: 15px;
-    
-    /* Añadir estas líneas */
     width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    border-radius: 0; /* Opcional: quitar border-radius si quieres que llegue hasta los bordes */
+    border-radius: 0;
 }
 
-/* Contenedor en línea para h2 y .script */
 .section-header-content {
     display: flex;
     align-items: baseline;
@@ -1076,7 +1039,7 @@ body.menu-open {
 }
 
 .section-header h2 {
-    font-family: var(--font-primary); /* Montserrat */
+    font-family: var(--font-primary);
     font-weight: 700;
     color: white;
     margin: 0;
@@ -1084,7 +1047,7 @@ body.menu-open {
 }
 
 .section-header .script {
-    font-family: var(--font-signature); /* Michigan Signature */
+    font-family: var(--font-signature);
     font-weight: 400;
     color: white;
     margin: 0;
@@ -1148,9 +1111,9 @@ body.menu-open {
 .juan-destacado {
     grid-column: span 2;
     margin-top: 30px;
-    max-width: 200px; /* Añade esta línea */
-    margin-left: auto; /* Añade esta línea */
-    margin-right: auto; /* Añade esta línea */
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .juan-destacado h3 {
@@ -1166,6 +1129,63 @@ body.menu-open {
     font-size: 0.8rem;
 }
 
+.team-member-image i {
+    font-size: 70px;
+    color: white;
+}
+
+/* Desktop Team */
+@media (min-width: 1024px) {
+    .team-section {
+        padding: 0 40px 80px;
+    }
+    
+    .section-header {
+        padding: 50px 40px;
+    }
+    
+    .section-header h2 {
+        font-size: 3rem;
+    }
+    
+    .section-header .script {
+        font-size: 4.5rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px;
+        max-width: 1400px;
+        margin: 60px auto;
+    }
+    
+    .team-member-image {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .team-member-image i {
+        font-size: 90px;
+    }
+    
+    .team-member h3 {
+        font-size: 1.7rem;
+    }
+    
+    .team-member .role {
+        font-size: 1rem;
+    }
+    
+    .team-member .district {
+        font-size: 0.9rem;
+    }
+    
+    .juan-destacado {
+        grid-column: span 1;
+        max-width: none;
+    }
+}
+
 /* ========== STRATEGIC PLAN SECTION ========== */
 .strategic-plan {
     position: relative;
@@ -1174,7 +1194,6 @@ body.menu-open {
     overflow: hidden;
 }
 
-/* Fondo con patrón */
 .strategic-plan::before {
     content: "";
     position: absolute;
@@ -1187,7 +1206,6 @@ body.menu-open {
     opacity: .05;
 }
 
-/* Capa blanca con opacidad */
 .strategic-plan::after {
     content: "";
     position: absolute;
@@ -1201,7 +1219,6 @@ body.menu-open {
     z-index: 2;
 }
 
-/* Contenido encima */
 .strategic-plan > * {
     position: relative;
     z-index: 3;
@@ -1259,7 +1276,6 @@ body.menu-open {
     color: #2C3E50;
 }
 
-/* Card del PDF */
 .plan-pdf-card {
     background: white;
     border: 2px solid var(--gray-light);
@@ -1333,54 +1349,41 @@ body.menu-open {
     box-shadow: 0 6px 20px rgba(192, 103, 55, 0.4);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Desktop Strategic Plan */
+@media (min-width: 1024px) {
+    .strategic-plan {
+        padding: 120px 40px;
+    }
+    
     .strategic-plan-title .plan-word {
-        font-size: 2rem;
+        font-size: 3.5rem;
     }
     
     .strategic-plan-title .estrategico-word {
-        font-size: 2.8rem;
+        font-size: 5rem;
+    }
+    
+    .strategic-plan-content {
+        max-width: 1200px;
+        padding: 0 40px;
     }
     
     .strategic-plan-text {
-        font-size: 1rem;
-        text-align: left;
+        font-size: 1.2rem;
+        line-height: 2;
     }
     
     .plan-pdf-card {
-        padding: 30px 20px;
+        padding: 60px;
     }
     
     .pdf-title {
-        font-size: 1.3rem;
-    }
-    
-    .plan-buttons {
-        flex-direction: column;
+        font-size: 2rem;
     }
     
     .plan-btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .strategic-plan-title .plan-word {
-        font-size: 1.7rem;
-    }
-    
-    .strategic-plan-title .estrategico-word {
-        font-size: 2.3rem;
-    }
-    
-    .strategic-plan-text {
-        font-size: 0.95rem;
-    }
-    
-    .pdf-title {
-        font-size: 1.2rem;
+        padding: 18px 45px;
+        font-size: 1.1rem;
     }
 }
 
@@ -1396,7 +1399,6 @@ body.menu-open {
     margin-bottom: 50px;
     background: white;
     padding: 30px 20px;
-    
     width: 100vw;
     position: relative;
     left: 50%;
@@ -1516,349 +1518,46 @@ body.menu-open {
     opacity: 0.8;
 }
 
-.team-member-image i {
-    font-size: 70px; /* Usa px para más control preciso */
-    color: white;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .spokespersons-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+/* Desktop Spokespersons */
+@media (min-width: 1024px) {
+    .spokespersons-section {
+        padding: 0 40px 100px 40px;
     }
     
-    .spokesperson-card {
-        padding: 25px 20px;
-    }
-    
-    .spokesperson-name {
-        font-size: 1.2rem;
-    }
-    
-    .contact-item {
-        font-size: 0.85rem;
+    .spokespersons-header {
+        padding: 50px 40px;
     }
     
     .spokespersons-header h2 {
-        font-size: 1.8rem;
+        font-size: 3rem;
     }
     
     .spokespersons-header .script {
-        font-size: 2.5rem;
+        font-size: 4.5rem;
     }
-}
-
-@media (min-width: 1024px) {
+    
     .spokespersons-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+        gap: 35px;
+        max-width: 1400px;
+    }
+    
+    .spokesperson-card {
+        padding: 40px 30px;
+    }
+    
+    .spokesperson-name {
+        font-size: 1.5rem;
+    }
+    
+    .spokesperson-region {
+        font-size: 1rem;
+    }
+    
+    .contact-item {
+        font-size: 1rem;
     }
 }
-
-/* ========== DONATION SECTION ==========
-.donation-section {
-            position: relative;
-            padding: 80px 0;
-            background-color: #fff;
-            overflow: hidden;
-}
-
-.donation-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 10px,
-        rgba(77, 182, 172, 0.03) 10px,
-        rgba(77, 182, 172, 0.03) 20px
-    );
-    z-index: 1;
-}
-
-.donation-section::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to top, 
-        rgba(255, 255, 255, 1) 0%,
-        rgba(255, 255, 255, 0.8) 70%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 2;
-}
-
-.donation-section > * {
-    position: relative;
-    z-index: 3;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.donation-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.donation-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.header-badge {
-    background: linear-gradient(to right, #377e7c 0%, #377e7c 5%, #4dabaa 60%);
-    color: white;
-    padding: 12px 40px;
-    border-radius: 50px;
-    display: inline-block;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 30px;
-}
-
-.title-main {
-    font-size: 2.3rem;
-    color: #2C3E50;
-    font-weight: 400;
-}
-
-.title-script {
-    font-family: 'Great Vibes', cursive;
-    font-size: 4.2rem;
-    color: #E67E5B;
-    margin: -15px 0 20px 0;
-    font-weight: 400;
-    line-height: 1.2;
-}
-
-.subtitle-text {
-    color: #718096;
-    font-size: 1.1rem;
-    line-height: 1.7;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.donation-content {
-    background: white;
-    border-radius: 30px;
-    padding: 40px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-}
-
-.amount-options {
-    margin: 30px 0;
-}
-
-.amount-options h3 {
-    color: #377e7c;
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 1.4rem;
-}
-
-.amount-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.amount-btn {
-    background: #E8F0EE;
-    border: 2px solid #D1E5E0;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.amount-btn:hover {
-    background: #4DB6AC;
-    border-color: #4DB6AC;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(77, 182, 172, 0.3);
-}
-
-.amount-btn:hover .amount-value,
-.amount-btn:hover .amount-label {
-    color: white;
-}
-
-.amount-btn.selected {
-    background: #377e7c;
-    border-color: #377e7c;
-}
-
-.amount-btn.selected .amount-value,
-.amount-btn.selected .amount-label {
-    color: white;
-}
-
-.amount-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #377e7c;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.amount-label {
-    font-size: 0.85rem;
-    color: #718096;
-}
-
-.custom-amount {
-    margin: 25px 0;
-    text-align: center;
-}
-
-.custom-amount p {
-    color: #718096;
-    margin-bottom: 15px;
-    font-weight: 500;
-}
-
-.custom-input-wrapper {
-    position: relative;
-    max-width: 250px;
-    margin: 0 auto 20px;
-}
-
-.custom-input-wrapper:before {
-    content: "$";
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    color: #377e7c;
-    font-weight: 700;
-}
-
-.custom-input {
-    width: 100%;
-    padding: 15px 15px 15px 45px;
-    background: #E8F0EE;
-    border: 2px solid #D1E5E0;
-    border-radius: 12px;
-    font-size: 1.3rem;
-    color: #2C3E50;
-    font-weight: 600;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-.custom-input:focus {
-    outline: none;
-    background: white;
-    border-color: #4DB6AC;
-    box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.1);
-}
-
-.donation-info {
-    background: #E8F0EE;
-    border-radius: 15px;
-    padding: 25px;
-    margin: 25px 0;
-    text-align: center;
-}
-
-.ath-handle {
-    color: #E67E5B;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 15px 0;
-}
-
-.donate-button {
-    width: 100%;
-    max-width: 400px;
-    margin: 30px auto;
-    display: block;
-    background: #E67E5B;
-    color: white;
-    border: none;
-    padding: 18px 40px;
-    border-radius: 50px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(230, 126, 91, 0.3);
-}
-
-.donate-button:hover {
-    background: #D5634F;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(230, 126, 91, 0.4);
-}
-
-.donate-button:active {
-    transform: translateY(0);
-}
-
-.info-note {
-    background: #FFF3E0;
-    border-left: 4px solid #FF9800;
-    padding: 15px 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-    color: #E65100;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-.campaign-hashtag {
-    text-align: center;
-    color: #377e7c;
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-top: 30px;
-}
-
-.payment-status {
-    display: none;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    text-align: center;
-    animation: slideDown 0.5s ease;
-}
-
-.payment-status.show {
-    display: block !important;
-}
-
-@media (max-width: 768px) {
-    .amount-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .title-script {
-        font-size: 3rem;
-    }
-
-    .header-badge {
-        font-size: 1.2rem;
-        padding: 10px 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .amount-grid {
-        grid-template-columns: 1fr;
-    }
-} */
 
 /* ========== DONATION SECTION TEMPORERA ========== */
 .donation-section {
@@ -1873,7 +1572,6 @@ body.menu-open {
     overflow: hidden;
 }
 
-/* Gradiente naranja desde abajo-izquierda hacia arriba-derecha */
 .donation-section::before {
     content: "";
     position: absolute;
@@ -1893,7 +1591,6 @@ body.menu-open {
     pointer-events: none;
 }
 
-/* Eliminar el segundo ::after ya no es necesario */
 .donation-section::after {
     content: none;
 }
@@ -1903,14 +1600,9 @@ body.menu-open {
     z-index: 2;
 }
 
-.donation-wrapper {
-    max-width: 700px;
-    margin: 0 auto;
-}
-
 .donation-header {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 }
 
 .donation-header .title-main {
@@ -1985,119 +1677,105 @@ body.menu-open {
     font-family: var(--font-primary);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .donation-section {
-        padding: 60px 20px;
-    }
-    
-    .donation-header .title-main {
-        font-size: 2rem;
-    }
-    
-    .donation-header .title-script {
-        font-size: 3.5rem;
-    }
-    
-    .ath-handle {
-        font-size: 1.6rem;
-    }
-    
-    .campaign-hashtag {
-        font-size: 1.3rem;
-    }
-    
-    .donation-section::before {
-        background: linear-gradient(
-            to top right,
-            #c06737 0%,
-            rgba(192, 103, 55, 0.5) 30%,
-            rgba(192, 103, 55, 0.2) 50%,
-            transparent 70%
-        );
-    }
+.donation-image-wrapper {
+    text-align: center;
+    margin: 40px 0;
+    padding: 0 20px;
 }
 
-@media (max-width: 480px) {
+.donation-image {
+    max-width: 450px;
+    width: 80%;
+    height: auto;
+    border-radius: 12px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Desktop Donation */
+@media (min-width: 1024px) {
     .donation-section {
-        padding: 50px 15px;
+        padding: 120px 40px;
     }
     
     .donation-header .title-main {
-        font-size: 1.8rem;
-    }
-    
-    .donation-header .title-script {
         font-size: 3rem;
     }
     
+    .donation-header .title-script {
+        font-size: 5.5rem;
+    }
+    
     .donation-header .subtitle-text {
-        font-size: 1rem;
+        font-size: 1.3rem;
+        max-width: 800px;
+    }
+    
+    .donation-image-wrapper {
+        margin: 60px 0;
+    }
+    
+    .donation-image {
+        max-width: 600px;
+        width: 60%;
     }
     
     .donation-info {
-        padding: 25px 20px;
+        padding: 40px 50px;
+        margin: 60px auto 40px;
+        max-width: 800px;
     }
     
-    .ath-handle {
-        font-size: 1.4rem;
-    }
-    
-    .campaign-hashtag {
+    .donation-method-text {
         font-size: 1.2rem;
     }
     
-    .donation-section::before {
-        background: linear-gradient(
-            to top right,
-            #c06737 0%,
-            rgba(192, 103, 55, 0.4) 35%,
-            transparent 65%
-        );
+    .ath-handle {
+        font-size: 2.5rem;
+    }
+    
+    .campaign-hashtag {
+        font-size: 2rem;
     }
 }
 
 /* ========== REGISTER SECTION ========== */
 .register-section {
-  position: relative;
-  padding: 80px 0;
-  background-color: #fff;
-  overflow: hidden;
+    position: relative;
+    padding: 80px 0;
+    background-color: #fff;
+    overflow: hidden;
 }
 
-/* Fondo con patrón */
 .register-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url('../img/backgrounds/pattern-line.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
-  opacity: .05;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../img/backgrounds/pattern-line.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    opacity: .05;
 }
 
-/* Capa blanca con opacidad de abajo hacia arriba */
 .register-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top, 
-    rgba(255, 255, 255, 1) 0%,      /* blanco sólido abajo */
-    rgba(255, 255, 255, 0.8) 70%,   /* casi blanco a mitad */
-    rgba(255, 255, 255, 0) 80%      /* transparente arriba */
-  );
-  z-index: 2;
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top, 
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.8) 70%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    z-index: 2;
 }
 
-/* Asegura que el contenido quede encima */
 .register-section > * {
-  position: relative;
-  z-index: 3;
+    position: relative;
+    z-index: 3;
 }
-
 
 .register-wrapper {
     max-width: 720px;
@@ -2162,7 +1840,6 @@ body.menu-open {
 .register-form-container {
     border-radius: 20px;
     padding: 40px;
-
 }
 
 .form-row {
@@ -2258,7 +1935,6 @@ body.menu-open {
     gap: 20px !important;
     align-items: center !important;
     animation: slideDown 0.3s ease;
-    
 }
 
 .years-section span {
@@ -2307,9 +1983,9 @@ body.menu-open {
     transition: all 0.3s ease;
     margin-top: 30px;
     letter-spacing: 1px;
-    margin: 30px auto 0;  /* ← Esta línea lo centra */
+    margin: 30px auto 0;
     display: block;
-
+    font-family: var(--font-primary) !important;
 }
 
 .register-submit-btn:hover {
@@ -2321,7 +1997,6 @@ body.menu-open {
     transform: translateY(0);
 }
 
-/* Email validation styles */
 .email-validation {
     margin-top: 8px;
     padding: 8px 12px;
@@ -2347,6 +2022,74 @@ body.menu-open {
 .email-validation.success {
     background: #D1FAE5;
     color: #059669;
+}
+
+/* Desktop Register */
+@media (min-width: 1024px) {
+    .register-section {
+        padding: 120px 0;
+    }
+    
+    .register-wrapper {
+        max-width: 900px;
+    }
+    
+    .header-badge {
+        font-size: 1.8rem;
+        padding: 15px 50px;
+    }
+    
+    .title-main {
+        font-size: 3rem;
+    }
+    
+    .title-script {
+        font-size: 5.5rem;
+    }
+    
+    .doctor-name img {
+        max-width: 350px;
+    }
+    
+    .campaign-hashtag {
+        font-size: 1.8rem;
+    }
+    
+    .register-form-container {
+        padding: 60px;
+    }
+    
+    .register-form input[type="text"],
+    .register-form input[type="email"],
+    .register-form input[type="tel"],
+    .register-form textarea {
+        padding: 18px;
+        font-size: 1.1rem;
+    }
+    
+    .question-group {
+        grid-template-columns: 220px 1fr;
+    }
+    
+    .question-section {
+        padding: 14px 25px;
+        font-size: 1rem;
+    }
+    
+    .years-section {
+        grid-template-columns: 240px 1fr !important;
+    }
+    
+    .years-section input[type="number"] {
+        width: 100px !important;
+        padding: 10px !important;
+    }
+    
+    .register-submit-btn {
+        width: 40%;
+        padding: 18px;
+        font-size: 1.2rem;
+    }
 }
 
 /* ========== FOOTER ========== */
@@ -2394,38 +2137,43 @@ body.menu-open {
     letter-spacing: 1px;
 }
 
-.social-links {
-    margin: 40px 0;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-link {
-    width: 45px;
-    height: 45px;
-    background: var(--teal-primary);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 1.2rem;
-}
-
-.social-link:hover {
-    background: var(--orange-accent);
-    transform: translateY(-5px) rotate(360deg);
-}
-
 .copyright {
     margin-top: 40px;
     padding-top: 20px;
     border-top: 1px solid rgba(255,255,255,0.1);
     font-size: 0.9rem;
     color: var(--gray-light);
+}
+
+/* Desktop Footer */
+@media (min-width: 1024px) {
+    .footer {
+        padding: 80px 40px 40px;
+    }
+    
+    .footer-content h3 {
+        font-size: 2.5rem;
+    }
+    
+    .footer-content .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .countdown {
+        gap: 50px;
+    }
+    
+    .countdown-item {
+        min-width: 100px;
+    }
+    
+    .countdown-number {
+        font-size: 3rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+    }
 }
 
 /* ========== ANIMATIONS ========== */
@@ -2505,119 +2253,6 @@ body.menu-open {
     100% { transform: rotate(360deg); }
 }
 
-/* ========== RESPONSIVE DESIGN ========== */
-@media (max-width: 768px) {
-    .register-form-container {
-        padding: 30px 20px;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .title-script {
-        font-size: 3.5rem;
-    }
-    
-    .doctor-name img {
-        max-width: 220px;
-    }
-    
-    .years-section {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-badge {
-        font-size: 1.9rem;
-        padding: 14px 55px;
-    }
-    
-    .title-main {
-        font-size: 1.7rem;
-    }
-    
-    .title-script {
-        font-size: 2.5rem;
-    }
-    
-    .doctor-name img {
-        max-width: 220px;
-    }
-    
-    .campaign-hashtag {
-        font-size: 1.45rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .hero h1 {
-        font-size: 3.5rem;
-    }
-    
-    .hero .subtitle {
-        font-size: 1.3rem;
-    }
-    
-    .team-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
-    }
-    
-    .juan-destacado {
-        grid-column: span 4;
-    }
-    
-    .plan-cards {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .plan-card {
-        flex: 1 1 calc(50% - 30px);
-        max-width: 400px;
-    }
-    
-    .countdown {
-        gap: 50px;
-    }
-    
-    .countdown-number {
-        font-size: 3rem;
-    }
-}
-
-@media (min-width: 1024px) {
-    .hero {
-        padding: 100px 20px;
-    }
-    
-    .hero h1 {
-        font-size: 4rem;
-    }
-    
-    .section-header h2 {
-        font-size: 2.5rem;
-    }
-    
-    .section-header .script {
-        font-size: 3.5rem;
-    }
-    
-    .team-grid {
-        max-width: 1000px;
-        margin: 40px auto;
-    }
-    
-    .donation-content {
-        padding: 50px 40px;
-    }
-}
-
 /* ========== RADIO BUTTONS - DEBE ESTAR AL FINAL ========== */
 .register-form .radio-option {
     display: flex !important;
@@ -2653,4 +2288,450 @@ body.menu-open {
 
 .register-form .radio-option > * {
     order: 0 !important;
+}
+
+/* ========== CHECKBOX STYLES ========== */
+.checkbox-group {
+    padding: 15px 0;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 12px;
+    margin-top: 3px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #4DB6AC;
+    flex-shrink: 0;
+}
+
+.checkbox-text {
+    color: #333;
+    user-select: none;
+}
+
+.checkbox-text a {
+    color: #4DB6AC;
+    text-decoration: underline;
+}
+
+.checkbox-text a:hover {
+    color: #377e7c;
+}
+
+/* Success message styles */
+.success-message {
+    background: #D1FAE5;
+    border: 2px solid #059669;
+    color: #065F46;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: none;
+    animation: slideDown 0.5s ease;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.success-message i {
+    color: #059669;
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Estilos para los botones de monto */
+.amount-btn:hover {
+    background: #4DB6AC !important;
+    color: white !important;
+    transform: translateY(-2px);
+}
+
+.amount-btn.active {
+    background: #4DB6AC !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(77, 182, 172, 0.4);
+}
+
+/* Estilos para el estado del pago */
+.payment-status.success {
+    background: #D1FAE5;
+    border: 2px solid #059669;
+    color: #065F46;
+    display: block !important;
+}
+
+.payment-status.error {
+    background: #FEE2E2;
+    border: 2px solid #DC2626;
+    color: #991B1B;
+    display: block !important;
+}
+
+.payment-status.processing {
+    background: #DBEAFE;
+    border: 2px solid #2563EB;
+    color: #1E40AF;
+    display: block !important;
+}
+
+/* ========== RESPONSIVE MOBILE ADJUSTMENTS ========== */
+@media (max-width: 968px) {
+    .doctor-intro-main {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .doctor-intro-logo {
+        max-width: 260px;
+    }
+    
+    .doctor-intro-image-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .doctor-intro-photo {
+        max-width: 100%;
+    }
+    
+    .doctor-intro-text-column {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .countdown-hero-section {
+        padding: 60px 0;
+        min-height: 500px;
+    }
+    
+    .countdown-hero-header h2 {
+        font-size: 2rem;
+    }
+    
+    .countdown-description {
+        font-size: 1rem;
+    }
+    
+    .countdown-display-large {
+        gap: 20px;
+    }
+    
+    .countdown-item-large {
+        padding: 20px 25px;
+        min-width: 120px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2.5rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.85rem;
+    }
+    
+    .countdown-logo img {
+        max-width: 320px;
+    }
+    
+    .register-form-container {
+        padding: 30px 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .title-script {
+        font-size: 3.5rem;
+    }
+    
+    .doctor-name img {
+        max-width: 220px;
+    }
+    
+    .years-section {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .donation-section {
+        padding: 60px 20px;
+    }
+    
+    .donation-header .title-main {
+        font-size: 2rem;
+    }
+    
+    .donation-header .title-script {
+        font-size: 3.5rem;
+    }
+    
+    .ath-handle {
+        font-size: 1.6rem;
+    }
+    
+    .campaign-hashtag {
+        font-size: 1.3rem;
+    }
+    
+    .donation-section::before {
+        background: linear-gradient(
+            to top right,
+            #c06737 0%,
+            rgba(192, 103, 55, 0.5) 30%,
+            rgba(192, 103, 55, 0.2) 50%,
+            transparent 70%
+        );
+    }
+    
+    .plan-pdf-card {
+        padding: 30px 20px;
+    }
+    
+    .pdf-title {
+        font-size: 1.3rem;
+    }
+    
+    .plan-buttons {
+        flex-direction: column;
+    }
+    
+    .plan-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .strategic-plan-title .plan-word {
+        font-size: 2rem;
+    }
+    
+    .strategic-plan-title .estrategico-word {
+        font-size: 2.8rem;
+    }
+    
+    .strategic-plan-text {
+        font-size: 1rem;
+        text-align: left;
+    }
+    
+    .spokespersons-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .spokesperson-card {
+        padding: 25px 20px;
+    }
+    
+    .spokesperson-name {
+        font-size: 1.2rem;
+    }
+    
+    .contact-item {
+        font-size: 0.85rem;
+    }
+    
+    .spokespersons-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .spokespersons-header .script {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-hero-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .countdown-item-large {
+        padding: 15px 20px;
+        min-width: 100px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+    
+    .header-badge {
+        font-size: 1.9rem;
+        padding: 14px 55px;
+    }
+    
+    .title-main {
+        font-size: 1.7rem;
+    }
+    
+    .title-script {
+        font-size: 2.5rem;
+    }
+    
+    .doctor-name img {
+        max-width: 220px;
+    }
+    
+    .campaign-hashtag {
+        font-size: 1.45rem;
+    }
+    
+    .countdown-section {
+        padding: 40px 15px;
+    }
+    
+    .countdown-title {
+        font-size: 1.2rem;
+    }
+    
+    .countdown-value {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+    }
+    
+    .countdown-display {
+        gap: 10px;
+    }
+    
+    .countdown-row {
+        gap: 5px;
+    }
+    
+    .donation-section {
+        padding: 50px 15px;
+    }
+    
+    .donation-header .title-main {
+        font-size: 1.8rem;
+    }
+    
+    .donation-header .title-script {
+        font-size: 3rem;
+    }
+    
+    .donation-header .subtitle-text {
+        font-size: 1rem;
+    }
+    
+    .donation-info {
+        padding: 25px 20px;
+    }
+    
+    .ath-handle {
+        font-size: 1.4rem;
+    }
+    
+    .campaign-hashtag {
+        font-size: 1.2rem;
+    }
+    
+    .donation-section::before {
+        background: linear-gradient(
+            to top right,
+            #c06737 0%,
+            rgba(192, 103, 55, 0.4) 35%,
+            transparent 65%
+        );
+    }
+    
+    .donation-image-wrapper {
+        margin: 25px 0;
+        padding: 0 10px;
+    }
+    
+    .donation-image {
+        max-width: 225px;
+        width: 70%;
+    }
+    
+    .doctor-intro-section {
+        padding: 50px 15px;
+    }
+    
+    .doctor-intro-logo-wrapper {
+        margin-bottom: 20px;
+    }
+    
+    .doctor-intro-logo {
+        max-width: 220px;
+    }
+    
+    .doctor-intro-image-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .doctor-intro-photo {
+        max-width: 100%;
+    }
+    
+    .doctor-intro-text {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .doctor-intro-highlight {
+        padding: 15px 20px;
+    }
+    
+    .doctor-intro-highlight p {
+        font-size: 0.85rem;
+        padding-left: 25px;
+    }
+    
+    .strategic-plan-title .plan-word {
+        font-size: 1.7rem;
+    }
+    
+    .strategic-plan-title .estrategico-word {
+        font-size: 2.3rem;
+    }
+    
+    .strategic-plan-text {
+        font-size: 0.95rem;
+    }
+    
+    .pdf-title {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .donation-image-wrapper {
+        margin: 30px 0;
+        padding: 0 15px;
+    }
+    
+    .donation-image {
+        max-width: 270px;
+        width: 75%;
+    }
+    
+    .donation-info {
+        margin: 35px 0 25px 0;
+        padding: 25px 20px;
+    }
 }

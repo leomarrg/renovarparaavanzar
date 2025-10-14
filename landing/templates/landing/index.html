@@ -206,18 +206,23 @@
     <section class="doctor-intro-section">
         <div class="container">
             <div class="doctor-intro-content">
-                <!-- Logo centrado -->
                 <div class="doctor-intro-logo-wrapper">
-                    <img src="{% static 'landing/img/logo-mendez.png' %}" 
+                    <!-- Logo para móvil -->
+                    <img src="{% static 'landing/img/logo-mendez-mobile.png' %}" 
                         alt="Dr. Méndez Sexto" 
-                        class="doctor-intro-logo">
+                        class="doctor-intro-logo-mobile">
+                    
+                    <!-- Logo para desktop -->
+                    <img src="{% static 'landing/img/DR_PRESIDENTE@2x.png' %}" 
+                        alt="Dr. Méndez Sexto" 
+                        class="doctor-intro-logo-desktop">
                 </div>
 
                 <div class="doctor-intro-image-wrapper">
                         <img src="{% static 'landing/img/dr_cutout.png' %}" 
                             alt="Dr. Méndez Sexto" 
                             class="doctor-intro-photo">
-                    </div>
+                </div>
                 <!-- Contenido principal: Texto y foto lado a lado -->
                 <div class="doctor-intro-main">
                     <div class="doctor-intro-text-column">
@@ -889,7 +894,7 @@ setTimeout(function() {
             <div class="countdown-hero-content">
                 <!-- Header -->
                 <div class="countdown-hero-header">
-                    <h2>Conteo regresivo para las elecciones</h2>
+                    <h2>Conteo regresivo para las elecciones:</h2>
                     <!-- <p class="countdown-description">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                         Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
@@ -952,7 +957,7 @@ setTimeout(function() {
                 
                 <div class="copyright">
                     <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
-                    <p style="margin-top: 10px; font-size: 0.8rem;">Powered By Dominio</p>
+                    <p style="margin-top: 10px; font-size: 0.8rem;">Comité Dr. Méndez Sexto</p>
                 </div>
             </div>
         </div>
