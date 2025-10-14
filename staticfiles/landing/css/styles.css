@@ -317,8 +317,8 @@ body.menu-open {
     height: 100%;
     background: linear-gradient(
         to top, 
-        rgba(255, 255, 255, 1) 30%,
-        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 1) 26%,
+        rgba(255, 255, 255, 0.7) 37%,
         rgba(255, 255, 255, 0) 70%
     );
     z-index: 1;
@@ -329,7 +329,7 @@ body.menu-open {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -3%;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -373,14 +373,14 @@ body.menu-open {
 /* Desktop Hero */
 @media (min-width: 1024px) {
     .hero {
-        margin-top: 70px;
-        min-height: 800px;
-        padding-bottom: 200px;
+        margin-top: 50px;
+        min-height: 1264px;
+        padding-bottom: 190px;
     }
     
     .hero::before {
-        height: 600px;
-        top: 10%;
+        height: 1200px;
+        top: 2%;
     }
     
     .hero-logo {
@@ -475,6 +475,7 @@ body.menu-open {
 .countdown-hero-header {
     margin-bottom: 60px;
     animation: fadeInUp 1s ease;
+    text-align: center;
 }
 
 .countdown-hero-header h2 {
@@ -483,6 +484,8 @@ body.menu-open {
     font-weight: 700;
     margin-bottom: 25px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    text-align: center;
 }
 
 .countdown-description {
@@ -545,11 +548,13 @@ body.menu-open {
 @media (min-width: 1024px) {
     .countdown-hero-section {
         padding: 120px 40px;
-        min-height: 700px;
+        min-height: 600px;
     }
     
     .countdown-hero-header h2 {
         font-size: 4rem;
+        white-space: nowrap;
+        text-align: center;
     }
     
     .countdown-description {
@@ -570,6 +575,65 @@ body.menu-open {
     
     .countdown-logo img {
         max-width: 400px;
+    }
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .countdown-hero-section {
+        padding: 60px 0;
+        min-height: 500px;
+    }
+    
+    .countdown-hero-header h2 {
+        font-size: 2rem;
+        white-space: normal; /* Permite que se rompa en móvil si es necesario */
+    }
+    
+    .countdown-description {
+        font-size: 1rem;
+    }
+    
+    .countdown-display-large {
+        gap: 20px;
+    }
+    
+    .countdown-item-large {
+        padding: 20px 25px;
+        min-width: 120px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2.5rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.85rem;
+    }
+    
+    .countdown-logo img {
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-hero-header h2 {
+        font-size: 1.6rem;
+        white-space: normal; /* Permite que se rompa en pantallas muy pequeñas */
+    }
+    
+    .countdown-item-large {
+        padding: 15px 20px;
+        min-width: 100px;
+    }
+    
+    .countdown-number-large {
+        font-size: 2rem;
+    }
+    
+    .countdown-label-large {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
     }
 }
 
@@ -677,15 +741,25 @@ body.menu-open {
 .doctor-intro-logo-wrapper {
     text-align: center;
     margin-bottom: 30px;
+    position: relative;
 }
 
-.doctor-intro-logo {
+/* Logo Mobile - visible por defecto */
+.doctor-intro-logo-mobile {
     max-width: 300px;
     width: 80%;
     height: auto;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
     animation: fadeInScale 1s ease;
     display: inline-block;
+}
+
+/* Logo Desktop - oculto por defecto */
+.doctor-intro-logo-desktop {
+    max-width: 300px;
+    width: 80%;
+    height: auto;
+    animation: fadeInScale 1s ease;
+    display: none;
 }
 
 .doctor-intro-main {
@@ -761,21 +835,40 @@ body.menu-open {
 /* Desktop Doctor Intro */
 @media (min-width: 1024px) {
     .doctor-intro-section {
-        padding: 120px 40px;
+        padding: 60px 40px 120px; /* Menos padding arriba, mantiene abajo */
     }
     
     .doctor-intro-content {
         max-width: 1400px;
     }
     
-    .doctor-intro-logo {
-        max-width: 400px;
-        width: 60%;
+    /* Logo wrapper en desktop - alineado a la derecha */
+    .doctor-intro-logo-wrapper {
+        text-align: right;
+        margin-bottom: 40px;
+        padding-right: 0;
+        position: relative;
+    }
+    
+    /* Ocultar logo mobile en desktop */
+    .doctor-intro-logo-mobile {
+        display: none;
+    }
+    
+    /* Mostrar logo desktop - más grande y alineado a la derecha */
+    .doctor-intro-logo-desktop {
+        display: inline-block;
+        max-width: 600px;
+        width: 70%;
+        margin-right: 0;
+        position: relative;
+        top: 130px;
     }
     
     .doctor-intro-main {
         gap: 60px;
         flex-direction: row;
+        align-items: flex-start;
     }
     
     .doctor-intro-text-column {
