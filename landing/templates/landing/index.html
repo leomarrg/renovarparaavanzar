@@ -219,7 +219,7 @@
             <div class="doctor-intro-content">
                 <div class="doctor-intro-logo-wrapper">
                     <!-- Logo para móvil -->
-                    <img src="{% static 'landing/img/logo-mendez.png' %}" 
+                    <img src="{% static 'landing/img/logo-mendez-mobile.png' %}" 
                         alt="Dr. Méndez Sexto" 
                         class="doctor-intro-logo-mobile">
                     
@@ -477,7 +477,7 @@
 
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
-<!-- <div id="emergency-debug" style="
+<div id="emergency-debug" style="
     position: fixed;
     top: 0;
     left: 0;
@@ -616,9 +616,9 @@ setTimeout(function() {
         emergencyLog('Listeners configurados. Prueba tocar un botón de monto', 'warning');
     }
 }, 1000);
-</script> -->
+</script> 
     
-    <!-- 4. SECCIÓN HTML DE DONACIÓN (descomentada y corregida) -->
+    <!-- Donation Section-->
     <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
@@ -632,42 +632,39 @@ setTimeout(function() {
                 </div>
 
                 <div class="donation-content">
-                    <!-- Status de pago -->
-                    <div id="paymentStatusDonation" class="payment-status" style="display: none;"></div>
+                    <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
                     
-                    <!-- Selección de monto -->
                     <div class="amount-options">
                         <h3>Selecciona un monto</h3>
                         
                         <div class="amount-grid">
-                            <button class="amount-btn" data-amount="25">
+                            <div class="amount-btn" data-amount="25">
                                 <span class="amount-value">$25</span>
                                 <span class="amount-label">Apoyo Básico</span>
-                            </button>
-                            <button class="amount-btn" data-amount="50">
+                            </div>
+                            <div class="amount-btn" data-amount="50">
                                 <span class="amount-value">$50</span>
                                 <span class="amount-label">Apoyo Solidario</span>
-                            </button>
-                            <button class="amount-btn" data-amount="100">
+                            </div>
+                            <div class="amount-btn" data-amount="100">
                                 <span class="amount-value">$100</span>
                                 <span class="amount-label">Apoyo Comprometido</span>
-                            </button>
-                            <button class="amount-btn" data-amount="250">
+                            </div>
+                            <div class="amount-btn" data-amount="250">
                                 <span class="amount-value">$250</span>
                                 <span class="amount-label">Apoyo Firme</span>
-                            </button>
-                            <button class="amount-btn" data-amount="500">
+                            </div>
+                            <div class="amount-btn" data-amount="500">
                                 <span class="amount-value">$500</span>
                                 <span class="amount-label">Apoyo Extraordinario</span>
-                            </button>
-                            <button class="amount-btn" data-amount="1000">
+                            </div>
+                            <div class="amount-btn" data-amount="1000">
                                 <span class="amount-value">$1,000</span>
                                 <span class="amount-label">Apoyo Transformador</span>
-                            </button>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Monto personalizado -->
                     <div class="custom-amount">
                         <p>O ingresa otra cantidad:</p>
                         <div class="custom-input-wrapper">
@@ -683,21 +680,36 @@ setTimeout(function() {
                         </div>
                     </div>
 
-                    <!-- Display del monto seleccionado -->
+                    <!-- Monto seleccionado -->
                     <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
-                        <p style="color: #2E7D32; margin: 0 0 10px 0;">Monto seleccionado:</p>
+                        <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
                         <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
                             $<span id="selectedAmountValue">0</span>
                         </p>
                     </div>
 
-                    <!-- BOTÓN DE ATH MÓVIL - SE GENERA AUTOMÁTICAMENTE AQUÍ -->
+                    <div class="info-note" style="background: #E3F2FD; border-left: 4px solid #2196F3; padding: 20px; border-radius: 8px; margin: 25px 0;">
+                        <h4 style="color: #1565C0; margin: 0 0 10px 0; font-size: 1.1rem;">
+                            ¿Cómo funciona?
+                        </h4>
+                        <ol style="color: #1565C0; margin: 0; padding-left: 20px; line-height: 1.8;">
+                            <li>Selecciona un monto arriba</li>
+                            <li>Haz click en "Donar con ATH Móvil"</li>
+                            <li>Ingresa tu número de teléfono</li>
+                            <li>Abre la app ATH Móvil y confirma</li>
+                        </ol>
+                    </div>
+
+                    <div class="donation-image-wrapper">
+                        <img src="{% static 'landing/img/ATHM.png' %}" alt="ATH Móvil" class="donation-image">
+                    </div>
+
+                    <!-- ATH Móvil Payment Button -->
                     <div id="ATHMovil_Checkout_Button_payment"></div>
 
-                    <!-- Información adicional -->
                     <div class="donation-info" style="margin-top: 25px;">
-                        <p style="color: #718096; margin-bottom: 10px;">
-                            Donación segura a través de <strong>ATH Móvil</strong>
+                        <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
+                            Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
                         </p>
                         <div class="ath-handle">/comitedrmendezsexto</div>
                     </div>
@@ -705,13 +717,15 @@ setTimeout(function() {
                     <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 20px;">
                         Este comité está debidamente registrado como una entidad sin fines de lucro.
                     </p>
+
+                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
                 </div>
             </div>
         </div>
-    </section>
+    </section> 
 
     <!-- Donation Section TEMPORERA -->
-    <section class="donation-section" id="donate">
+    <!-- <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
@@ -720,10 +734,10 @@ setTimeout(function() {
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
-                </div>
+                </div> -->
 
                 <!-- Imagen centralizada -->
-                <div class="donation-image-wrapper">
+                <!-- <div class="donation-image-wrapper">
                     <img src="{% static 'landing/img/ATHM.png' %}" alt="ATH Móvil" class="donation-image">
                 </div>
 
@@ -741,7 +755,7 @@ setTimeout(function() {
                 <div class="campaign-hashtag">#RenovarParaAvanzar</div>
             </div>
         </div>
-    </section>
+    </section> -->
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
     <section class="register-section" id="register">
