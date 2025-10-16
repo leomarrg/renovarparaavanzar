@@ -1,987 +1,171 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ meta.description }}">
-    <meta name="keywords" content="{{ meta.keywords }}">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="{{ meta.title }}">
-    <meta property="og:description" content="{{ meta.description }}">
-    <meta property="og:image" content="{% static meta.og_image %}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    
-    <title>{{ meta.title }}</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'landing/img/favicon.png' %}">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
-
+    <title>Test ATH Móvil - MÍNIMO</title>
     <style>
-.checkbox-group {
-    padding: 15px 0;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.checkbox-label input[type="checkbox"] {
-    margin-right: 12px;
-    margin-top: 3px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #4DB6AC;
-    flex-shrink: 0;
-}
-
-.checkbox-text {
-    color: #333;
-    user-select: none;
-}
-
-.checkbox-text a {
-    color: #4DB6AC;
-    text-decoration: underline;
-}
-
-.checkbox-text a:hover {
-    color: #377e7c;
-}
-
-/* Success message styles */
-.success-message {
-    background: #D1FAE5;
-    border: 2px solid #059669;
-    color: #065F46;
-    padding: 20px;
-    border-radius: 12px;
-    margin: 20px 0;
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.1rem;
-    display: none;
-    animation: slideDown 0.5s ease;
-}
-
-.success-message.show {
-    display: block;
-}
-
-.success-message i {
-    color: #059669;
-    font-size: 2rem;
-    display: block;
-    margin-bottom: 10px;
-}
-
-/* Estilos para los botones de monto */
-.amount-btn:hover {
-    background: #4DB6AC !important;
-    color: white !important;
-    transform: translateY(-2px);
-}
-
-.amount-btn.active {
-    background: #4DB6AC !important;
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(77, 182, 172, 0.4);
-}
-
-/* Estilos para el estado del pago */
-.payment-status.success {
-    background: #D1FAE5;
-    border: 2px solid #059669;
-    color: #065F46;
-    display: block !important;
-}
-
-.payment-status.error {
-    background: #FEE2E2;
-    border: 2px solid #DC2626;
-    color: #991B1B;
-    display: block !important;
-}
-
-.payment-status.processing {
-    background: #DBEAFE;
-    border: 2px solid #2563EB;
-    color: #1E40AF;
-    display: block !important;
-}
-</style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4DB6AC; }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: none;
+        }
+        .status.show { display: block; }
+        .status.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        #ATHMovil_Checkout_Button_payment {
+            margin: 30px 0;
+            min-height: 60px;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
-    <!-- Loader -->
-     <div class="loader" id="loader">
-        <div class="loader-spinner"></div>
-    </div>
-    
-    <!-- Header -->
-    <header class="header" id="header">
-        <nav class="navbar">
-            <div class="logo-container">
-                <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
-            </div>
-            
-            <!-- Desktop Navigation - visible solo en desktop -->
-            <div class="desktop-nav">
-                <a href="#hero" style="color: black !important;">Inicio</a>
-                <a href="#team" style="color: black !important;">Equipo</a>
-                <a href="#plan" style="color: black !important;">Plan Estratégico</a>
-                <a href="#donate" style="color: black !important;">Donar</a>
-                <a href="#register" style="color: black !important;">Registrarse</a>
-            </div>
-            
-            <!-- Mobile Menu Toggle - visible solo en móvil -->
-            <button class="menu-toggle" id="menuToggle">
-                <span>☰</span>
-            </button>
-        </nav>
-            
-            <!-- Mobile Menu -->
-            <div class="mobile-menu" id="mobileMenu">
-                <a href="#hero">Inicio</a>
-                <a href="#team">Equipo</a>
-                <a href="#plan">Plan Estratégico</a>
-                <a href="#donate">Donar</a>
-                <a href="#register">Registrarse</a>
-            </div>
-    </header>
-    
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="hero-content">
-            <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
+    <div class="card">
+        <h1>🧪 Test ATH Móvil</h1>
+        <p>Prueba mínima del botón de pago</p>
 
-            <p class="hero-text">
-                "Cuando los médicos nos unimos... Puerto Rico sana." <span class="hero-author">- Dr. Méndez Sexto</span>
-            </p>
-        </div>
-    </section>
+        <div id="statusMessage" class="status"></div>
 
-    <!-- Countdown Section -->
-    <section class="countdown-section">
-        <div class="countdown-wrapper">
-            <h3 class="countdown-title" style="font-size: 1.2rem;">Conteo regresivo para las elecciones:</h3>
-            
-            <div class="countdown-display">
-                <div class="countdown-row">
-                    <div class="countdown-unit">
-                        <span class="countdown-value" id="days-mini">{{ countdown.days }}</span>
-                        <span class="countdown-label">Días</span>
-                    </div>
-                </div>
-                
-                <div class="countdown-row">
-                    <div class="countdown-unit">
-                        <span class="countdown-value" id="hours-mini">{{ countdown.hours }}</span>
-                        <span class="countdown-label">Horas</span>
-                    </div>
-                </div>
-                
-                <div class="countdown-row">
-                    <div class="countdown-unit">
-                        <span class="countdown-value" id="minutes-mini">{{ countdown.minutes }}</span>
-                        <span class="countdown-label">Minutos</span>
-                    </div>
-                </div>
-                
-                <div class="countdown-row">
-                    <div class="countdown-unit">
-                        <span class="countdown-value" id="seconds-mini">{{ countdown.seconds }}</span>
-                        <span class="countdown-label">Segundos</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="doctor-intro-section">
-        <div class="container">
-            <div class="doctor-intro-content">
-                <div class="doctor-intro-logo-wrapper">
-                    <!-- Logo para móvil -->
-                    <img src="{% static 'landing/img/logo-mendez-mobile.png' %}" 
-                        alt="Dr. Méndez Sexto" 
-                        class="doctor-intro-logo-mobile">
-                    
-                    <!-- Logo para desktop -->
-                    <img src="{% static 'landing/img/DR_PRESIDENTE@2x.png' %}" 
-                        alt="Dr. Méndez Sexto" 
-                        class="doctor-intro-logo-desktop">
-                </div>
-
-                <div class="doctor-intro-image-wrapper">
-                        <img src="{% static 'landing/img/dr_cutout.png' %}" 
-                            alt="Dr. Méndez Sexto" 
-                            class="doctor-intro-photo">
-                </div>
-                <!-- Contenido principal: Texto y foto lado a lado -->
-                <div class="doctor-intro-main">
-                    <div class="doctor-intro-text-column">
-                        <h2 class="doctor-intro-section-title" style="margin-bottom: 20px; color: #377e7c;">Dr. Ramón Méndez Sexto</h2>
-                        <ul class="doctor-intro-list">
-                            Médico generalista con más de 40 años de experiencia, radicado en Guaynabo, Puerto Rico. Sus áreas de práctica incluyen medicina familiar, geriatría, medicina ocupacional y medicina integrativa.
-                        
-                            Graduado en 1981 de la San Juan Bautista School of Medicine, ha mantenido su licencia médica vigente en Puerto Rico.
-                        
-                            Fue presidente de la Junta de Licenciamiento y Disciplina Médica (JLDM) entre 2021 y 2025, periodo en el que se destacó por su participación en temas de regulación médica. En marzo de 2023, expresó su desacuerdo con una propuesta para aumentar la puntuación mínima de recertificación.
-                        
-                            En agosto de 2025 anunció su aspiración a la presidencia del Colegio de Médicos Cirujanos de Puerto Rico. Su trayectoria refleja compromiso con la profesión médica y el fortalecimiento de la práctica ética en la isla.
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Team Section -->
-    <section class="team-section" id="team">
-        <div class="section-header">
-            <div class="section-header-content">
-                <h2>Nuestro</h2>
-                <div class="script">Equipo</div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="team-grid">
-                {% for member in team_members %}
-                <div class="team-member animate-on-scroll">
-                    <div class="team-member-image">
-                        <i class="fas fa-user-md fa-8x"></i>
-                    </div>
-                    <h3>{{ member.name }}</h3>
-                    <p class="role">{{ member.role }}</p>
-                    <p class="district">{{ member.district }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
-    
-    <!-- Strategic Plan Section -->
-    <section class="strategic-plan" id="plan">
-        <div class="container">
-            <div class="strategic-plan-header">
-                <div class="strategic-plan-title">
-                    <h2 class="plan-word">Plan</h2>
-                    <div class="estrategico-word">Estratégico</div>
-                </div>
-            </div>
-            
-            <div class="strategic-plan-content">
-                <p class="strategic-plan-text">
-                    El Plan de Trabajo <span class="plan-name">"Renovar para Avanzar"</span> propone una transformación estratégica del Colegio de Médicos y Cirujanos de Puerto Rico, orientada a <span class="bold-text">recuperar su credibilidad, unificar a la clase médica y posicionarla como fuerza decisiva en la política pública de salud.</span> La propuesta plantea modernizar la gestión institucional, fortalecer la defensa de la profesión y crear una estructura sólida, participativa y transparente que devuelva al Colegio su rol protagónico. <span class="bold-text">Renovar es rescatar la esencia. Avanzar es proyectar el futuro.</span>
-                </p>
-                
-                {% if plan_estrategico %}
-                <div class="plan-pdf-card">
-                    <div class="pdf-icon"></div>
-                    <h3 class="pdf-title">{{ plan_estrategico.titulo }}</h3>
-                    
-                    <div class="plan-buttons">
-                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
-                        target="_blank" 
-                        class="plan-btn plan-btn-primary">
-                            <i class="fas fa-eye"></i>
-                            Ver Documento
-                        </a>
-                        <a href="{{ plan_estrategico.archivo_pdf.url }}" 
-                        download 
-                        class="plan-btn plan-btn-secondary">
-                            <i class="fas fa-download"></i>
-                            Descargar PDF
-                        </a>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de Portavoces -->
-    <section class="spokespersons-section" id="portavoces">
-        <div class="spokespersons-header">
-            <div class="spokespersons-header-content">
-                <h2 style="font-size: 3rem;">Portavoces</h2>
-            </div>
-        </div>
-        <div class="container">
-            <div class="spokespersons-grid">
-                <!-- San Juan -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. Ramón Vidal</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> San Juan</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:7872091227">(787) 209-1227</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:revidalmd@gmail.com">revidalmd@gmail.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bayamón -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. Carlos Santiago</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Bayamón</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:7874792539">(787) 479-2539</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:carlossantiago@hotmail.com">carlossantiago@hotmail.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Arecibo -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. Héctor Cott</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Arecibo</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:7875861372">(787) 586-1372</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:h_cott@yahoo.com">h_cott@yahoo.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aguadilla -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. Luigi</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Aguadilla</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:9399691661">(939) 969-1661</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:ortholuigi@gmail.com">ortholuigi@gmail.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mayagüez -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. Roberto Tirado</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Mayagüez</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:9393392976">(939) 339-2976</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:michaelmdrt@hotmail.com">michaelmdrt@hotmail.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ponce -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dr. José Toro</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Ponce</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:7873187870">(787) 318-7870</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:drjatoro@yahoo.com">drjatoro@yahoo.com</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Carolina -->
-                <div class="spokesperson-card animate-on-scroll">
-                    <h3 class="spokesperson-name">Dra. Lourdes Rodríguez Galarza</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Carolina</p>
-                    <div class="spokesperson-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:7876478991">(787) 647-8991</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:mrgalarza04@yahoo.com">mrgalarza04@yahoo.com</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Donation Section -->
-    <section class="donation-section" id="donate">
-        <div class="container">
-            <div class="donation-wrapper">
-                <div class="donation-header">
-                    <div class="header-badge">¡Apoya la Campaña!</div>
-                    <div class="title-main">Haz tu</div>
-                    <div class="title-script">donación</div>
-                    <p class="subtitle-text">
-                        Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
-                    </p>
-                </div>
-
-                <div class="donation-content">
-                    <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
-                    
-                    <div class="amount-options">
-                        <h3>Selecciona un monto</h3>
-                        
-                        <div class="amount-grid">
-                            <div class="amount-btn" data-amount="25">
-                                <span class="amount-value">$25</span>
-                                <span class="amount-label">Apoyo Básico</span>
-                            </div>
-                            <div class="amount-btn" data-amount="50">
-                                <span class="amount-value">$50</span>
-                                <span class="amount-label">Apoyo Solidario</span>
-                            </div>
-                            <div class="amount-btn" data-amount="100">
-                                <span class="amount-value">$100</span>
-                                <span class="amount-label">Apoyo Comprometido</span>
-                            </div>
-                            <div class="amount-btn" data-amount="250">
-                                <span class="amount-value">$250</span>
-                                <span class="amount-label">Apoyo Firme</span>
-                            </div>
-                            <div class="amount-btn" data-amount="500">
-                                <span class="amount-value">$500</span>
-                                <span class="amount-label">Apoyo Extraordinario</span>
-                            </div>
-                            <div class="amount-btn" data-amount="1000">
-                                <span class="amount-value">$1,000</span>
-                                <span class="amount-label">Apoyo Transformador</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="custom-amount">
-                        <p>O ingresa otra cantidad:</p>
-                        <div class="custom-input-wrapper">
-                            <input 
-                                type="number" 
-                                class="custom-input" 
-                                id="customDonationAmount"
-                                placeholder="0.00"
-                                min="1"
-                                max="1500"
-                                step="0.01"
-                            >
-                        </div>
-                    </div>
-
-                    <!-- Monto seleccionado -->
-                    <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
-                        <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
-                        <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
-                            $<span id="selectedAmountValue">0</span>
-                        </p>
-                    </div>
-
-                    <div class="info-note" style="background: #E3F2FD; border-left: 4px solid #2196F3; padding: 20px; border-radius: 8px; margin: 25px 0;">
-                        <h4 style="color: #1565C0; margin: 0 0 10px 0; font-size: 1.1rem;">
-                            ¿Cómo funciona?
-                        </h4>
-                        <ol style="color: #1565C0; margin: 0; padding-left: 20px; line-height: 1.8;">
-                            <li>Selecciona un monto arriba</li>
-                            <li>Haz click en "Donar con ATH Móvil"</li>
-                            <li>Ingresa tu número de teléfono</li>
-                            <li>Abre la app ATH Móvil y confirma</li>
-                        </ol>
-                    </div>
-
-                    <!-- ATH Móvil Payment Button -->
-                    <div id="ATHMovil_Checkout_Button_payment"></div>
-
-                    <div class="donation-info" style="margin-top: 25px;">
-                        <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
-                            Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
-                        </p>
-                        <div class="ath-handle">/comitedrmendezsexto</div>
-                    </div>
-
-                    <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 20px;">
-                        Este comité está debidamente registrado como una entidad sin fines de lucro.
-                    </p>
-
-                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Register Section -->
-    <section class="register-section" id="register">
-        <div class="container">
-            <div class="register-wrapper">
-                <div class="register-header">
-                    <div class="header-badge">¡Regístrate!</div>
-                    
-                    <div class="title-section">
-                        <div class="title-main">¡Iniciemos la</div>
-                        <div class="title-script">renovación!</div>
-                        
-                        <div class="doctor-name">
-                            <img src="{% static 'landing/img/logo-mendez.png' %}" alt="Dr. Méndez Sexto">
-                        </div>
-                        
-                        <div class="campaign-hashtag">#RenovarParaAvanzar</div>
-                    </div>
-                </div>
-                
-                <div class="register-form-container">
-                    <form method="post" action="{% url 'landing:register' %}" id="registerForm" class="register-form">
-                        {% csrf_token %}
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="text" name="name" placeholder="Nombre" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <input type="text" name="last_name" placeholder="Apellidos" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
-                            <div class="email-validation" id="emailValidation"></div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <input type="text" name="postal_address" placeholder="Dirección postal" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <input type="tel" name="phone_number" id="phone" placeholder="Número telefónico" required>
-                            </div>
-                        </div>
-                        
-                        <div class="question-group">
-                            <div class="question-section">¿Eres médico?</div>
-                            <div class="radio-group">
-                                <div class="radio-option">
-                                    <label>Sí</label>
-                                    <input type="radio" name="is_doctor" value="True" id="doctor_yes" required>
-                                </div>
-                                <div class="radio-option">
-                                    <label>No</label>
-                                    <input type="radio" name="is_doctor" value="False" id="doctor_no">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- INICIO DEL DIV QUE SE OCULTA -->
-                        <div id="doctorFields" style="display: none;">
-                            
-                            <div class="form-group">
-                                <input type="text" name="specialty" id="specialty" placeholder="Especialidad que practica">
-                            </div>
-                            
-                            <div class="years-section">
-                                <span>Años ejerciendo</span>
-                                <input type="number" name="years_practicing" id="years" min="0" max="70" placeholder="0">
-                            </div>
-                            
-                            <div class="form-group">
-                                <textarea name="service_location" id="service_location" placeholder="¿Dónde ofrece servicios?" rows="2"></textarea>
-                            </div>
-                            
-                            <div class="question-group">
-                                <div class="question-section">¿Eres colegiado?</div>
-                                <div class="radio-group">
-                                    <div class="radio-option">
-                                        <label>Sí</label>
-                                        <input type="radio" name="is_licensed" value="True" id="licensed_yes">
-                                    </div>
-                                    <div class="radio-option">
-                                        <label>No</label>
-                                        <input type="radio" name="is_licensed" value="False" id="licensed_no">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="question-group">
-                                <div class="question-section" style="font-size: .75rem;">¿Desea voto adelantado?</div>
-                                <div class="radio-group">
-                                    <div class="radio-option">
-                                        <label>Sí</label>
-                                        <input type="radio" name="needs_voting_help" value="True" required>
-                                    </div>
-                                    <div class="radio-option">
-                                        <label>No</label>
-                                        <input type="radio" name="needs_voting_help" value="False">
-                                    </div>
-                                </div>
-                        </div>
-                            
-                        </div>
-                        <!-- FIN DEL DIV QUE SE OCULTA -->
-
-                        <!-- Checkbox de términos y condiciones -->
-                        <div class="checkbox-group" style="margin: 25px 0;">
-                            <label class="checkbox-label">
-                                <input type="checkbox" 
-                                    name="accepts_terms" 
-                                    id="accepts_terms" 
-                                    required 
-                                    checked>
-                                <span class="checkbox-text">
-                                    Acepto los <a href="{% url 'landing:terms' %}" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
-                                </span>
-                            </label>
-                        </div>
-
-                        <!-- Checkbox de promociones -->
-                        <div class="checkbox-group" style="margin: 25px 0;">
-                            <label class="checkbox-label">
-                                <input type="checkbox" 
-                                    name="accepts_promotions" 
-                                    id="accepts_promotions" 
-                                    checked>
-                                <span class="checkbox-text">
-                                    Acepto recibir información sobre la campaña y actividades
-                                </span>
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="register-submit-btn" style="font-family: monts;">Someter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Nueva Sección de Countdown -->
-    <section class="countdown-hero-section">
-        <div class="countdown-hero-overlay"></div>
-        <div class="container">
-            <div class="countdown-hero-content">
-                <!-- Header -->
-                <div class="countdown-hero-header">
-                    <h2>Conteo regresivo para las elecciones:</h2>
-                </div>
-                
-                <!-- Countdown Display -->
-                <div class="countdown-display-large" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
-                    <div class="countdown-item-large">
-                        <span class="countdown-number-large" id="days">{{ countdown.days }}</span>
-                        <span class="countdown-label-large">Días</span>
-                    </div>
-                    <div class="countdown-item-large">
-                        <span class="countdown-number-large" id="hours">{{ countdown.hours }}</span>
-                        <span class="countdown-label-large">Horas</span>
-                    </div>
-                    <div class="countdown-item-large">
-                        <span class="countdown-number-large" id="minutes">{{ countdown.minutes }}</span>
-                        <span class="countdown-label-large">Minutos</span>
-                    </div>
-                    <div class="countdown-item-large">
-                        <span class="countdown-number-large" id="seconds">{{ countdown.seconds }}</span>
-                        <span class="countdown-label-large">Segundos</span>
-                    </div>
-                </div>
-                
-                <!-- Logo -->
-                <div class="countdown-logo">
-                    <img src="{% static 'landing/img/DR_x_RPA@4x.png' %}" alt="Logo Renovar Para Avanzar">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer Simplificado -->
-    <footer class="footer-simple">
-        <div class="container">
-            <div class="footer-content-simple">
-                <h3>{{ candidate.name }}</h3>
-                <p class="subtitle">Candidato a la Presidencia del Colegio de Médicos Cirujanos de Puerto Rico</p>
-                
-                <div class="social-links">
-                    {% if social_media.facebook %}
-                    <a href="https://www.facebook.com/share/17NsSyDXX3/?mibextid=wwXIfr" target="_blank" class="social-link">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    {% endif %}
-                    {% if social_media.twitter %}
-                    <a href="https://x.com/drmendezsexto?s=21" target="_blank" class="social-link">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    {% endif %}
-                    {% if social_media.instagram %}
-                    <a href="https://www.instagram.com/drmendezsexto?igsh=Ym9hamN3ZG5idmd3" target="_blank" class="social-link">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    {% endif %}
-                </div>
-                
-                <div class="copyright">
-                    <p>&copy; 2025 {{ candidate.campaign_slogan }}. Todos los derechos reservados.</p>
-                    <p style="margin-top: 10px; font-size: 0.8rem;">Pagado por Comité Dr. Méndez Sexto</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Django Messages -->
-    {% if messages %}
-    <script>
-        window.djangoMessages = [
-            {% for message in messages %}
-            {
-                level: '{{ message.tags }}',
-                message: '{{ message|escapejs }}'
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-    </script>
-    {% endif %}
-
-    <!-- Scroll to Register -->
-    {% if scroll_to_register %}
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const registerSection = document.getElementById('register');
-                if (registerSection) {
-                    registerSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }, 600);
-        });
-    </script>
-    {% endif %}
-
-    <!-- IMPLEMENTACIÓN CORRECTA DE ATH MÓVIL SEGÚN DOCUMENTACIÓN OFICIAL -->
-    
-    <!-- 1. PRIMERO: Script de ATH Móvil Base -->
-    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-
-    <!-- 2. SEGUNDO: Configuración y Callbacks EXACTAMENTE como en la documentación -->
-    <script type="text/javascript">
-        // Obtener monto de la URL si existe
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlAmount = urlParams.get('amount');
-        const selectedAmount = urlAmount ? parseFloat(urlAmount) : 25; // Default $25
+        <h3>Monto: $100.00</h3>
         
-        // CONFIGURACIÓN SEGÚN DOCUMENTACIÓN OFICIAL
+        <!-- Contenedor del botón -->
+        <div id="ATHMovil_Checkout_Button_payment">
+            <p style="color: #999;">El botón aparecerá aquí...</p>
+        </div>
+
+        <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 5px; margin-top: 20px;">
+            <strong>⚠️ Instrucciones:</strong>
+            <ol style="margin: 10px 0 0 20px; padding: 0;">
+                <li>Abre la consola (F12)</li>
+                <li>Busca mensajes que digan "TEST ATH"</li>
+                <li>Verifica que aparezca el botón naranja</li>
+                <li>Haz click y prueba el pago</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCRIPTS - NO CAMBIAR EL ORDEN -->
+    <!-- ========================================== -->
+    
+    <!-- 1. Script de ATH Móvil -->
+    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+    
+    <!-- 2. Configuración y callbacks -->
+    <script type="text/javascript">
+        console.log('%c🧪 TEST ATH MÓVIL - INICIANDO', 'background: #4DB6AC; color: white; padding: 10px; font-size: 14px; font-weight: bold;');
+        
+        // Token real - NO CAMBIAR
+        const TOKEN_REAL = 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763';
+        
+        // Configuración
         const ATHM_Checkout = {
             env: 'production',
-            publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // REEMPLAZA CON TU TOKEN REAL
+            publicToken: TOKEN_REAL,
             timeout: 600,
-            orderType: '',
             theme: 'btn',
             lang: 'es',
-            total: selectedAmount,
-            subtotal: selectedAmount,
+            total: 100,
+            subtotal: 100,
             tax: 0,
-            metadata1: 'Donacion Campaña',
-            metadata2: 'Dr Mendez Sexto',
-            items: [
-                {
-                    "name": "Donación Campaña",
-                    "description": "Apoyo a campaña Dr. Méndez Sexto",
-                    "quantity": "1",
-                    "price": selectedAmount.toString(),
-                    "tax": "0",
-                    "metadata": "Renovar para Avanzar"
-                }
-            ],
+            metadata1: 'Test Donacion',
+            metadata2: 'Prueba Sistema',
+            items: [{
+                name: "Donación de Prueba",
+                description: "Test del sistema",
+                quantity: "1",
+                price: "100",
+                tax: "0",
+                metadata: "Test"
+            }],
             phoneNumber: ""
         };
-
-        // CALLBACKS MODIFICADOS PARA MANEJAR EL ERROR
+        
+        console.log('✅ ATHM_Checkout creado:', ATHM_Checkout);
+        
+        // Callbacks
         async function authorizationATHM() {
-            console.log('authorizationATHM llamado');
-            try {
-                // Verificar si la función existe
-                if (typeof authorization === 'function') {
-                    const responseAuth = await authorization();
-                    console.log('Respuesta autorización:', responseAuth);
-                    
-                    // Mostrar éxito
-                    const statusDiv = document.getElementById('paymentStatusDonation');
-                    if (statusDiv) {
-                        statusDiv.className = 'payment-status success';
-                        statusDiv.innerHTML = `
-                            <i class="fas fa-check-circle"></i>
-                            <h3>¡Donación exitosa!</h3>
-                            <p>Gracias por tu apoyo.</p>
-                        `;
-                        statusDiv.style.display = 'block';
-                    }
-                } else {
-                    console.log('Función authorization no disponible');
-                    // Asumir éxito si se llamó este callback
-                    const statusDiv = document.getElementById('paymentStatusDonation');
-                    if (statusDiv) {
-                        statusDiv.className = 'payment-status success';
-                        statusDiv.innerHTML = `
-                            <i class="fas fa-check-circle"></i>
-                            <h3>¡Donación procesada!</h3>
-                            <p>Tu transacción está siendo procesada.</p>
-                        `;
-                        statusDiv.style.display = 'block';
-                    }
-                }
-            } catch (error) {
-                console.error('Error en authorizationATHM:', error);
-            }
+            console.log('✅ PAGO AUTORIZADO!');
+            const status = document.getElementById('statusMessage');
+            status.className = 'status success show';
+            status.innerHTML = '<strong>✅ ¡Pago exitoso!</strong><br>El sistema funciona correctamente.';
         }
-
+        
         async function cancelATHM() {
-            console.log('cancelATHM llamado');
-            try {
-                // Solo intentar llamar si existe
-                if (typeof findPaymentATHM === 'function') {
-                    const responseCancel = await findPaymentATHM();
-                    console.log('Respuesta cancelación:', responseCancel);
-                }
-            } catch (error) {
-                console.error('Error en cancelATHM:', error);
-            }
-            
-            // Siempre mostrar mensaje de cancelación
-            const statusDiv = document.getElementById('paymentStatusDonation');
-            if (statusDiv) {
-                statusDiv.className = 'payment-status error';
-                statusDiv.innerHTML = `
-                    <i class="fas fa-times-circle"></i>
-                    <h3>Transacción cancelada</h3>
-                    <p>El proceso de pago fue cancelado.</p>
-                `;
-                statusDiv.style.display = 'block';
-            }
+            console.log('❌ PAGO CANCELADO');
+            const status = document.getElementById('statusMessage');
+            status.className = 'status error show';
+            status.innerHTML = '<strong>❌ Pago cancelado</strong><br>El proceso fue cancelado por el usuario.';
         }
-
+        
         async function expiredATHM() {
-            console.log('expiredATHM llamado');
-            try {
-                if (typeof findPaymentATHM === 'function') {
-                    const responseExpired = await findPaymentATHM();
-                    console.log('Respuesta expiración:', responseExpired);
-                }
-            } catch (error) {
-                console.error('Error en expiredATHM:', error);
-            }
-            
-            // Siempre mostrar mensaje de expiración
-            const statusDiv = document.getElementById('paymentStatusDonation');
-            if (statusDiv) {
-                statusDiv.className = 'payment-status error';
-                statusDiv.innerHTML = `
-                    <i class="fas fa-clock"></i>
-                    <h3>Tiempo expirado</h3>
-                    <p>El tiempo para completar el pago ha expirado.</p>
-                `;
-                statusDiv.style.display = 'block';
-            }
+            console.log('⏱️ PAGO EXPIRADO');
+            const status = document.getElementById('statusMessage');
+            status.className = 'status error show';
+            status.innerHTML = '<strong>⏱️ Tiempo expirado</strong><br>El tiempo para completar el pago terminó.';
         }
-
-        // Script para manejar selección de montos
-        document.addEventListener('DOMContentLoaded', function() {
-            // Si hay monto en URL, mostrar display
-            if (urlAmount) {
-                const displayDiv = document.getElementById('selectedAmountDisplay');
-                const valueSpan = document.getElementById('selectedAmountValue');
-                if (displayDiv && valueSpan) {
-                    valueSpan.textContent = selectedAmount.toFixed(2);
-                    displayDiv.style.display = 'block';
-                }
+        
+        console.log('✅ Callbacks definidos');
+        
+        // Verificación después de cargar
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                console.log('%c🔍 VERIFICACIÓN POST-CARGA', 'background: #2196F3; color: white; padding: 5px;');
                 
-                // Marcar botón como activo
-                document.querySelectorAll('.amount-btn').forEach(btn => {
-                    if (parseFloat(btn.dataset.amount) === selectedAmount) {
-                        btn.classList.add('active');
-                    }
-                });
-            }
-            
-            // Configurar botones de monto
-            const amountButtons = document.querySelectorAll('.amount-btn');
-            amountButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const amount = this.dataset.amount;
-                    // Recargar página con nuevo monto
-                    window.location.href = window.location.pathname + '?amount=' + amount + '#donate';
-                });
-            });
-            
-            // Configurar input personalizado
-            const customInput = document.getElementById('customDonationAmount');
-            if (customInput) {
-                // Crear botón si no existe
-                let confirmBtn = document.getElementById('confirmCustomAmount');
-                if (!confirmBtn) {
-                    confirmBtn = document.createElement('button');
-                    confirmBtn.id = 'confirmCustomAmount';
-                    confirmBtn.textContent = 'Usar este monto';
-                    confirmBtn.style.cssText = `
-                        margin-top: 15px;
-                        padding: 15px 35px;
-                        background: #4DB6AC;
-                        color: white;
-                        border: none;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        font-weight: 600;
-                        font-size: 1rem;
-                        width: 100%;
-                        font-family: 'Montserrat', sans-serif;
+                const container = document.querySelector('#ATHMovil_Checkout_Button_payment');
+                const hasButton = container && container.innerHTML.trim().length > 50;
+                
+                console.log('Contenedor existe:', !!container);
+                console.log('Botón generado:', hasButton);
+                console.log('HTML del contenedor:', container?.innerHTML.substring(0, 100));
+                
+                if (hasButton) {
+                    console.log('%c✅ BOTÓN GENERADO CORRECTAMENTE', 'background: #28a745; color: white; padding: 10px; font-size: 16px;');
+                } else {
+                    console.error('%c❌ ERROR: BOTÓN NO SE GENERÓ', 'background: #dc3545; color: white; padding: 10px; font-size: 16px;');
+                    console.error('Causa probable: Token inválido o cuenta inactiva');
+                    
+                    const status = document.getElementById('statusMessage');
+                    status.className = 'status error show';
+                    status.innerHTML = `
+                        <strong>❌ Error: Botón no generado</strong><br>
+                        <ul style="text-align: left; margin: 10px 0 0 20px;">
+                            <li>Verifica el token en ATH Business</li>
+                            <li>Confirma que la cuenta está activa</li>
+                            <li>Revisa la consola para más detalles</li>
+                        </ul>
                     `;
-                    customInput.parentElement.appendChild(confirmBtn);
                 }
-                
-                confirmBtn.addEventListener('click', function() {
-                    const amount = parseFloat(customInput.value);
-                    if (!amount || amount < 1 || amount > 1500) {
-                        alert('Por favor ingresa un monto válido entre $1 y $1,500');
-                        return;
-                    }
-                    // Recargar con monto personalizado
-                    window.location.href = window.location.pathname + '?amount=' + amount + '#donate';
-                });
-            }
+            }, 2000);
         });
+        
+        console.log('✅ Test inicializado - Esperando carga completa...');
     </script>
-
-    <!-- 3. Tus otros scripts -->
-    <script src="{% static 'landing/js/page-interactions.js' %}"></script>
-    <script src="{% static 'landing/js/form-validation.js' %}"></script>
-    <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
-    <script src="{% static 'landing/js/messages-handler.js' %}"></script>
-
 </body>
 </html>
