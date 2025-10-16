@@ -536,7 +536,7 @@ emergencyLog('Android: ' + /Android/i.test(navigator.userAgent));
 
 // MODIFICAR SOLO ESTA PARTE en tu DOMContentLoaded:
 document.addEventListener('DOMContentLoaded', function() {
-    athDebugger.log('DOM cargado', 'success');
+    console.log('DOM cargado');
     
     // Usar la función global waitForATHMCheckout
     if (typeof window.waitForATHMCheckout === 'function') {
@@ -1036,6 +1036,27 @@ setTimeout(function() {
         phoneNumber: ""
     };
 
+    document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlAmount = urlParams.get('amount');
+    
+    if (urlAmount) {
+        const amount = parseFloat(urlAmount);
+        
+        // Actualizar ANTES de que ATH cargue
+        ATHM_Checkout.total = amount;
+        ATHM_Checkout.subtotal = amount;
+        ATHM_Checkout.items[0].price = amount;
+        
+        // Forzar recreación del botón
+        const container = document.getElementById('ATHMovil_Checkout_Button_payment');
+        if (container) {
+            container.innerHTML = ''; // Limpiar
+            // ATH Móvil lo volverá a crear con el nuevo monto
+        }
+    }
+});
+
     // Callbacks obligatorios
     async function authorizationATHM() {
         const responseAuth = await authorization();
@@ -1054,6 +1075,22 @@ setTimeout(function() {
         console.log('⏱️ PAGO EXPIRADO:', responseExpired);
         // Aquí mostrar mensaje de expiración
     }
+
+    // Verificación y espera de funciones ATH
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        // Verificar si las funciones están disponibles
+        if (typeof window.sendATHMPayment === 'function') {
+            console.log('✅ ATH Móvil completamente cargado');
+            
+            // Si necesitas acceder a las funciones, podrían estar en el scope interno
+            // El botón debería funcionar al hacer click
+        } else {
+            console.log('⚠️ Esperando carga completa de ATH...');
+        }
+    }, 1000);
+});
+
 </script>
 
 <!-- 4. Tus otros scripts -->
