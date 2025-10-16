@@ -46,6 +46,251 @@
     </style>
 </head>
 <body>
+
+    <!-- Panel de Debug Visual -->
+<div id="athDebugPanel" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: white;
+    border: 3px solid #4DB6AC;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 999999;
+    font-family: monospace;
+    font-size: 12px;
+">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <strong style="color: #4DB6AC; font-size: 16px;">🔍 Debug ATH Móvil</strong>
+        <button onclick="document.getElementById('athDebugPanel').style.display='none'" 
+                style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+            ✕
+        </button>
+    </div>
+    <div id="athDebugContent" style="color: #333; line-height: 1.8;">
+        <p>⏳ Iniciando diagnóstico...</p>
+    </div>
+</div>
+
+<!-- Script de Debug Visual -->
+<script type="text/javascript">
+(function() {
+    // Función para agregar logs visibles
+    function logVisual(message, type = 'info') {
+        const content = document.getElementById('athDebugContent');
+        if (!content) return;
+        
+        const colors = {
+            'info': '#2196F3',
+            'success': '#4CAF50',
+            'error': '#F44336',
+            'warning': '#FF9800'
+        };
+        
+        const icons = {
+            'info': 'ℹ️',
+            'success': '✅',
+            'error': '❌',
+            'warning': '⚠️'
+        };
+        
+        const timestamp = new Date().toLocaleTimeString();
+        const log = document.createElement('p');
+        log.style.margin = '5px 0';
+        log.style.padding = '8px';
+        log.style.background = '#f8f9fa';
+        log.style.borderLeft = `4px solid ${colors[type]}`;
+        log.style.borderRadius = '4px';
+        log.innerHTML = `<strong>[${timestamp}]</strong> ${icons[type]} ${message}`;
+        
+        content.appendChild(log);
+        content.scrollTop = content.scrollHeight;
+    }
+
+    // Esperar a que la página cargue
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            logVisual('Página cargada', 'success');
+            
+            // 1. Verificar ATHM_Checkout
+            if (window.ATHM_Checkout) {
+                logVisual('ATHM_Checkout: ✓ Existe', 'success');
+                logVisual('Token: ' + window.ATHM_Checkout.publicToken.substring(0, 10) + '...', 'info');
+                logVisual('Monto: $' + window.ATHM_Checkout.total, 'info');
+                logVisual('Env: ' + window.ATHM_Checkout.env, 'info');
+            } else {
+                logVisual('ATHM_Checkout: ✗ NO EXISTE', 'error');
+                logVisual('El script no se ejecutó correctamente', 'error');
+            }
+            
+            // 2. Verificar contenedor
+            const container = document.querySelector('#ATHMovil_Checkout_Button_payment');
+            if (container) {
+                logVisual('Contenedor: ✓ Encontrado', 'success');
+                const hasContent = container.innerHTML.trim().length > 50;
+                if (hasContent) {
+                    logVisual('Botón: ✓ GENERADO', 'success');
+                } else {
+                    logVisual('Botón: ✗ NO GENERADO', 'error');
+                    logVisual('Causa: Token inválido o cuenta inactiva', 'warning');
+                }
+            } else {
+                logVisual('Contenedor: ✗ NO EXISTE', 'error');
+            }
+            
+            // 3. Verificar callbacks
+            const callbacks = ['authorizationATHM', 'cancelATHM', 'expiredATHM'];
+            callbacks.forEach(cb => {
+                if (typeof window[cb] === 'function') {
+                    logVisual(cb + ': ✓ Definido', 'success');
+                } else {
+                    logVisual(cb + ': ✗ NO definido', 'error');
+                }
+            });
+            
+            // 4. Interceptar el botón
+            const button = document.querySelector('[id^="buttonATHM"]');
+            if (button) {
+                logVisual('Botón ATH: ✓ Encontrado (ID: ' + button.id + ')', 'success');
+                
+                // Agregar listener al click
+                button.addEventListener('click', function() {
+                    logVisual('🖱️ CLICK EN BOTÓN ATH', 'warning');
+                    logVisual('Esperando respuesta del servidor...', 'info');
+                }, true);
+            } else {
+                logVisual('Botón ATH: ✗ No encontrado', 'error');
+            }
+            
+            // 5. Override de callbacks para detectar llamadas
+            const originalCancel = window.cancelATHM;
+            window.cancelATHM = async function() {
+                logVisual('🚨 cancelATHM EJECUTADO', 'error');
+                logVisual('El pago fue cancelado o falló', 'error');
+                
+                // Mostrar mensaje grande
+                const statusDiv = document.getElementById('paymentStatusDonation');
+                if (statusDiv) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.className = 'payment-status error';
+                    statusDiv.innerHTML = `
+                        <h3>❌ Pago Cancelado</h3>
+                        <p>Revisa el panel de debug (abajo derecha)</p>
+                    `;
+                }
+                
+                if (originalCancel) return originalCancel.apply(this, arguments);
+            };
+            
+            const originalAuth = window.authorizationATHM;
+            window.authorizationATHM = async function() {
+                logVisual('🎉 authorizationATHM EJECUTADO', 'success');
+                logVisual('¡Pago autorizado exitosamente!', 'success');
+                
+                const statusDiv = document.getElementById('paymentStatusDonation');
+                if (statusDiv) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.className = 'payment-status success';
+                    statusDiv.innerHTML = `
+                        <h3>✅ ¡Donación Exitosa!</h3>
+                        <p>Gracias por tu apoyo</p>
+                    `;
+                }
+                
+                if (originalAuth) return originalAuth.apply(this, arguments);
+            };
+            
+            const originalExpired = window.expiredATHM;
+            window.expiredATHM = async function() {
+                logVisual('⏱️ expiredATHM EJECUTADO', 'warning');
+                logVisual('El tiempo de la transacción expiró', 'warning');
+                
+                const statusDiv = document.getElementById('paymentStatusDonation');
+                if (statusDiv) {
+                    statusDiv.style.display = 'block';
+                    statusDiv.className = 'payment-status error';
+                    statusDiv.innerHTML = `
+                        <h3>⏱️ Tiempo Expirado</h3>
+                        <p>Intenta de nuevo</p>
+                    `;
+                }
+                
+                if (originalExpired) return originalExpired.apply(this, arguments);
+            };
+            
+            // 6. Interceptar XHR para ver errores
+            const originalOpen = XMLHttpRequest.prototype.open;
+            const originalSend = XMLHttpRequest.prototype.send;
+            
+            XMLHttpRequest.prototype.open = function(method, url) {
+                this._url = url;
+                return originalOpen.apply(this, arguments);
+            };
+            
+            XMLHttpRequest.prototype.send = function() {
+                this.addEventListener('load', function() {
+                    if (this._url.includes('athmovil') || this._url.includes('payment')) {
+                        logVisual('📡 Respuesta de ATH recibida', 'info');
+                        logVisual('Status: ' + this.status, 'info');
+                        
+                        try {
+                            const response = JSON.parse(this.responseText);
+                            if (response.status === 'error') {
+                                logVisual('🚨 ERROR: ' + response.errorcode, 'error');
+                                logVisual('Mensaje: ' + response.message, 'error');
+                                
+                                // Traducir errores comunes
+                                const errors = {
+                                    'BTRA_0003': 'Tarjeta del cliente = tarjeta del negocio',
+                                    'BTRA_0009': 'Negocio no está activo',
+                                    'BTRA_0010': 'Estado del negocio no es Activo',
+                                    'token.invalid': 'Token público inválido'
+                                };
+                                
+                                if (errors[response.errorcode]) {
+                                    logVisual('Causa: ' + errors[response.errorcode], 'warning');
+                                }
+                            } else if (response.status === 'success') {
+                                logVisual('✅ Respuesta exitosa', 'success');
+                            }
+                        } catch(e) {}
+                    }
+                });
+                return originalSend.apply(this, arguments);
+            };
+            
+            logVisual('🎯 Sistema de debug iniciado', 'success');
+            logVisual('Haz click en el botón ATH para probar', 'info');
+            
+        }, 1500);
+    });
+})();
+</script>
+
+<style>
+/* Asegurar que el panel sea visible sobre todo */
+#athDebugPanel {
+    font-family: 'Courier New', monospace !important;
+}
+
+#athDebugPanel * {
+    box-sizing: border-box;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #athDebugPanel {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+}
+</style>
     <div class="card">
         <h1>🧪 Test ATH Móvil</h1>
         <p>Prueba mínima del botón de pago</p>
