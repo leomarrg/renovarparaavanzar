@@ -237,37 +237,112 @@
                     }, true);
                 }
                 
-                // Interceptar XHR
+                // Interceptar XHR - VERSIÓN MEJORADA
+                const originalOpen = XMLHttpRequest.prototype.open;
                 const originalSend = XMLHttpRequest.prototype.send;
+                
+                XMLHttpRequest.prototype.open = function(method, url) {
+                    this._method = method;
+                    this._url = url;
+                    return originalOpen.apply(this, arguments);
+                };
+                
                 XMLHttpRequest.prototype.send = function(body) {
+                    const url = this._url || '';
+                    
+                    // Log de la petición
+                    if (url.includes('athmovil') || url.includes('payment') || url.includes('ecommerce')) {
+                        logVisual('📤 Enviando petición a ATH...', 'info');
+                        logVisual('URL: ' + url.substring(0, 60) + '...', 'info');
+                        logVisual('Method: ' + this._method, 'info');
+                        
+                        // Log del body si existe
+                        if (body) {
+                            try {
+                                const bodyData = JSON.parse(body);
+                                logVisual('Token: ' + (bodyData.publicToken || '').substring(0, 10) + '...', 'info');
+                                logVisual('Total: 
+                
+                logVisual('🎯 Sistema iniciado - Haz click en el botón', 'success');
+                
+            }, 1500);
+        });
+        
+        console.log('✅ [3/3] Debug inicializado');
+    </script>
+    
+</body>
+</html> + bodyData.total, 'info');
+                            } catch(e) {}
+                        }
+                    }
+                    
+                    // Interceptar respuesta
                     this.addEventListener('load', function() {
-                        const url = this.responseURL || '';
-                        if (url.includes('athmovil') || url.includes('payment')) {
-                            logVisual('📡 Respuesta ATH recibida', 'info');
+                        const responseUrl = this.responseURL || this._url || '';
+                        
+                        if (responseUrl.includes('athmovil') || responseUrl.includes('payment') || responseUrl.includes('ecommerce')) {
+                            logVisual('📥 Respuesta recibida', 'info');
+                            logVisual('Status HTTP: ' + this.status, 'info');
                             
                             try {
                                 const response = JSON.parse(this.responseText);
+                                logVisual('Status: ' + response.status, response.status === 'success' ? 'success' : 'error');
+                                
                                 if (response.status === 'error') {
-                                    logVisual('🚨 ERROR: ' + response.errorcode, 'error');
-                                    logVisual('Mensaje: ' + response.message, 'error');
+                                    logVisual('🚨 CÓDIGO ERROR: ' + response.errorcode, 'error');
+                                    logVisual('📝 MENSAJE: ' + response.message, 'error');
                                     
                                     const errors = {
-                                        'BTRA_0003': 'Misma tarjeta en cliente y negocio',
-                                        'BTRA_0009': 'Negocio NO está activo',
-                                        'BTRA_0010': 'Estado del negocio no es Activo',
-                                        'token.invalid': 'Token público INVÁLIDO'
+                                        'BTRA_0001': 'Monto muy bajo (mínimo $1.00)',
+                                        'BTRA_0003': '⚠️ MISMA TARJETA en cliente y negocio',
+                                        'BTRA_0004': 'Monto excede límites',
+                                        'BTRA_0009': '⚠️ NEGOCIO NO ACTIVO',
+                                        'BTRA_0010': '⚠️ ESTADO DEL NEGOCIO NO ES ACTIVO',
+                                        'BTRA_0038': 'Metadata muy largo (>40 chars)',
+                                        'token.invalid': '⚠️ TOKEN INVÁLIDO',
+                                        'token.expired': '⚠️ TOKEN EXPIRADO'
                                     };
                                     
                                     if (errors[response.errorcode]) {
-                                        logVisual('💡 ' + errors[response.errorcode], 'warning');
+                                        logVisual('💡 CAUSA: ' + errors[response.errorcode], 'warning');
+                                        
+                                        // Soluciones específicas
+                                        if (response.errorcode === 'BTRA_0003') {
+                                            logVisual('✅ SOLUCIÓN: Usa tarjeta DIFERENTE', 'info');
+                                        } else if (response.errorcode === 'BTRA_0009' || response.errorcode === 'BTRA_0010') {
+                                            logVisual('✅ SOLUCIÓN: Activa cuenta en ATH Business', 'info');
+                                        } else if (response.errorcode === 'token.invalid') {
+                                            logVisual('✅ SOLUCIÓN: Verifica token en app', 'info');
+                                        }
+                                    } else {
+                                        logVisual('Error no documentado: ' + response.errorcode, 'error');
                                     }
-                                } else {
-                                    logVisual('✅ Respuesta exitosa', 'success');
+                                    
+                                    // Mostrar alerta grande
+                                    alert('❌ ERROR ATH MÓVIL\n\nCódigo: ' + response.errorcode + '\n' + response.message);
+                                    
+                                } else if (response.status === 'success') {
+                                    logVisual('✅ Transacción creada exitosamente', 'success');
+                                    if (response.data && response.data.ecommerceId) {
+                                        logVisual('ID: ' + response.data.ecommerceId, 'info');
+                                    }
                                 }
-                            } catch(e) {}
+                            } catch(e) {
+                                logVisual('⚠️ Respuesta no es JSON', 'warning');
+                                logVisual('Raw: ' + this.responseText.substring(0, 100), 'info');
+                            }
                         }
                     });
-                    return originalSend.call(this, body);
+                    
+                    this.addEventListener('error', function() {
+                        if ((this._url || '').includes('athmovil') || (this._url || '').includes('payment')) {
+                            logVisual('🚨 ERROR DE RED', 'error');
+                            alert('Error de conexión con ATH Móvil');
+                        }
+                    });
+                    
+                    return originalSend.apply(this, arguments);
                 };
                 
                 logVisual('🎯 Sistema iniciado - Haz click en el botón', 'success');
