@@ -322,95 +322,177 @@
     <!-- 1. Script de ATH Móvil -->
     <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
     
-    <!-- 2. Configuración y callbacks -->
-    <script type="text/javascript">
-        console.log('%c🧪 TEST ATH MÓVIL - INICIANDO', 'background: #4DB6AC; color: white; padding: 10px; font-size: 14px; font-weight: bold;');
-        
-        // Token real - NO CAMBIAR
-        const TOKEN_REAL = 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763';
-        
-        // Configuración
-        const ATHM_Checkout = {
-            env: 'production',
-            publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
-            timeout: 600,
-            theme: 'btn',
-            lang: 'es',
-            total: 100,
-            subtotal: 100,
-            tax: 0,
-            metadata1: 'Test Donacion',
-            metadata2: 'Prueba Sistema',
-            items: [{
-                name: "Donación de Prueba",
-                description: "Test del sistema",
-                quantity: "1",
-                price: "1",
-                tax: "0",
-                metadata: "Test"
-            }],
-            phoneNumber: ""
-        };
-        
-        console.log('✅ ATHM_Checkout creado:', ATHM_Checkout);
-        
-        // Callbacks
-        async function authorizationATHM() {
-            console.log('✅ PAGO AUTORIZADO!');
-            const status = document.getElementById('statusMessage');
-            status.className = 'status success show';
-            status.innerHTML = '<strong>✅ ¡Pago exitoso!</strong><br>El sistema funciona correctamente.';
+    <!-- ============================================ -->
+<!-- REEMPLAZA TODA TU SECCIÓN DE SCRIPTS ATH -->
+<!-- Debe estar JUSTO ANTES de </body> -->
+<!-- ============================================ -->
+
+<!-- 1. PRIMERO: Configuración (ANTES del script de ATH) -->
+<script type="text/javascript">
+    console.log('🔧 [1/3] Configurando ATHM_Checkout...');
+    
+    // Variable global ATHM_Checkout
+    window.ATHM_Checkout = {
+        env: 'production',
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
+        timeout: 600,
+        theme: 'btn',
+        lang: 'es',
+        total: 100,
+        subtotal: 100,
+        tax: 0,
+        metadata1: 'Donacion Campaña',
+        metadata2: 'Dr Mendez Sexto',
+        items: [{
+            name: "Donación Campaña",
+            description: "Apoyo campaña Dr. Méndez Sexto",
+            quantity: "1",
+            price: "100",
+            tax: "0",
+            metadata: "Renovar para Avanzar"
+        }],
+        phoneNumber: ""
+    };
+    
+    console.log('✅ ATHM_Checkout configurado:', window.ATHM_Checkout);
+    
+    // Callbacks globales
+    window.authorizationATHM = async function() {
+        console.log('✅ PAGO AUTORIZADO');
+        const statusDiv = document.getElementById('paymentStatusDonation');
+        if (statusDiv) {
+            statusDiv.className = 'payment-status success';
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = `
+                <i class="fas fa-check-circle" style="font-size: 3rem;"></i>
+                <h3>¡Donación exitosa!</h3>
+                <p>Gracias por tu apoyo de $${window.ATHM_Checkout.total}</p>
+            `;
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+    
+    window.cancelATHM = async function() {
+        console.log('❌ PAGO CANCELADO');
+        const statusDiv = document.getElementById('paymentStatusDonation');
+        if (statusDiv) {
+            statusDiv.className = 'payment-status error';
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = `
+                <i class="fas fa-times-circle" style="font-size: 3rem;"></i>
+                <h3>Transacción cancelada</h3>
+                <p>El proceso de pago fue cancelado. Puedes intentar nuevamente.</p>
+            `;
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+    
+    window.expiredATHM = async function() {
+        console.log('⏱️ PAGO EXPIRADO');
+        const statusDiv = document.getElementById('paymentStatusDonation');
+        if (statusDiv) {
+            statusDiv.className = 'payment-status error';
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = `
+                <i class="fas fa-clock" style="font-size: 3rem;"></i>
+                <h3>Tiempo expirado</h3>
+                <p>El tiempo para completar el pago ha expirado. Intenta de nuevo.</p>
+            `;
+            statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+    
+    console.log('✅ [1/3] Callbacks definidos');
+</script>
+
+<!-- 2. SEGUNDO: Script de ATH Móvil -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js" 
+        onload="console.log('✅ [2/3] Script ATH cargado')"
+        onerror="console.error('❌ [2/3] Error cargando script ATH')">
+</script>
+
+<!-- 3. TERCERO: Verificación y manejo de montos -->
+<script type="text/javascript">
+    console.log('🔧 [3/3] Inicializando sistema...');
+    
+    // Función para actualizar monto
+    function actualizarMontoATH(nuevoMonto) {
+        if (!window.ATHM_Checkout) {
+            console.error('❌ ATHM_Checkout no existe, no se puede actualizar');
+            return;
         }
         
-        async function cancelATHM() {
-            console.log('❌ PAGO CANCELADO');
-            const status = document.getElementById('statusMessage');
-            status.className = 'status error show';
-            status.innerHTML = '<strong>❌ Pago cancelado</strong><br>El proceso fue cancelado por el usuario.';
+        console.log('💰 Actualizando monto a:', nuevoMonto);
+        window.ATHM_Checkout.total = nuevoMonto;
+        window.ATHM_Checkout.subtotal = nuevoMonto;
+        window.ATHM_Checkout.items[0].price = nuevoMonto.toString();
+        
+        // Actualizar display
+        const displayValue = document.getElementById('selectedAmountValue');
+        if (displayValue) {
+            displayValue.textContent = nuevoMonto.toFixed(2);
         }
         
-        async function expiredATHM() {
-            console.log('⏱️ PAGO EXPIRADO');
-            const status = document.getElementById('statusMessage');
-            status.className = 'status error show';
-            status.innerHTML = '<strong>⏱️ Tiempo expirado</strong><br>El tiempo para completar el pago terminó.';
+        const display = document.getElementById('selectedAmountDisplay');
+        if (display) {
+            display.style.display = 'block';
         }
+    }
+    
+    // Esperar a que todo cargue
+    window.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 DOM cargado');
         
-        console.log('✅ Callbacks definidos');
-        
-        // Verificación después de cargar
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                console.log('%c🔍 VERIFICACIÓN POST-CARGA', 'background: #2196F3; color: white; padding: 5px;');
-                
-                const container = document.querySelector('#ATHMovil_Checkout_Button_payment');
-                const hasButton = container && container.innerHTML.trim().length > 50;
-                
-                console.log('Contenedor existe:', !!container);
-                console.log('Botón generado:', hasButton);
-                console.log('HTML del contenedor:', container?.innerHTML.substring(0, 100));
-                
-                if (hasButton) {
-                    console.log('%c✅ BOTÓN GENERADO CORRECTAMENTE', 'background: #28a745; color: white; padding: 10px; font-size: 16px;');
-                } else {
-                    console.error('%c❌ ERROR: BOTÓN NO SE GENERÓ', 'background: #dc3545; color: white; padding: 10px; font-size: 16px;');
-                    console.error('Causa probable: Token inválido o cuenta inactiva');
+        // Verificar configuración después de un momento
+        setTimeout(function() {
+            console.log('🔍 Verificación final:');
+            console.log('- ATHM_Checkout existe:', !!window.ATHM_Checkout);
+            console.log('- Token:', window.ATHM_Checkout?.publicToken?.substring(0, 10) + '...');
+            console.log('- Botón generado:', !!document.querySelector('[id^="buttonATHM"]'));
+            
+            if (!window.ATHM_Checkout) {
+                console.error('❌ CRÍTICO: ATHM_Checkout no se creó');
+                alert('Error de configuración ATH Móvil. Recarga la página.');
+                return;
+            }
+            
+            // Setup de botones de monto
+            const amountButtons = document.querySelectorAll('.amount-btn');
+            amountButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const amount = parseFloat(this.dataset.amount);
                     
-                    const status = document.getElementById('statusMessage');
-                    status.className = 'status error show';
-                    status.innerHTML = `
-                        <strong>❌ Error: Botón no generado</strong><br>
-                        <ul style="text-align: left; margin: 10px 0 0 20px;">
-                            <li>Verifica el token en ATH Business</li>
-                            <li>Confirma que la cuenta está activa</li>
-                            <li>Revisa la consola para más detalles</li>
-                        </ul>
-                    `;
-                }
-            }, 2000);
-        });
-        
-        console.log('✅ Test inicializado - Esperando carga completa...');
-    </script>
+                    // Remover active de todos
+                    amountButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Actualizar monto
+                    actualizarMontoATH(amount);
+                    
+                    console.log('✅ Monto seleccionado:', amount);
+                });
+            });
+            
+            // Monto inicial de URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlAmount = urlParams.get('amount');
+            if (urlAmount) {
+                const amount = parseFloat(urlAmount);
+                actualizarMontoATH(amount);
+                
+                // Marcar botón como activo
+                amountButtons.forEach(btn => {
+                    if (parseFloat(btn.dataset.amount) === amount) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            console.log('✅ [3/3] Sistema inicializado correctamente');
+        }, 1000);
+    });
+</script>
+
+<!-- TUS OTROS SCRIPTS (form-validation, countdown, etc) VAN DESPUÉS -->
 </body>
 </html>
