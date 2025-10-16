@@ -124,7 +124,6 @@
     color: #1E40AF;
     display: block !important;
 }
-
 </style>
 </head>
 
@@ -247,8 +246,6 @@
                         
                             En agosto de 2025 anunció su aspiración a la presidencia del Colegio de Médicos Cirujanos de Puerto Rico. Su trayectoria refleja compromiso con la profesión médica y el fortalecimiento de la práctica ética en la isla.
                         </ul>
-                        
-                    
                     </div>
                 </div>
             </div>
@@ -275,16 +272,6 @@
                     <p class="district">{{ member.district }}</p>
                 </div>
                 {% endfor %}
-                
-                <!-- Featured Member -->
-                <!-- <div class="team-member juan-destacado animate-on-scroll">
-                    <div class="team-member-image">
-                        <i class="fas fa-user-md fa-8x"></i>
-                    </div>
-                    <h3>{{ featured_member.name }}</h3>
-                    <p class="role">{{ featured_member.role }}</p>
-                    <p class="district">{{ featured_member.district }}</p>
-                </div> -->
             </div>
         </div>
     </section>
@@ -324,16 +311,12 @@
                         </a>
                     </div>
                 </div>
-                {% else %}
-                <div style="background: #ffcccc; padding: 20px; border: 2px solid red; margin: 20px 0;">
-                    <p style="color: red; font-weight: bold;">❌ No se encontró plan_estrategico en el contexto</p>
-                </div>
                 {% endif %}
             </div>
         </div>
     </section>
 
-    <!-- Sección de Portavoces - Agregar después de la sección de Team -->
+    <!-- Sección de Portavoces -->
     <section class="spokespersons-section" id="portavoces">
         <div class="spokespersons-header">
             <div class="spokespersons-header-content">
@@ -453,172 +436,11 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Humacao - Vacante -->
-                <!-- <div class="spokesperson-card vacant animate-on-scroll">
-                    <h3 class="spokesperson-name">Vacante</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Humacao</p>
-                    <div class="spokesperson-contact">
-                        <p class="vacant-text">Próximamente</p>
-                    </div>
-                </div> -->
-
-                <!-- Caguas - Vacante -->
-                <!-- <div class="spokesperson-card vacant animate-on-scroll">
-                    <h3 class="spokesperson-name">Vacante</h3>
-                    <p class="spokesperson-region"><span class="region-label">Región:</span> Caguas</p>
-                    <div class="spokesperson-contact">
-                        <p class="vacant-text">Próximamente</p>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
-
-
-    <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
-<div id="emergency-debug" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgb(0, 0, 0);
-    color: white;
-    padding: 15px;
-    z-index: 999999;
-    font-size: 12px;
-    font-family: monospace;
-    max-height: 250px;
-    overflow-y: auto;
-    border-bottom: 3px solid yellow;
-">
-    <strong style="font-size: 14px;">🚨 DEBUG MÓVIL EMERGENCY</strong>
-    <button onclick="this.parentElement.style.display='none'" style="float: right; background: black; color: white; border: none; padding: 5px 10px;">X</button>
-    <div id="debug-log" style="margin-top: 10px; font-size: 11px;">
-        <div>✓ HTML cargado</div>
-    </div>
-</div>
-
-<script>
-// Función de log inline
-function emergencyLog(msg, type = 'info') {
-    const logDiv = document.getElementById('debug-log');
-    const time = new Date().toLocaleTimeString();
-    let icon = '•';
-    let color = 'white';
     
-    if (type === 'error') {
-        icon = '❌';
-        color = '#ff6b6b';
-    } else if (type === 'success') {
-        icon = '✅';
-        color = '#51cf66';
-    } else if (type === 'warning') {
-        icon = '⚠️';
-        color = '#ffd43b';
-    }
-    
-    const entry = document.createElement('div');
-    entry.style.color = color;
-    entry.innerHTML = `[${time}] ${icon} ${msg}`;
-    logDiv.appendChild(entry);
-    logDiv.scrollTop = logDiv.scrollHeight;
-    
-    console.log(`[EMERGENCY] ${msg}`);
-}
-
-// Logs iniciales
-emergencyLog('JavaScript está funcionando', 'success');
-emergencyLog('User Agent: ' + navigator.userAgent.substring(0, 60));
-emergencyLog('Pantalla: ' + window.innerWidth + 'x' + window.innerHeight);
-emergencyLog('iOS: ' + /iPhone|iPad|iPod/i.test(navigator.userAgent));
-emergencyLog('Android: ' + /Android/i.test(navigator.userAgent));
-
-// MODIFICAR SOLO ESTA PARTE en tu DOMContentLoaded:
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM cargado');
-    
-    // Usar la función global waitForATHMCheckout
-    if (typeof window.waitForATHMCheckout === 'function') {
-        window.waitForATHMCheckout((success) => {
-            if (success) {
-                initializePaymentSystem();
-            } else {
-                athDebugger.log('No se pudo cargar ATH Móvil', 'error');
-                showATHUnavailableMessage();
-            }
-        });
-    } else {
-        // Fallback si la función no existe
-        waitForATH((success) => {
-            if (success) {
-                initializePaymentSystem();
-            } else {
-                showATHUnavailableMessage();
-            }
-        });
-    }
-});
-
-// Verificar window.load
-window.addEventListener('load', function() {
-    emergencyLog('Window load completo', 'success');
-    emergencyLog('ATHM_Checkout: ' + (typeof ATHM_Checkout !== 'undefined' ? 'CARGADO' : 'NO CARGADO'), 
-                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
-});
-
-// Capturar errores
-window.addEventListener('error', function(e) {
-    emergencyLog('ERROR: ' + e.message, 'error');
-    emergencyLog('Archivo: ' + e.filename, 'error');
-    emergencyLog('Línea: ' + e.lineno, 'error');
-});
-
-// Verificar si los scripts externos se cargan
-setTimeout(function() {
-    emergencyLog('--- Verificación de scripts externos ---');
-    emergencyLog('athmovil_base.js: ' + (typeof ATHM_Checkout !== 'undefined' ? 'OK' : 'FALLO'), 
-                 typeof ATHM_Checkout !== 'undefined' ? 'success' : 'error');
-    
-    // Listar todos los scripts cargados
-    const scripts = document.getElementsByTagName('script');
-    emergencyLog('Total scripts en página: ' + scripts.length);
-    
-    let athFound = false;
-    let athPaymentFound = false;
-    
-    for (let i = 0; i < scripts.length; i++) {
-        if (scripts[i].src.includes('athmovil_base.js')) {
-            athFound = true;
-            emergencyLog('✓ athmovil_base.js encontrado en DOM', 'success');
-        }
-        if (scripts[i].src.includes('ath-movil-payment.js')) {
-            athPaymentFound = true;
-            emergencyLog('✓ ath-movil-payment.js encontrado en DOM', 'success');
-        }
-    }
-    
-    if (!athFound) emergencyLog('✗ athmovil_base.js NO está en el DOM', 'error');
-    if (!athPaymentFound) emergencyLog('✗ ath-movil-payment.js NO está en el DOM', 'error');
-    
-}, 2000);
-
-// Test de click en botones de monto
-setTimeout(function() {
-    const amountBtns = document.querySelectorAll('.amount-btn');
-    if (amountBtns.length > 0) {
-        emergencyLog('Configurando listeners en botones...', 'warning');
-        amountBtns.forEach(function(btn, index) {
-            btn.addEventListener('click', function() {
-                emergencyLog('CLICK detectado en botón #' + (index + 1) + ' ($' + btn.dataset.amount + ')', 'success');
-            });
-        });
-        emergencyLog('Listeners configurados. Prueba tocar un botón de monto', 'warning');
-    }
-}, 1000);
-</script>
-    
-    <!-- Donation Section-->
+    <!-- Donation Section -->
     <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
@@ -718,42 +540,9 @@ setTimeout(function() {
                 </div>
             </div>
         </div>
-    </section> 
-
-    <!-- Donation Section TEMPORERA -->
-    <!-- <section class="donation-section" id="donate">
-        <div class="container">
-            <div class="donation-wrapper">
-                <div class="donation-header">
-                    <div class="title-main">Haz tu</div>
-                    <div class="title-script">donación</div>
-                    <p class="subtitle-text">
-                        Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
-                    </p>
-                </div>-->
-
-                <!-- Imagen centralizada -->
-                <!--<div class="donation-image-wrapper">
-                    <img src="{% static 'landing/img/ATHM.png' %}" alt="ATH Móvil" class="donation-image">
-                </div>
-
-                <div class="donation-info">
-                    <p class="donation-method-text">
-                        Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
-                    </p>
-                    <div class="ath-handle">/comitedrmendezsexto</div>
-                </div>
-
-                <p class="donation-disclaimer">
-                    Este comité está debidamente registrado como una entidad sin fines de lucro.
-                </p>
-
-                <div class="campaign-hashtag">#RenovarParaAvanzar</div>
-            </div>
-        </div>
-    </section> -->
+    </section>
     
-    <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
+    <!-- Register Section -->
     <section class="register-section" id="register">
         <div class="container">
             <div class="register-wrapper">
@@ -862,8 +651,6 @@ setTimeout(function() {
                         </div>
                         <!-- FIN DEL DIV QUE SE OCULTA -->
 
-                
-
                         <!-- Checkbox de términos y condiciones -->
                         <div class="checkbox-group" style="margin: 25px 0;">
                             <label class="checkbox-label">
@@ -906,11 +693,6 @@ setTimeout(function() {
                 <!-- Header -->
                 <div class="countdown-hero-header">
                     <h2>Conteo regresivo para las elecciones:</h2>
-                    <!-- <p class="countdown-description">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-                    </p> -->
                 </div>
                 
                 <!-- Countdown Display -->
@@ -973,9 +755,8 @@ setTimeout(function() {
             </div>
         </div>
     </footer>
-    <!-- ==========================================
-         DJANGO MESSAGES DATA
-         ========================================== -->
+
+    <!-- Django Messages -->
     {% if messages %}
     <script>
         window.djangoMessages = [
@@ -989,9 +770,7 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-    <!-- ==========================================
-         SCROLL TO REGISTER (Django variable)
-         ========================================== -->
+    <!-- Scroll to Register -->
     {% if scroll_to_register %}
     <script>
         window.addEventListener('load', function() {
@@ -1005,102 +784,167 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-<!-- 2. SEGUNDO: Script de ATH Móvil Base -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
-
-
-
-<!-- 3. TERCERO: Tu configuración y callbacks -->
-<script type="text/javascript">
-    const ATHM_Checkout = {
-        env: 'production',
-        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // Reemplaza con tu token real
-        timeout: 600,
-        theme: 'btn',
-        lang: 'es',
-        total: 1, // Este valor se actualiza con el monto de la URL
-        subtotal: 1,
-        tax: 0,
-        metadata1: 'Donacion Campaña',
-        metadata2: 'Monto: $1',
-        items: [
-            {
-                name: "Donación",
-                description: "Apoyo a la campaña",
-                quantity: 1,
-                price: 1,
-                tax: 0,
-                metadata: "Donacion"
-            }
-        ],
-        phoneNumber: ""
-    };
-
-    document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlAmount = urlParams.get('amount');
+    <!-- IMPLEMENTACIÓN CORRECTA DE ATH MÓVIL SEGÚN DOCUMENTACIÓN OFICIAL -->
     
-    if (urlAmount) {
-        const amount = parseFloat(urlAmount);
+    <!-- 1. PRIMERO: Script de ATH Móvil Base -->
+    <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+
+    <!-- 2. SEGUNDO: Configuración y Callbacks EXACTAMENTE como en la documentación -->
+    <script type="text/javascript">
+        // Obtener monto de la URL si existe
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlAmount = urlParams.get('amount');
+        const selectedAmount = urlAmount ? parseFloat(urlAmount) : 25; // Default $25
         
-        // Actualizar ANTES de que ATH cargue
-        ATHM_Checkout.total = amount;
-        ATHM_Checkout.subtotal = amount;
-        ATHM_Checkout.items[0].price = amount;
-        
-        // Forzar recreación del botón
-        const container = document.getElementById('ATHMovil_Checkout_Button_payment');
-        if (container) {
-            container.innerHTML = ''; // Limpiar
-            // ATH Móvil lo volverá a crear con el nuevo monto
-        }
-    }
-});
+        // CONFIGURACIÓN SEGÚN DOCUMENTACIÓN OFICIAL
+        const ATHM_Checkout = {
+            env: 'production',
+            publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // REEMPLAZA CON TU TOKEN REAL
+            timeout: 600,
+            orderType: '',
+            theme: 'btn',
+            lang: 'es',
+            total: selectedAmount,
+            subtotal: selectedAmount,
+            tax: 0,
+            metadata1: 'Donacion Campaña',
+            metadata2: 'Dr Mendez Sexto',
+            items: [
+                {
+                    "name": "Donación Campaña",
+                    "description": "Apoyo a campaña Dr. Méndez Sexto",
+                    "quantity": "1",
+                    "price": selectedAmount.toString(),
+                    "tax": "0",
+                    "metadata": "Renovar para Avanzar"
+                }
+            ],
+            phoneNumber: ""
+        };
 
-    // Callbacks obligatorios
-    async function authorizationATHM() {
-        const responseAuth = await authorization();
-        console.log('✅ PAGO COMPLETADO:', responseAuth);
-        // Aquí mostrar mensaje de éxito al usuario
-    }
-
-    async function cancelATHM() {
-        const responseCancel = await findPaymentATHM();
-        console.log('❌ PAGO CANCELADO:', responseCancel);
-        // Aquí mostrar mensaje de cancelación
-    }
-
-    async function expiredATHM() {
-        const responseExpired = await findPaymentATHM();
-        console.log('⏱️ PAGO EXPIRADO:', responseExpired);
-        // Aquí mostrar mensaje de expiración
-    }
-
-    // Verificación y espera de funciones ATH
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        // Verificar si las funciones están disponibles
-        if (typeof window.sendATHMPayment === 'function') {
-            console.log('✅ ATH Móvil completamente cargado');
+        // CALLBACKS OBLIGATORIOS SEGÚN DOCUMENTACIÓN
+        async function authorizationATHM() {
+            const responseAuth = await authorization();
+            console.log('Pago autorizado:', responseAuth);
             
-            // Si necesitas acceder a las funciones, podrían estar en el scope interno
-            // El botón debería funcionar al hacer click
-        } else {
-            console.log('⚠️ Esperando carga completa de ATH...');
+            // Mostrar mensaje de éxito
+            const statusDiv = document.getElementById('paymentStatusDonation');
+            if (statusDiv && responseAuth.status === 'success') {
+                statusDiv.className = 'payment-status success';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <h3>¡Donación exitosa!</h3>
+                    <p>Gracias por tu apoyo. Referencia: ${responseAuth.data?.referenceNumber || 'N/A'}</p>
+                `;
+                statusDiv.style.display = 'block';
+                statusDiv.scrollIntoView({ behavior: 'smooth' });
+            }
         }
-    }, 1000);
-});
 
-</script>
+        async function cancelATHM() {
+            const responseCancel = await findPaymentATHM();
+            console.log('Pago cancelado:', responseCancel);
+            
+            const statusDiv = document.getElementById('paymentStatusDonation');
+            if (statusDiv) {
+                statusDiv.className = 'payment-status error';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-times-circle"></i>
+                    <h3>Pago cancelado</h3>
+                    <p>La transacción fue cancelada.</p>
+                `;
+                statusDiv.style.display = 'block';
+            }
+        }
 
-<!-- 4. Tus otros scripts -->
-<script src="{% static 'landing/js/page-interactions.js' %}"></script>
-<script src="{% static 'landing/js/form-validation.js' %}"></script>
-<script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+        async function expiredATHM() {
+            const responseExpired = await findPaymentATHM();
+            console.log('Pago expirado:', responseExpired);
+            
+            const statusDiv = document.getElementById('paymentStatusDonation');
+            if (statusDiv) {
+                statusDiv.className = 'payment-status error';
+                statusDiv.innerHTML = `
+                    <i class="fas fa-clock"></i>
+                    <h3>Tiempo expirado</h3>
+                    <p>El tiempo para completar el pago ha expirado.</p>
+                `;
+                statusDiv.style.display = 'block';
+            }
+        }
 
-<script src="{% static 'landing/js/messages-handler.js' %}"></script>
+        // Script para manejar selección de montos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Si hay monto en URL, mostrar display
+            if (urlAmount) {
+                const displayDiv = document.getElementById('selectedAmountDisplay');
+                const valueSpan = document.getElementById('selectedAmountValue');
+                if (displayDiv && valueSpan) {
+                    valueSpan.textContent = selectedAmount.toFixed(2);
+                    displayDiv.style.display = 'block';
+                }
+                
+                // Marcar botón como activo
+                document.querySelectorAll('.amount-btn').forEach(btn => {
+                    if (parseFloat(btn.dataset.amount) === selectedAmount) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            // Configurar botones de monto
+            const amountButtons = document.querySelectorAll('.amount-btn');
+            amountButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const amount = this.dataset.amount;
+                    // Recargar página con nuevo monto
+                    window.location.href = window.location.pathname + '?amount=' + amount + '#donate';
+                });
+            });
+            
+            // Configurar input personalizado
+            const customInput = document.getElementById('customDonationAmount');
+            if (customInput) {
+                // Crear botón si no existe
+                let confirmBtn = document.getElementById('confirmCustomAmount');
+                if (!confirmBtn) {
+                    confirmBtn = document.createElement('button');
+                    confirmBtn.id = 'confirmCustomAmount';
+                    confirmBtn.textContent = 'Usar este monto';
+                    confirmBtn.style.cssText = `
+                        margin-top: 15px;
+                        padding: 15px 35px;
+                        background: #4DB6AC;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        font-size: 1rem;
+                        width: 100%;
+                        font-family: 'Montserrat', sans-serif;
+                    `;
+                    customInput.parentElement.appendChild(confirmBtn);
+                }
+                
+                confirmBtn.addEventListener('click', function() {
+                    const amount = parseFloat(customInput.value);
+                    if (!amount || amount < 1 || amount > 1500) {
+                        alert('Por favor ingresa un monto válido entre $1 y $1,500');
+                        return;
+                    }
+                    // Recargar con monto personalizado
+                    window.location.href = window.location.pathname + '?amount=' + amount + '#donate';
+                });
+            }
+        });
+    </script>
 
-
+    <!-- 3. Tus otros scripts -->
+    <script src="{% static 'landing/js/page-interactions.js' %}"></script>
+    <script src="{% static 'landing/js/form-validation.js' %}"></script>
+    <script src="{% static 'landing/js/countdown-timer.js' %}"></script>
+    <script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 </body>
 </html>
