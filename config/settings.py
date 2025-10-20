@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     '3.88.157.222',
-    #  '127.0.0.1',
+    #   '127.0.0.1',
     #  'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
 
@@ -122,6 +122,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# ============================================
+# TWILIO CONFIGURATION
+# ============================================
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
+TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER', default='')
+
+# ============================================
+# DASHBOARD CONFIGURATION
+# ============================================
+DASHBOARD_ITEMS_PER_PAGE = 25
+
 
 # ============================================
 # ATH MÓVIL CONFIGURATION

@@ -1,0 +1,637 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Renovar para Avanzar</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #377e7c;
+            --secondary-color: #4dabaa;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .sidebar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-card .label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .action-buttons {
+            margin-bottom: 20px;
+        }
+        
+        .btn-action {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .table thead {
+            background-color: #f8f9fa;
+        }
+        
+        .badge-custom {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .filter-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .modal-header {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .checkbox-cell {
+            width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </div>
+                
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="{% url 'landing:dashboard' %}">
+                        <i class="fas fa-home me-2"></i> Inicio
+                    </a>
+                    <a class="nav-link" href="{% url 'landing:index' %}" target="_blank">
+                        <i class="fas fa-globe me-2"></i> Ver Sitio
+                    </a>
+                    <a class="nav-link" href="/admin/">
+                        <i class="fas fa-cog me-2"></i> Admin Django
+                    </a>
+                    <a class="nav-link" href="/admin/logout/">
+                        <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <h1 class="mb-4">Dashboard de Registros</h1>
+                
+                <!-- Estadísticas -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="number">{{ total_registros }}</div>
+                            <div class="label">Total Registros</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="number">{{ total_medicos }}</div>
+                            <div class="label">Médicos</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="number">{{ total_colegiados }}</div>
+                            <div class="label">Colegiados</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="number">{{ total_acepto_promociones }}</div>
+                            <div class="label">Aceptan Comunicaciones</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de Tendencias -->
+                <div class="chart-container">
+                    <h4 class="mb-3">Tendencia de Registros</h4>
+                    <canvas id="registrationChart" height="80"></canvas>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="filter-section">
+                    <h5 class="mb-3">
+                        <i class="fas fa-filter"></i> Filtros
+                        <button class="btn btn-sm btn-outline-secondary float-end" onclick="clearFilters()">
+                            Limpiar Filtros
+                        </button>
+                    </h5>
+                    
+                    <form method="get" id="filterForm">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Nombre</label>
+                                {{ filter.form.name }}
+                            </div>
+                            <div class="col-md-3">
+                                <label>Apellido</label>
+                                {{ filter.form.last_name }}
+                            </div>
+                            <div class="col-md-3">
+                                <label>Email</label>
+                                {{ filter.form.email }}
+                            </div>
+                            <div class="col-md-3">
+                                <label>Teléfono</label>
+                                {{ filter.form.phone_number }}
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-md-2">
+                                <label>¿Es Médico?</label>
+                                {{ filter.form.is_doctor }}
+                            </div>
+                            <div class="col-md-2">
+                                <label>¿Colegiado?</label>
+                                {{ filter.form.is_licensed }}
+                            </div>
+                            <div class="col-md-3">
+                                <label>¿Necesita Ayuda Voto?</label>
+                                {{ filter.form.needs_voting_help }}
+                            </div>
+                            <div class="col-md-3">
+                                <label>¿Acepta Promociones?</label>
+                                {{ filter.form.accepts_promotions }}
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Botones de Acción -->
+                <div class="action-buttons">
+                    <button class="btn btn-success btn-action" onclick="sendEmailsToSelected()">
+                        <i class="fas fa-envelope"></i> Enviar Email a Seleccionados
+                    </button>
+                    <button class="btn btn-primary btn-action" onclick="sendSMSToSelected()">
+                        <i class="fas fa-sms"></i> Enviar SMS a Seleccionados
+                    </button>
+                    <button class="btn btn-info btn-action" onclick="selectAll()">
+                        <i class="fas fa-check-double"></i> Seleccionar Todos
+                    </button>
+                    <button class="btn btn-secondary btn-action" onclick="deselectAll()">
+                        <i class="fas fa-times"></i> Deseleccionar Todos
+                    </button>
+                    <a href="{% url 'landing:export-csv' %}?{{ request.GET.urlencode }}" class="btn btn-warning btn-action">
+                        <i class="fas fa-download"></i> Exportar CSV
+                    </a>
+                </div>
+                
+                <!-- Tabla de Registros -->
+                <div class="table-container">
+                    <h4 class="mb-3">Registros ({{ total_registros }})</h4>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="checkbox-cell">
+                                        <input type="checkbox" id="selectAllCheckbox" onchange="toggleAllCheckboxes(this)">
+                                    </th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Médico</th>
+                                    <th>Colegiado</th>
+                                    <th>Promociones</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reg in registrations %}
+                                <tr>
+                                    <td class="checkbox-cell">
+                                        <input type="checkbox" class="row-checkbox" value="{{ reg.id }}">
+                                    </td>
+                                    <td><strong>{{ reg.unique_id }}</strong></td>
+                                    <td>{{ reg.name }} {{ reg.last_name }}</td>
+                                    <td>{{ reg.email|default:"N/A" }}</td>
+                                    <td>{{ reg.phone_number }}</td>
+                                    <td>
+                                        {% if reg.is_doctor %}
+                                            <span class="badge badge-custom bg-success">Sí</span>
+                                        {% else %}
+                                            <span class="badge badge-custom bg-secondary">No</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if reg.is_licensed %}
+                                            <span class="badge badge-custom bg-info">Sí</span>
+                                        {% else %}
+                                            <span class="badge badge-custom bg-secondary">No</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if reg.accepts_promotions %}
+                                            <span class="badge badge-custom bg-primary">Sí</span>
+                                        {% else %}
+                                            <span class="badge badge-custom bg-secondary">No</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ reg.created_at|date:"d/m/Y H:i" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No hay registros</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    {% if registrations.has_other_pages %}
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            {% if registrations.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ registrations.previous_page_number }}&{{ request.GET.urlencode }}">Anterior</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in registrations.paginator.page_range %}
+                                <li class="page-item {% if registrations.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}&{{ request.GET.urlencode }}">{{ num }}</a>
+                                </li>
+                            {% endfor %}
+                            
+                            {% if registrations.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ registrations.next_page_number }}&{{ request.GET.urlencode }}">Siguiente</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para Email -->
+    <div class="modal fade" id="emailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enviar Email a Seleccionados</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="emailForm">
+                        <div class="mb-3">
+                            <label class="form-label">Asunto</label>
+                            <input type="text" class="form-control" id="emailSubject" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje (HTML permitido)</label>
+                            <textarea class="form-control" id="emailMessage" rows="10" required></textarea>
+                            <small class="text-muted">Puedes usar HTML para dar formato al mensaje</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" onclick="confirmSendEmails()">Enviar Emails</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para SMS -->
+    <div class="modal fade" id="smsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enviar SMS a Seleccionados</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="smsForm">
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje (Máx. 160 caracteres)</label>
+                            <textarea class="form-control" id="smsMessage" rows="4" maxlength="160" required></textarea>
+                            <small class="text-muted">
+                                <span id="charCount">0</span>/160 caracteres
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="confirmSendSMS()">Enviar SMS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Inicializar gráfico
+        const ctx = document.getElementById('registrationChart').getContext('2d');
+        let registrationChart;
+        
+        function loadChartData() {
+            fetch("{% url 'landing:dashboard-chart-data' %}")
+                .then(response => response.json())
+                .then(data => {
+                    if (registrationChart) {
+                        registrationChart.destroy();
+                    }
+                    
+                    registrationChart = new Chart(ctx, {
+                        type: 'line',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false,
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+        }
+        
+        // Cargar gráfico al iniciar
+        loadChartData();
+        
+        // Contador de caracteres para SMS
+        document.getElementById('smsMessage')?.addEventListener('input', function() {
+            document.getElementById('charCount').textContent = this.value.length;
+        });
+        
+        // Funciones de selección
+        function toggleAllCheckboxes(checkbox) {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+        }
+        
+        function selectAll() {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = true);
+            document.getElementById('selectAllCheckbox').checked = true;
+        }
+        
+        function deselectAll() {
+            const checkboxes = document.querySelectorAll('.row-checkbox');
+            checkboxes.forEach(cb => cb.checked = false);
+            document.getElementById('selectAllCheckbox').checked = false;
+        }
+        
+        function getSelectedIds() {
+            const checkboxes = document.querySelectorAll('.row-checkbox:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+        
+        // Enviar emails
+        function sendEmailsToSelected() {
+            const selectedIds = getSelectedIds();
+            if (selectedIds.length === 0) {
+                alert('Por favor selecciona al menos un registro');
+                return;
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('emailModal'));
+            modal.show();
+        }
+        
+        function confirmSendEmails() {
+            const selectedIds = getSelectedIds();
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value;
+            
+            if (!subject || !message) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+            
+            if (!confirm(`¿Enviar email a ${selectedIds.length} personas?`)) {
+                return;
+            }
+            
+            fetch("{% url 'landing:send-email' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    recipients: selectedIds,
+                    subject: subject,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('emailModal')).hide();
+                    document.getElementById('emailForm').reset();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error al enviar emails: ' + error);
+            });
+        }
+        
+        // Enviar SMS
+        function sendSMSToSelected() {
+            const selectedIds = getSelectedIds();
+            if (selectedIds.length === 0) {
+                alert('Por favor selecciona al menos un registro');
+                return;
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('smsModal'));
+            modal.show();
+        }
+        
+        function confirmSendSMS() {
+            const selectedIds = getSelectedIds();
+            const message = document.getElementById('smsMessage').value;
+            
+            if (!message) {
+                alert('Por favor escribe un mensaje');
+                return;
+            }
+            
+            if (!confirm(`¿Enviar SMS a ${selectedIds.length} personas?`)) {
+                return;
+            }
+            
+            fetch("{% url 'landing:send-sms' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    recipients: selectedIds,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    bootstrap.Modal.getInstance(document.getElementById('smsModal')).hide();
+                    document.getElementById('smsForm').reset();
+                    document.getElementById('charCount').textContent = '0';
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error al enviar SMS: ' + error);
+            });
+        }
+        
+        // Limpiar filtros
+        function clearFilters() {
+            window.location.href = "{% url 'landing:dashboard' %}";
+        }
+    </script>
+</body>
+</html>
