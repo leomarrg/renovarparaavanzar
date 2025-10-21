@@ -1,31 +1,31 @@
-<!-- {% load static %} -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ meta.description }}">
-    <meta name="keywords" content="{{ meta.keywords }}"> -->
+    <meta name="keywords" content="{{ meta.keywords }}">
     
     <!-- Open Graph Meta Tags -->
-    <!-- <meta property="og:title" content="{{ meta.title }}">
+    <meta property="og:title" content="{{ meta.title }}">
     <meta property="og:description" content="{{ meta.description }}">
     <meta property="og:image" content="{% static meta.og_image %}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}"> -->
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
     
-    <!-- <title>{{ meta.title }}</title> -->
+    <title>{{ meta.title }}</title>
     
     <!-- Favicon -->
-    <!-- <link rel="icon" type="image/png" href="{% static 'landing/img/favicon.png' %}"> -->
+    <link rel="icon" type="image/png" href="{% static 'landing/img/favicon.png' %}">
 
     <!-- Google Fonts -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
     
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Custom CSS -->
-    <!-- <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
 
     <style>
 .checkbox-group {
@@ -123,51 +123,51 @@
     border: 2px solid #2563EB;
     color: #1E40AF;
     display: block !important;
-} -->
+}
 
-<!-- </style> -->
+</style>
 </head>
 
 <body>
     <!-- Loader -->
-     <!-- <div class="loader" id="loader">
+     <div class="loader" id="loader">
         <div class="loader-spinner"></div>
-    </div> -->
+    </div>
     
     <!-- Header -->
-    <!-- <header class="header" id="header">
+    <header class="header" id="header">
         <nav class="navbar">
             <div class="logo-container">
                 <img src="{% static 'landing/img/navbar-logo.png' %}" alt="{{ candidate.campaign_slogan }}" class="logo-img">
-            </div> -->
+            </div>
             
             <!-- Desktop Navigation - visible solo en desktop -->
-            <!-- <div class="desktop-nav">
+            <div class="desktop-nav">
                 <a href="#hero" style="color: black !important;">Inicio</a>
                 <a href="#team" style="color: black !important;">Equipo</a>
                 <a href="#plan" style="color: black !important;">Plan Estratégico</a>
                 <a href="#donate" style="color: black !important;">Donar</a>
                 <a href="#register" style="color: black !important;">Registrarse</a>
-            </div> -->
+            </div>
             
             <!-- Mobile Menu Toggle - visible solo en móvil -->
-            <!-- <button class="menu-toggle" id="menuToggle">
+            <button class="menu-toggle" id="menuToggle">
                 <span>☰</span>
             </button>
-        </nav> -->
+        </nav>
             
             <!-- Mobile Menu -->
-            <!-- <div class="mobile-menu" id="mobileMenu">
+            <div class="mobile-menu" id="mobileMenu">
                 <a href="#hero">Inicio</a>
                 <a href="#team">Equipo</a>
                 <a href="#plan">Plan Estratégico</a>
                 <a href="#donate">Donar</a>
                 <a href="#register">Registrarse</a>
             </div>
-    </header> -->
+    </header>
     
     <!-- Hero Section -->
-    <!-- <section class="hero" id="hero">
+    <section class="hero" id="hero">
         <div class="hero-content">
             <img src="{% static 'landing/img/logo-renovar.png' %}" alt="Dr. Méndez Sexto" class="hero-logo">
 
@@ -175,10 +175,10 @@
                 "Cuando los médicos nos unimos... Puerto Rico sana." <span class="hero-author">- Dr. Méndez Sexto</span>
             </p>
         </div>
-    </section> -->
+    </section>
 
     <!-- Countdown Section -->
-    <!-- <section class="countdown-section">
+    <section class="countdown-section">
         <div class="countdown-wrapper">
             <h3 class="countdown-title" style="font-size: 1.2rem;">Conteo regresivo para las elecciones:</h3>
             
@@ -212,19 +212,19 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
 
-    <!-- <section class="doctor-intro-section">
+    <section class="doctor-intro-section">
         <div class="container">
             <div class="doctor-intro-content">
-                <div class="doctor-intro-logo-wrapper"> -->
+                <div class="doctor-intro-logo-wrapper">
                     <!-- Logo para móvil -->
-                    <!-- <img src="{% static 'landing/img/logo-mendez.png' %}" 
+                    <img src="{% static 'landing/img/logo-mendez.png' %}" 
                         alt="Dr. Méndez Sexto" 
-                        class="doctor-intro-logo-mobile"> -->
+                        class="doctor-intro-logo-mobile">
                     
                     <!-- Logo para desktop -->
-                    <!-- <img src="{% static 'landing/img/DR_PRESIDENTE@2x.png' %}" 
+                    <img src="{% static 'landing/img/DR_PRESIDENTE@2x.png' %}" 
                         alt="Dr. Méndez Sexto" 
                         class="doctor-intro-logo-desktop">
                 </div>
@@ -233,9 +233,9 @@
                         <img src="{% static 'landing/img/dr_cutout.png' %}" 
                             alt="Dr. Méndez Sexto" 
                             class="doctor-intro-photo">
-                </div> -->
+                </div>
                 <!-- Contenido principal: Texto y foto lado a lado -->
-                <!-- <div class="doctor-intro-main">
+                <div class="doctor-intro-main">
                     <div class="doctor-intro-text-column">
                         <h2 class="doctor-intro-section-title" style="margin-bottom: 20px; color: #377e7c;">Dr. Ramón Méndez Sexto</h2>
                         <ul class="doctor-intro-list">
@@ -253,10 +253,10 @@
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Team Section -->
-    <!-- <section class="team-section" id="team">
+    <section class="team-section" id="team">
         <div class="section-header">
             <div class="section-header-content">
                 <h2>Nuestro</h2>
@@ -274,7 +274,7 @@
                     <p class="role">{{ member.role }}</p>
                     <p class="district">{{ member.district }}</p>
                 </div>
-                {% endfor %} -->
+                {% endfor %}
                 
                 <!-- Featured Member -->
                 <!-- <div class="team-member juan-destacado animate-on-scroll">
@@ -285,12 +285,12 @@
                     <p class="role">{{ featured_member.role }}</p>
                     <p class="district">{{ featured_member.district }}</p>
                 </div> -->
-            <!-- </div>
+            </div>
         </div>
-    </section> -->
+    </section>
     
     <!-- Strategic Plan Section -->
-    <!-- <section class="strategic-plan" id="plan">
+    <section class="strategic-plan" id="plan">
         <div class="container">
             <div class="strategic-plan-header">
                 <div class="strategic-plan-title">
@@ -331,19 +331,19 @@
                 {% endif %}
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- Sección de Portavoces - Agregar después de la sección de Team -->
-    <!-- <section class="spokespersons-section" id="portavoces">
+    <section class="spokespersons-section" id="portavoces">
         <div class="spokespersons-header">
             <div class="spokespersons-header-content">
                 <h2 style="font-size: 3rem;">Portavoces</h2>
             </div>
         </div>
         <div class="container">
-            <div class="spokespersons-grid"> -->
+            <div class="spokespersons-grid">
                 <!-- San Juan -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Ramón Vidal</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> San Juan</p>
                     <div class="spokesperson-contact">
@@ -356,10 +356,10 @@
                             <a href="mailto:revidalmd@gmail.com">revidalmd@gmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Bayamón -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Carlos Santiago</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Bayamón</p>
                     <div class="spokesperson-contact">
@@ -372,10 +372,10 @@
                             <a href="mailto:carlossantiago@hotmail.com">carlossantiago@hotmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Arecibo -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Héctor Cott</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Arecibo</p>
                     <div class="spokesperson-contact">
@@ -388,10 +388,10 @@
                             <a href="mailto:h_cott@yahoo.com">h_cott@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Aguadilla -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Luigi</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Aguadilla</p>
                     <div class="spokesperson-contact">
@@ -404,10 +404,10 @@
                             <a href="mailto:ortholuigi@gmail.com">ortholuigi@gmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Mayagüez -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. Roberto Tirado</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Mayagüez</p>
                     <div class="spokesperson-contact">
@@ -420,10 +420,10 @@
                             <a href="mailto:michaelmdrt@hotmail.com">michaelmdrt@hotmail.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Ponce -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dr. José Toro</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Ponce</p>
                     <div class="spokesperson-contact">
@@ -436,10 +436,10 @@
                             <a href="mailto:drjatoro@yahoo.com">drjatoro@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Carolina -->
-                <!-- <div class="spokesperson-card animate-on-scroll">
+                <div class="spokesperson-card animate-on-scroll">
                     <h3 class="spokesperson-name">Dra. Lourdes Rodríguez Galarza</h3>
                     <p class="spokesperson-region"><span class="region-label">Región:</span> Carolina</p>
                     <div class="spokesperson-contact">
@@ -452,7 +452,7 @@
                             <a href="mailto:mrgalarza04@yahoo.com">mrgalarza04@yahoo.com</a>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <!-- Humacao - Vacante -->
                 <!-- <div class="spokesperson-card vacant animate-on-scroll">
@@ -471,9 +471,9 @@
                         <p class="vacant-text">Próximamente</p>
                     </div>
                 </div> -->
-            <!-- </div>
+            </div>
         </div>
-    </section> -->
+    </section>
 
 
     <!-- DEBUG DE EMERGENCIA - Panel Visual Inline -->
@@ -754,7 +754,7 @@ setTimeout(function() {
     </section>-->
     
     <!-- Register Section - Añadir esto en el index.html después de la sección de donación -->
-    <!-- <section class="register-section" id="register">
+    <section class="register-section" id="register">
         <div class="container">
             <div class="register-wrapper">
                 <div class="register-header">
@@ -813,10 +813,10 @@ setTimeout(function() {
                                     <input type="radio" name="is_doctor" value="False" id="doctor_no">
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
 
                         <!-- INICIO DEL DIV QUE SE OCULTA -->
-                        <!-- <div id="doctorFields" style="display: none;">
+                        <div id="doctorFields" style="display: none;">
                             
                             <div class="form-group">
                                 <input type="text" name="specialty" id="specialty" placeholder="Especialidad que practica">
@@ -859,13 +859,13 @@ setTimeout(function() {
                                 </div>
                         </div>
                             
-                        </div> -->
+                        </div>
                         <!-- FIN DEL DIV QUE SE OCULTA -->
 
                 
 
                         <!-- Checkbox de términos y condiciones -->
-                        <!-- <div class="checkbox-group" style="margin: 25px 0;">
+                        <div class="checkbox-group" style="margin: 25px 0;">
                             <label class="checkbox-label">
                                 <input type="checkbox" 
                                     name="accepts_terms" 
@@ -876,10 +876,10 @@ setTimeout(function() {
                                     Acepto los <a href="{% url 'landing:terms' %}" style="color: #4DB6AC; text-decoration: underline;">términos y condiciones</a>
                                 </span>
                             </label>
-                        </div> -->
+                        </div>
 
                         <!-- Checkbox de promociones -->
-                        <!-- <div class="checkbox-group" style="margin: 25px 0;">
+                        <div class="checkbox-group" style="margin: 25px 0;">
                             <label class="checkbox-label">
                                 <input type="checkbox" 
                                     name="accepts_promotions" 
@@ -896,25 +896,25 @@ setTimeout(function() {
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- Nueva Sección de Countdown -->
-    <!-- <section class="countdown-hero-section">
+    <section class="countdown-hero-section">
         <div class="countdown-hero-overlay"></div>
         <div class="container">
-            <div class="countdown-hero-content"> -->
+            <div class="countdown-hero-content">
                 <!-- Header -->
-                <!-- <div class="countdown-hero-header">
-                    <h2>Conteo regresivo para las elecciones:</h2> -->
+                <div class="countdown-hero-header">
+                    <h2>Conteo regresivo para las elecciones:</h2>
                     <!-- <p class="countdown-description">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                         Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
                     </p> -->
-                <!-- </div> -->
+                </div>
                 
                 <!-- Countdown Display -->
-                <!-- <div class="countdown-display-large" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
+                <div class="countdown-display-large" id="countdown" data-countdown-url="{% url 'landing:countdown-api' %}">
                     <div class="countdown-item-large">
                         <span class="countdown-number-large" id="days">{{ countdown.days }}</span>
                         <span class="countdown-label-large">Días</span>
@@ -931,18 +931,18 @@ setTimeout(function() {
                         <span class="countdown-number-large" id="seconds">{{ countdown.seconds }}</span>
                         <span class="countdown-label-large">Segundos</span>
                     </div>
-                </div> -->
+                </div>
                 
                 <!-- Logo -->
-                <!-- <div class="countdown-logo">
+                <div class="countdown-logo">
                     <img src="{% static 'landing/img/DR_x_RPA@4x.png' %}" alt="Logo Renovar Para Avanzar">
                 </div>
             </div>
         </div>
-    </section> -->
+    </section>
 
     <!-- Footer Simplificado -->
-    <!-- <footer class="footer-simple">
+    <footer class="footer-simple">
         <div class="container">
             <div class="footer-content-simple">
                 <h3>{{ candidate.name }}</h3>
@@ -972,11 +972,11 @@ setTimeout(function() {
                 </div>
             </div>
         </div>
-    </footer> -->
+    </footer>
     <!-- ==========================================
          DJANGO MESSAGES DATA
          ========================================== -->
-    <!-- {% if messages %}
+    {% if messages %}
     <script>
         window.djangoMessages = [
             {% for message in messages %}
@@ -987,12 +987,12 @@ setTimeout(function() {
             {% endfor %}
         ];
     </script>
-    {% endif %} -->
+    {% endif %}
 
     <!-- ==========================================
          SCROLL TO REGISTER (Django variable)
          ========================================== -->
-    <!-- {% if scroll_to_register %}
+    {% if scroll_to_register %}
     <script>
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -1003,10 +1003,10 @@ setTimeout(function() {
             }, 600);
         });
     </script>
-    {% endif %} -->
+    {% endif %}
 
 <!-- 2. SEGUNDO: Script de ATH Móvil Base -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+<script src="https://payments.athmovil.com/api/modal/js/athmovil_base.js"></script>
 
 <!-- 3. TERCERO: Tu configuración y callbacks -->
 <script type="text/javascript">
@@ -1132,14 +1132,14 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <!-- 4. Tus otros scripts -->
-<!-- <script src="{% static 'landing/js/page-interactions.js' %}"></script> -->
+<script src="{% static 'landing/js/page-interactions.js' %}"></script>
 
 <!-- 4. Tus otros scripts -->
-<!-- <script src="{% static 'landing/js/page-interactions.js' %}"></script>
+<script src="{% static 'landing/js/page-interactions.js' %}"></script>
 <script src="{% static 'landing/js/form-validation.js' %}"></script>
-<script src="{% static 'landing/js/countdown-timer.js' %}"></script> -->
+<script src="{% static 'landing/js/countdown-timer.js' %}"></script>
 
-<!-- <script src="{% static 'landing/js/messages-handler.js' %}"></script> -->
+<script src="{% static 'landing/js/messages-handler.js' %}"></script>
 
 
 
