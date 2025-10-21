@@ -792,7 +792,7 @@ body.menu-open {
 .doctor-intro-photo {
     width: 100%;
     max-width: 500px;
-    height: auto;
+    height: 850px;
     border-radius: 15px;
     position: relative;
     object-fit: cover;
@@ -2652,6 +2652,7 @@ body.menu-open {
     
     .doctor-intro-photo {
         max-width: 100%;
+        max-height: 500px;
     }
     
     .doctor-intro-text-column {
