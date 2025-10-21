@@ -623,12 +623,16 @@ setTimeout(function() {
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
-                    <div class="header-badge">¡Apoya la Campaña!</div>
                     <div class="title-main">Haz tu</div>
                     <div class="title-script">donación</div>
                     <p class="subtitle-text">
                         Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
                     </p>
+                </div>
+
+                <!-- Imagen centralizada -->
+                <div class="donation-image-wrapper">
+                    <img src="{% static 'landing/img/ATHM.png' %}" alt="ATH Móvil" class="donation-image">
                 </div>
 
                 <div class="donation-content">
@@ -678,7 +682,7 @@ setTimeout(function() {
                                 step="0.01"
                             >
                         </div>
-                    </div> -->
+                    </div>
 
                     <!-- Monto seleccionado -->
                     <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
@@ -1130,9 +1134,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Sistema de actualización de montos inicializado');
 });
 </script>
-
-<!-- 4. Tus otros scripts -->
-<script src="{% static 'landing/js/page-interactions.js' %}"></script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
