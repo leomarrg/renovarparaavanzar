@@ -855,7 +855,7 @@ body.menu-open {
     /* Logo wrapper en desktop - alineado a la derecha */
     .doctor-intro-logo-wrapper {
         text-align: right;
-        margin-bottom: 40px;
+        margin-bottom: -170px;
         padding-right: 0;
         position: relative;
     }
@@ -872,7 +872,7 @@ body.menu-open {
         width: 70%;
         margin-right: 0;
         position: relative;
-        top: 130px;
+        top: 260px;
     }
     
     .doctor-intro-main {
@@ -886,8 +886,8 @@ body.menu-open {
     }
     
     .doctor-intro-image-wrapper {
-        width: 500px;
-        max-width: 500px;
+        width: 580px;
+        max-width: 600px;
     }
     
     .doctor-intro-photo {
