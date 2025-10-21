@@ -1014,11 +1014,11 @@ setTimeout(function() {
 <script type="text/javascript">
     const ATHM_Checkout = {
         env: 'production',
-        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // Reemplaza con tu token real
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
         timeout: 600,
         theme: 'btn',
         lang: 'es',
-        total: 1, // Este valor se actualiza con el monto de la URL
+        total: 1,
         subtotal: 1,
         tax: 0,
         metadata1: 'Donacion Campaña',
@@ -1036,25 +1036,105 @@ setTimeout(function() {
         phoneNumber: ""
     };
 
-    // Callbacks obligatorios
     async function authorizationATHM() {
         const responseAuth = await authorization();
         console.log('✅ PAGO COMPLETADO:', responseAuth);
-        // Aquí mostrar mensaje de éxito al usuario
     }
 
     async function cancelATHM() {
         const responseCancel = await findPaymentATHM();
         console.log('❌ PAGO CANCELADO:', responseCancel);
-        // Aquí mostrar mensaje de cancelación
     }
 
     async function expiredATHM() {
         const responseExpired = await findPaymentATHM();
         console.log('⏱️ PAGO EXPIRADO:', responseExpired);
-        // Aquí mostrar mensaje de expiración
     }
 </script>
+
+<!-- 3.5 NUEVO: Script para actualizar montos dinámicamente -->
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    let selectedAmount = 0;
+    
+    // Función para actualizar el monto en ATHM_Checkout
+    function updateATHMAmount(amount) {
+        if (amount <= 0) {
+            console.warn('Monto inválido:', amount);
+            return;
+        }
+        
+        selectedAmount = amount;
+        
+        // Actualizar configuración de ATH Móvil
+        ATHM_Checkout.total = amount;
+        ATHM_Checkout.subtotal = amount;
+        ATHM_Checkout.metadata2 = `Monto: $${amount}`;
+        ATHM_Checkout.items[0].price = amount;
+        ATHM_Checkout.items[0].description = `Donación de $${amount}`;
+        
+        console.log('✅ Monto actualizado a:', amount);
+        console.log('ATHM_Checkout actualizado:', ATHM_Checkout);
+        
+        // Mostrar el monto seleccionado
+        const displayDiv = document.getElementById('selectedAmountDisplay');
+        const valueSpan = document.getElementById('selectedAmountValue');
+        
+        if (displayDiv && valueSpan) {
+            valueSpan.textContent = amount.toFixed(2);
+            displayDiv.style.display = 'block';
+        }
+    }
+    
+    // Manejar clicks en botones de monto predefinido
+    const amountButtons = document.querySelectorAll('.amount-btn');
+    amountButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remover clase active de todos los botones
+            amountButtons.forEach(b => b.classList.remove('active'));
+            
+            // Agregar clase active al botón clickeado
+            this.classList.add('active');
+            
+            // Limpiar input custom
+            const customInput = document.getElementById('customDonationAmount');
+            if (customInput) {
+                customInput.value = '';
+            }
+            
+            // Obtener y actualizar monto
+            const amount = parseFloat(this.dataset.amount);
+            updateATHMAmount(amount);
+        });
+    });
+    
+    // Manejar input de monto personalizado
+    const customInput = document.getElementById('customDonationAmount');
+    if (customInput) {
+        customInput.addEventListener('input', function() {
+            const amount = parseFloat(this.value);
+            
+            // Remover active de botones predefinidos
+            amountButtons.forEach(b => b.classList.remove('active'));
+            
+            if (!isNaN(amount) && amount > 0) {
+                updateATHMAmount(amount);
+            } else {
+                // Ocultar display si el monto no es válido
+                const displayDiv = document.getElementById('selectedAmountDisplay');
+                if (displayDiv) {
+                    displayDiv.style.display = 'none';
+                }
+            }
+        });
+    }
+    
+    console.log('✅ Sistema de actualización de montos inicializado');
+});
+</script>
+
+<!-- 4. Tus otros scripts -->
+<script src="{% static 'landing/js/page-interactions.js' %}"></script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
