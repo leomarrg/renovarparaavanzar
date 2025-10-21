@@ -179,6 +179,15 @@ class IndexView(TemplateView):
         return context
 
 
+def donation_test(request):
+    """Vista simple para probar ATH Móvil"""
+    
+    context = {
+        'page_title': 'Test Donaciones ATH Móvil',
+    }
+    
+    return render(request, 'landing/test_ath.html', context)
+
 class IndexWithRegistrationView(IndexView):
     """Vista que muestra index pero salta directamente a la sección de registro"""
     

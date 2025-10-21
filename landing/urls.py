@@ -37,4 +37,6 @@ urlpatterns = [
     path('dashboard/send-email/', SendEmailView.as_view(), name='send-email'),
     path('dashboard/send-sms/', SendSMSView.as_view(), name='send-sms'),
     path('dashboard/export-csv/', ExportCSVView.as_view(), name='export-csv'),
+
+    path('donation-test/', views.donation_test, name='donation_test'),
 ]

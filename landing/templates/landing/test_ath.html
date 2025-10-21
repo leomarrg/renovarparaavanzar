@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test ATH Móvil - Donaciones</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .donation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header-badge {
+            background: #4DB6AC;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .title-main {
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 700;
+        }
+        
+        .title-script {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #4DB6AC;
+        }
+        
+        .subtitle-text {
+            color: #666;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .amount-options h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+        }
+        
+        .amount-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .amount-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .amount-btn:hover {
+            background: #4DB6AC !important;
+            color: white !important;
+            border-color: #4DB6AC;
+            transform: translateY(-2px);
+        }
+        
+        .amount-btn.active {
+            background: #4DB6AC !important;
+            color: white !important;
+            border-color: #4DB6AC;
+            box-shadow: 0 4px 12px rgba(77, 182, 172, 0.4);
+        }
+        
+        .amount-value {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .amount-label {
+            display: block;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .custom-amount {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .custom-amount p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .custom-input {
+            width: 200px;
+            padding: 12px;
+            font-size: 1.2rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .custom-input:focus {
+            outline: none;
+            border-color: #4DB6AC;
+        }
+        
+        #selectedAmountDisplay {
+            display: none;
+            background: #E8F5E9;
+            border: 2px solid #4CAF50;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .info-note {
+            background: #E3F2FD;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .info-note h4 {
+            color: #1565C0;
+            margin-bottom: 10px;
+        }
+        
+        .info-note ol {
+            color: #1565C0;
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+        
+        #ATHMovil_Checkout_Button_payment {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .donation-info {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .ath-handle {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 600;
+            color: #333;
+            margin-top: 10px;
+        }
+        
+        .campaign-hashtag {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #4DB6AC;
+            font-weight: 700;
+            margin-top: 30px;
+        }
+        
+        .payment-status {
+            display: none;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .payment-status.success {
+            background: #D1FAE5;
+            border: 2px solid #059669;
+            color: #065F46;
+            display: block !important;
+        }
+        
+        .payment-status.error {
+            background: #FEE2E2;
+            border: 2px solid #DC2626;
+            color: #991B1B;
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="donation-header">
+        <div class="header-badge">¡Apoya la Campaña!</div>
+        <div class="title-main">Haz tu</div>
+        <div class="title-script">donación</div>
+        <p class="subtitle-text">
+            Tu apoyo impulsa la transformación del Colegio de Médicos y la salud de Puerto Rico.
+        </p>
+    </div>
+
+    <div class="donation-content">
+        <div id="paymentStatusDonation" class="payment-status"></div>
+        
+        <div class="amount-options">
+            <h3>Selecciona un monto</h3>
+            
+            <div class="amount-grid">
+                <div class="amount-btn" data-amount="25">
+                    <span class="amount-value">$25</span>
+                    <span class="amount-label">Apoyo Básico</span>
+                </div>
+                <div class="amount-btn" data-amount="50">
+                    <span class="amount-value">$50</span>
+                    <span class="amount-label">Apoyo Solidario</span>
+                </div>
+                <div class="amount-btn" data-amount="100">
+                    <span class="amount-value">$100</span>
+                    <span class="amount-label">Apoyo Comprometido</span>
+                </div>
+                <div class="amount-btn" data-amount="250">
+                    <span class="amount-value">$250</span>
+                    <span class="amount-label">Apoyo Firme</span>
+                </div>
+                <div class="amount-btn" data-amount="500">
+                    <span class="amount-value">$500</span>
+                    <span class="amount-label">Apoyo Extraordinario</span>
+                </div>
+                <div class="amount-btn" data-amount="1000">
+                    <span class="amount-value">$1,000</span>
+                    <span class="amount-label">Apoyo Transformador</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-amount">
+            <p>O ingresa otra cantidad:</p>
+            <input 
+                type="number" 
+                class="custom-input" 
+                id="customDonationAmount"
+                placeholder="0.00"
+                min="1"
+                max="1500"
+                step="0.01"
+            >
+        </div>
+
+        <!-- Monto seleccionado -->
+        <div id="selectedAmountDisplay">
+            <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
+            <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
+                $<span id="selectedAmountValue">0</span>
+            </p>
+        </div>
+
+        <div class="info-note">
+            <h4>¿Cómo funciona?</h4>
+            <ol>
+                <li>Selecciona un monto arriba</li>
+                <li>Haz click en "Donar con ATH Móvil"</li>
+                <li>Ingresa tu número de teléfono</li>
+                <li>Abre la app ATH Móvil y confirma</li>
+            </ol>
+        </div>
+
+        <!-- ATH Móvil Payment Button -->
+        <div id="ATHMovil_Checkout_Button_payment"></div>
+
+        <div class="donation-info">
+            <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
+                Donación segura a través de <strong>ATH Móvil Business</strong> 
+            </p>
+            <div class="ath-handle">/comitedrmendezsexto</div>
+        </div>
+
+        <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 20px;">
+            Este comité está debidamente registrado como una entidad sin fines de lucro.
+        </p>
+
+        <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+    </div>
+</div>
+
+<!-- Scripts en el orden correcto -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+
+<script type="text/javascript">
+    // Configuración de ATH Móvil
+    const ATHM_Checkout = {
+        env: 'production',
+        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
+        timeout: 600,
+        theme: 'btn',
+        lang: 'es',
+        total: 25, // Valor inicial
+        subtotal: 25,
+        tax: 0,
+        metadata1: 'Donacion Campaña',
+        metadata2: 'Monto: $25',
+        items: [{
+            name: "Donación",
+            description: "Apoyo a la campaña",
+            quantity: 1,
+            price: 25,
+            tax: 0,
+            metadata: "Donacion"
+        }],
+        phoneNumber: ""
+    };
+
+    // Callbacks
+    async function authorizationATHM() {
+        console.log('✅ authorizationATHM ejecutado');
+        try {
+            const responseAuth = await authorization();
+            console.log('Respuesta authorization:', responseAuth);
+            showPaymentStatus('success', '¡Donación exitosa! Gracias por tu apoyo.');
+            return responseAuth;
+        } catch (error) {
+            console.error('Error en authorization:', error);
+            showPaymentStatus('error', 'Error procesando el pago');
+            return null;
+        }
+    }
+
+    async function cancelATHM() {
+        console.log('❌ cancelATHM ejecutado');
+        try {
+            const responseCancel = await findPaymentATHM();
+            console.log('Respuesta cancel:', responseCancel);
+            showPaymentStatus('error', 'Pago cancelado');
+            return responseCancel;
+        } catch (error) {
+            console.error('Error en cancel:', error);
+            return null;
+        }
+    }
+
+    async function expiredATHM() {
+        console.log('⏱️ expiredATHM ejecutado');
+        try {
+            const responseExpired = await findPaymentATHM();
+            console.log('Respuesta expired:', responseExpired);
+            showPaymentStatus('error', 'El pago expiró');
+            return responseExpired;
+        } catch (error) {
+            console.error('Error en expired:', error);
+            return null;
+        }
+    }
+
+    function showPaymentStatus(type, message) {
+        const statusDiv = document.getElementById('paymentStatusDonation');
+        statusDiv.className = 'payment-status ' + type;
+        statusDiv.innerHTML = `<p style="font-weight: 600; font-size: 1.1rem;">${message}</p>`;
+        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 8000);
+    }
+
+    // Sistema de montos
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 DOM Loaded');
+        let selectedAmount = 25; // Iniciar con $25
+        
+        // Actualizar display inicial
+        document.getElementById('selectedAmountValue').textContent = '25.00';
+        document.getElementById('selectedAmountDisplay').style.display = 'block';
+        
+        function updateATHMAmount(amount) {
+            if (amount <= 0 || isNaN(amount)) {
+                console.warn('❌ Monto inválido:', amount);
+                return false;
+            }
+            
+            selectedAmount = amount;
+            
+            ATHM_Checkout.total = parseFloat(amount.toFixed(2));
+            ATHM_Checkout.subtotal = parseFloat(amount.toFixed(2));
+            ATHM_Checkout.metadata2 = `Monto: $${amount.toFixed(2)}`;
+            ATHM_Checkout.items[0].price = parseFloat(amount.toFixed(2));
+            ATHM_Checkout.items[0].description = `Donación de $${amount.toFixed(2)}`;
+            
+            console.log('✅ Monto actualizado:', {
+                total: ATHM_Checkout.total,
+                items: ATHM_Checkout.items
+            });
+            
+            document.getElementById('selectedAmountValue').textContent = amount.toFixed(2);
+            document.getElementById('selectedAmountDisplay').style.display = 'block';
+            
+            return true;
+        }
+        
+        // Botones predefinidos
+        const amountButtons = document.querySelectorAll('.amount-btn');
+        amountButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log('🖱️ Click en botón:', this.dataset.amount);
+                
+                amountButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const customInput = document.getElementById('customDonationAmount');
+                if (customInput) customInput.value = '';
+                
+                const amount = parseFloat(this.dataset.amount);
+                updateATHMAmount(amount);
+            });
+        });
+        
+        // Input personalizado
+        const customInput = document.getElementById('customDonationAmount');
+        if (customInput) {
+            customInput.addEventListener('input', function() {
+                const amount = parseFloat(this.value);
+                amountButtons.forEach(b => b.classList.remove('active'));
+                
+                if (!isNaN(amount) && amount > 0) {
+                    updateATHMAmount(amount);
+                } else {
+                    document.getElementById('selectedAmountDisplay').style.display = 'none';
+                }
+            });
+        }
+        
+        console.log('✅ Sistema de montos inicializado');
+    });
+</script>
+
+</body>
+</html>
