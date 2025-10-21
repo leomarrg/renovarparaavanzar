@@ -31,9 +31,28 @@ ALLOWED_HOSTS = [
     'renovarparaavanzar.com',
     'www.renovarparaavanzar.com',
     '3.88.157.222',
-    #   '127.0.0.1',
+    '127.0.0.1',
     #  'emelia-rockier-unrelatedly.ngrok-free.dev'
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
 
 # Site URL for absolute URLs in emails and other purposes
 if DEBUG:
