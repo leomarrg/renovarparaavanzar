@@ -617,9 +617,8 @@ setTimeout(function() {
     }
 }, 1000);
 </script> -->
-    
-    <!-- Donation Section-->
-    <!-- <section class="donation-section" id="donate">
+    <!--Donation Section-->
+    <section class="donation-section" id="donate">
         <div class="container">
             <div class="donation-wrapper">
                 <div class="donation-header">
@@ -632,93 +631,94 @@ setTimeout(function() {
                 </div>
 
                 <div class="donation-content">
-                    <div id="paymentStatusDonation" class="payment-status" style="display: none; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;"></div>
+                    <!-- Estado del pago -->
+                    <div id="paymentStatus" class="payment-status" style="display: none;"></div>
                     
+                    <!-- Selección de monto -->
                     <div class="amount-options">
-                        <h3>Selecciona un monto</h3>
+                        <h3>Selecciona un monto para donar</h3>
                         
                         <div class="amount-grid">
-                            <div class="amount-btn" data-amount="25">
+                            <div class="amount-btn" data-amount="25" onclick="selectAmount(25)">
                                 <span class="amount-value">$25</span>
                                 <span class="amount-label">Apoyo Básico</span>
                             </div>
-                            <div class="amount-btn" data-amount="50">
+                            <div class="amount-btn" data-amount="50" onclick="selectAmount(50)">
                                 <span class="amount-value">$50</span>
                                 <span class="amount-label">Apoyo Solidario</span>
                             </div>
-                            <div class="amount-btn" data-amount="100">
+                            <div class="amount-btn" data-amount="100" onclick="selectAmount(100)">
                                 <span class="amount-value">$100</span>
                                 <span class="amount-label">Apoyo Comprometido</span>
                             </div>
-                            <div class="amount-btn" data-amount="250">
+                            <div class="amount-btn" data-amount="250" onclick="selectAmount(250)">
                                 <span class="amount-value">$250</span>
                                 <span class="amount-label">Apoyo Firme</span>
                             </div>
-                            <div class="amount-btn" data-amount="500">
+                            <div class="amount-btn" data-amount="500" onclick="selectAmount(500)">
                                 <span class="amount-value">$500</span>
                                 <span class="amount-label">Apoyo Extraordinario</span>
                             </div>
-                            <div class="amount-btn" data-amount="1000">
+                            <div class="amount-btn" data-amount="1000" onclick="selectAmount(1000)">
                                 <span class="amount-value">$1,000</span>
                                 <span class="amount-label">Apoyo Transformador</span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Monto personalizado -->
                     <div class="custom-amount">
                         <p>O ingresa otra cantidad:</p>
                         <div class="custom-input-wrapper">
                             <input 
                                 type="number" 
                                 class="custom-input" 
-                                id="customDonationAmount"
+                                id="customAmount"
                                 placeholder="0.00"
                                 min="1"
                                 max="1500"
                                 step="0.01"
+                                onchange="handleCustomAmount(this.value)"
                             >
                         </div>
-                    </div> -->
+                    </div>
 
                     <!-- Monto seleccionado -->
-                    <!-- <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
+                    <div id="selectedAmountDisplay" style="display: none; background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 12px; padding: 20px; margin: 25px 0; text-align: center;">
                         <p style="color: #2E7D32; margin: 0 0 10px 0; font-size: 1rem;">Monto seleccionado:</p>
                         <p style="color: #2E7D32; margin: 0; font-size: 2.5rem; font-weight: 700;">
                             $<span id="selectedAmountValue">0</span>
                         </p>
                     </div>
 
+                    <!-- Instrucciones -->
                     <div class="info-note" style="background: #E3F2FD; border-left: 4px solid #2196F3; padding: 20px; border-radius: 8px; margin: 25px 0;">
                         <h4 style="color: #1565C0; margin: 0 0 10px 0; font-size: 1.1rem;">
                             ¿Cómo funciona?
                         </h4>
                         <ol style="color: #1565C0; margin: 0; padding-left: 20px; line-height: 1.8;">
                             <li>Selecciona un monto arriba</li>
-                            <li>Haz click en "Donar con ATH Móvil"</li>
+                            <li>Haz click en el botón "Pagar con ATH Móvil"</li>
                             <li>Ingresa tu número de teléfono</li>
-                            <li>Abre la app ATH Móvil y confirma</li>
+                            <li>Abre la app ATH Móvil y confirma el pago</li>
                         </ol>
-                    </div> -->
-
-                    <!-- ATH Móvil Payment Button -->
-                    <!-- <div id="ATHMovil_Checkout_Button_payment"></div>
-
-                    <div class="donation-info" style="margin-top: 25px;">
-                        <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem;">
-                            Donación segura a través de <strong>ATH Móvil sección Pay a Business</strong> 
-                        </p>
-                        <div class="ath-handle">/comitedrmendezsexto</div>
                     </div>
 
-                    <p style="text-align: center; color: #718096; font-size: 0.9rem; margin-top: 20px;">
-                        Este comité está debidamente registrado como una entidad sin fines de lucro.
-                    </p>
+                    <!-- CONTENEDOR PARA EL BOTÓN DE ATH MÓVIL -->
+                    <div id="ATHMovil_Checkout_Button_payment" style="text-align: center; margin: 30px 0;"></div>
 
-                    <div class="campaign-hashtag">#RenovarParaAvanzar</div>
+                    <!-- Información adicional -->
+                    <div class="donation-info" style="margin-top: 25px;">
+                        <p style="color: #718096; margin-bottom: 10px; font-size: 0.9rem; text-align: center;">
+                            Donación segura a través de <strong>ATH Móvil</strong>
+                        </p>
+                    </div>
+
+                    <div class="campaign-hashtag" style="text-align: center;">#RenovarParaAvanzar</div>
                 </div>
             </div>
         </div>
-    </section>  -->
+    </section>
 
     <!-- Donation Section TEMPORERA -->
     <section class="donation-section" id="donate">
@@ -1005,56 +1005,215 @@ setTimeout(function() {
     </script>
     {% endif %}
 
-<!-- 2. SEGUNDO: Script de ATH Móvil Base -->
-<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
+<script>
+// Variable global para el monto seleccionado
+let selectedAmount = 0;
 
+// Función para seleccionar monto
+function selectAmount(amount) {
+    selectedAmount = amount;
+    
+    // Actualizar UI
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    // Mostrar monto seleccionado
+    document.getElementById('selectedAmountDisplay').style.display = 'block';
+    document.getElementById('selectedAmountValue').textContent = amount.toFixed(2);
+    
+    // Actualizar configuración de ATH Móvil
+    updateATHMConfig(amount);
+}
 
+// Función para monto personalizado
+function handleCustomAmount(value) {
+    const amount = parseFloat(value);
+    
+    if (amount >= 1 && amount <= 1500) {
+        selectedAmount = amount;
+        
+        // Quitar selección de botones predefinidos
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Mostrar monto seleccionado
+        document.getElementById('selectedAmountDisplay').style.display = 'block';
+        document.getElementById('selectedAmountValue').textContent = amount.toFixed(2);
+        
+        // Actualizar configuración de ATH Móvil
+        updateATHMConfig(amount);
+    }
+}
 
-<!-- 3. TERCERO: Tu configuración y callbacks -->
-<script type="text/javascript">
-    const ATHM_Checkout = {
-        env: 'production',
-        publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763', // Reemplaza con tu token real
-        timeout: 600,
-        theme: 'btn',
-        lang: 'es',
-        total: 1, // Este valor se actualiza con el monto de la URL
-        subtotal: 1,
-        tax: 0,
-        metadata1: 'Donacion Campaña',
-        metadata2: 'Monto: $1',
-        items: [
-            {
-                name: "Donación",
-                description: "Apoyo a la campaña",
-                quantity: 1,
-                price: 1,
-                tax: 0,
-                metadata: "Donacion"
-            }
-        ],
-        phoneNumber: ""
-    };
+// Función para actualizar la configuración de ATH Móvil
+function updateATHMConfig(amount) {
+    if (typeof ATHM_Checkout !== 'undefined') {
+        ATHM_Checkout.total = amount;
+        ATHM_Checkout.subtotal = amount;
+        ATHM_Checkout.metadata2 = `Donación: $${amount}`;
+        ATHM_Checkout.items[0].price = amount;
+        
+        console.log('ATH Móvil configurado con monto:', amount);
+        
+        // Recrear el botón con el nuevo monto
+        const buttonContainer = document.getElementById('ATHMovil_Checkout_Button_payment');
+        if (buttonContainer) {
+            // Limpiar el contenedor
+            buttonContainer.innerHTML = '';
+            
+            // ATH Móvil recreará el botón automáticamente
+            // con la configuración actualizada
+        }
+    }
+}
 
-    // Callbacks obligatorios
-    async function authorizationATHM() {
+// Configuración inicial de ATH Móvil
+const ATHM_Checkout = {
+    env: 'production',
+    publicToken: 'a937f2e32a4e35ebd2c2850d204fd4dc4b515763',
+    timeout: 600,
+    theme: 'btn',
+    lang: 'es',
+    total: 1,
+    subtotal: 1,
+    tax: 0,
+    metadata1: 'Donacion Campaña',
+    metadata2: 'Donación: $1',
+    items: [
+        {
+            name: "Donación para Campaña",
+            description: "Apoyo a Renovar para Avanzar",
+            quantity: 1,
+            price: 1,
+            tax: 0,
+            metadata: "Donacion RPA"
+        }
+    ],
+    phoneNumber: ""
+};
+
+// Callbacks obligatorios de ATH Móvil
+async function authorizationATHM() {
+    try {
         const responseAuth = await authorization();
-        console.log('✅ PAGO COMPLETADO:', responseAuth);
-        // Aquí mostrar mensaje de éxito al usuario
+        console.log('Pago autorizado:', responseAuth);
+        
+        // Mostrar mensaje de éxito
+        showPaymentStatus('success', '¡Donación exitosa! Gracias por tu apoyo.');
+        
+        // Enviar información al servidor (opcional)
+        if (responseAuth && responseAuth.data) {
+            saveTransactionToServer(responseAuth.data);
+        }
+        
+    } catch (error) {
+        console.error('Error en autorización:', error);
+        showPaymentStatus('error', 'Hubo un error procesando el pago.');
     }
+}
 
-    async function cancelATHM() {
+async function cancelATHM() {
+    try {
         const responseCancel = await findPaymentATHM();
-        console.log('❌ PAGO CANCELADO:', responseCancel);
-        // Aquí mostrar mensaje de cancelación
+        console.log('Pago cancelado:', responseCancel);
+        
+        showPaymentStatus('warning', 'El pago fue cancelado.');
+        
+    } catch (error) {
+        console.error('Error en cancelación:', error);
     }
+}
 
-    async function expiredATHM() {
+async function expiredATHM() {
+    try {
         const responseExpired = await findPaymentATHM();
-        console.log('⏱️ PAGO EXPIRADO:', responseExpired);
-        // Aquí mostrar mensaje de expiración
+        console.log('Pago expirado:', responseExpired);
+        
+        showPaymentStatus('warning', 'El tiempo para completar el pago expiró. Por favor intenta de nuevo.');
+        
+    } catch (error) {
+        console.error('Error en expiración:', error);
     }
+}
+
+// Función para mostrar estado del pago
+function showPaymentStatus(type, message) {
+    const statusDiv = document.getElementById('paymentStatus');
+    
+    if (statusDiv) {
+        statusDiv.className = 'payment-status ' + type;
+        statusDiv.innerHTML = message;
+        statusDiv.style.display = 'block';
+        
+        // Hacer scroll hacia el mensaje
+        statusDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Ocultar después de 10 segundos si es éxito
+        if (type === 'success') {
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 10000);
+        }
+    }
+}
+
+// Función para guardar transacción en el servidor (opcional)
+function saveTransactionToServer(transactionData) {
+    fetch('/api/save-donation/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            reference_number: transactionData.referenceNumber,
+            amount: transactionData.total,
+            transaction_date: transactionData.transactionDate,
+            ecommerce_id: transactionData.ecommerceId,
+            metadata1: transactionData.metadata1,
+            metadata2: transactionData.metadata2
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Transacción guardada:', data);
+    })
+    .catch(error => {
+        console.error('Error guardando transacción:', error);
+    });
+}
+
+// Verificar que ATH Móvil esté cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar cada segundo si ATH Móvil está listo
+    const checkATHM = setInterval(() => {
+        if (typeof ATHM_Checkout !== 'undefined') {
+            console.log('✅ ATH Móvil está listo');
+            clearInterval(checkATHM);
+            
+            // Mostrar instrucción inicial
+            const buttonContainer = document.getElementById('ATHMovil_Checkout_Button_payment');
+            if (buttonContainer && !buttonContainer.innerHTML) {
+                buttonContainer.innerHTML = '<p style="color: #999;">Por favor selecciona un monto para continuar</p>';
+            }
+        }
+    }, 1000);
+    
+    // Timeout después de 10 segundos
+    setTimeout(() => {
+        clearInterval(checkATHM);
+        const buttonContainer = document.getElementById('ATHMovil_Checkout_Button_payment');
+        if (buttonContainer && !buttonContainer.innerHTML) {
+            buttonContainer.innerHTML = '<p style="color: red;">Error cargando ATH Móvil. Por favor recarga la página.</p>';
+        }
+    }, 10000);
+});
 </script>
+
+<!-- Cargar el script de ATH Móvil DESPUÉS de definir la configuración -->
+<script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
 
 <!-- 4. Tus otros scripts -->
 <script src="{% static 'landing/js/page-interactions.js' %}"></script>
