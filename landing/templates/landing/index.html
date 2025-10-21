@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %} -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +25,7 @@
     
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'landing/css/styles.css' %}">
 
     <style>
 .checkbox-group {
@@ -123,9 +123,9 @@
     border: 2px solid #2563EB;
     color: #1E40AF;
     display: block !important;
-}
+} -->
 
-</style>
+<!-- </style> -->
 </head>
 
 <body>
@@ -976,7 +976,7 @@ setTimeout(function() {
     <!-- ==========================================
          DJANGO MESSAGES DATA
          ========================================== -->
-    {% if messages %}
+    <!-- {% if messages %}
     <script>
         window.djangoMessages = [
             {% for message in messages %}
@@ -987,12 +987,12 @@ setTimeout(function() {
             {% endfor %}
         ];
     </script>
-    {% endif %}
+    {% endif %} -->
 
     <!-- ==========================================
          SCROLL TO REGISTER (Django variable)
          ========================================== -->
-    {% if scroll_to_register %}
+    <!-- {% if scroll_to_register %}
     <script>
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -1003,7 +1003,7 @@ setTimeout(function() {
             }, 600);
         });
     </script>
-    {% endif %}
+    {% endif %} -->
 
 <!-- 2. SEGUNDO: Script de ATH Móvil Base -->
 <script src="https://payments.athmovil.com/api/js/athmovil_base.js"></script>
@@ -1139,7 +1139,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="{% static 'landing/js/form-validation.js' %}"></script>
 <script src="{% static 'landing/js/countdown-timer.js' %}"></script> -->
 
-<script src="{% static 'landing/js/messages-handler.js' %}"></script>
+<!-- <script src="{% static 'landing/js/messages-handler.js' %}"></script> -->
 
 
 
