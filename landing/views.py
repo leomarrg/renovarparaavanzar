@@ -129,9 +129,9 @@ class IndexView(TemplateView):
         
         # Miembro destacado (Juan del Pueblo - Vocal)
         context['featured_member'] = {
-            'name': 'TBA',
-            'role': 'TBA',
-            'district': 'TBA',
+            'name': 'Dra. Ida R. Cordero',
+            'role': 'Médico Generalista',
+            'district': 'Presidenta de Investigación Clínica',
             'image': 'landing/img/miembros/dra_erika.jpg'
         }
         
