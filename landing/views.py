@@ -107,7 +107,7 @@ class IndexView(TemplateView):
             {
                 'id': 6,
                 'name': 'Dr. Edgar Reyes',
-                'role': 'Otorrinolaringólogo, Cirujano Maxilofacial',
+                'role': 'Otorrinolaringólogo, Cirugía Plástica Facial',
                 'district': 'Presidente Instituto de Educación Continua',
                 'image': 'landing/img/miembros/rd_edgar_reyes.jpg'
             },

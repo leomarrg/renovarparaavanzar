@@ -34,7 +34,7 @@ class RegistrationForm(forms.ModelForm):
         }),
         label='¿Necesitará ayuda con voto adelantado?',
         initial=False,
-        required=True
+        required=False
     )
     
     # NUEVOS CAMPOS - Checkboxes de términos y promociones
@@ -157,36 +157,56 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Debe aceptar los términos y condiciones para continuar.")
         return accepts_terms
     
-    def clean(self):
-        """Validación general del formulario"""
-        cleaned_data = super().clean()
+    def _to_bool(self, value):
+        """
+        Convertir cualquier valor a booleano de forma robusta.
+        Maneja: strings ('True', 'False', 'true', 'false'), booleanos, None, etc.
+        """
+        if value is None:
+            return False
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            return value.strip().lower() in ('true', '1', 'yes', 'sí', 'si')
+        return bool(value)
+
+def clean(self):
+    """Validación general del formulario"""
+    cleaned_data = super().clean()
+    
+    # DEBUG: Imprimir valores recibidos (puedes remover después)
+    print("=" * 60)
+    print("🔍 DEBUG - Valores recibidos:")
+    print(f"  is_doctor: {cleaned_data.get('is_doctor')} (type: {type(cleaned_data.get('is_doctor'))})")
+    print(f"  service_location: '{cleaned_data.get('service_location')}'")
+    print("=" * 60)
+    
+    # 🔧 Conversión ROBUSTA de strings/booleanos
+    cleaned_data['is_doctor'] = self._to_bool(cleaned_data.get('is_doctor', False))
+    cleaned_data['is_licensed'] = self._to_bool(cleaned_data.get('is_licensed', False))
+    cleaned_data['needs_voting_help'] = self._to_bool(cleaned_data.get('needs_voting_help', False))
+    
+    is_doctor = cleaned_data['is_doctor']
+    
+    print(f"✅ is_doctor convertido a: {is_doctor}")
+    
+    # SOLO validar campos de médico SI es médico
+    if is_doctor:
+        print("👨‍⚕️ Usuario ES médico - validando campos")
         
-        # Convertir strings a booleanos
-        for field in ['is_doctor', 'is_licensed', 'needs_voting_help']:
-            if field in cleaned_data:
-                value = cleaned_data[field]
-                if isinstance(value, str):
-                    cleaned_data[field] = value.lower() == 'true'
+        service_location = cleaned_data.get('service_location', '').strip()
         
-        is_doctor = cleaned_data.get('is_doctor')
-        
-        # SOLO validar campos de médico SI es médico
-        if is_doctor:
-            service_location = cleaned_data.get('service_location')
-            is_licensed = cleaned_data.get('is_licensed')
-            
-            if not service_location:
-                self.add_error('service_location', 
-                              'Por favor indique dónde provee servicios médicos.')
-            
-            if is_licensed is None:
-                self.add_error('is_licensed', 
-                              'Por favor indique si está colegiado.')
-        else:
-            # Si NO es médico, establecer valores por defecto
-            cleaned_data['service_location'] = ''
-            cleaned_data['specialty'] = ''
-            cleaned_data['is_licensed'] = False
-            cleaned_data['years_practicing'] = None
-        
-        return cleaned_data
+        if not service_location:
+            self.add_error('service_location', 
+                          'Por favor indique dónde provee servicios médicos.')
+    else:
+        print("👤 Usuario NO es médico - limpiando campos")
+        # Si NO es médico, limpiar campos médicos
+        cleaned_data['service_location'] = ''
+        cleaned_data['specialty'] = ''
+        cleaned_data['is_licensed'] = False
+        cleaned_data['years_practicing'] = None
+    
+    print("=" * 60)
+    
+    return cleaned_data

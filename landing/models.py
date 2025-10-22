@@ -36,7 +36,9 @@ class Registration(models.Model):
     # Asistencia electoral
     needs_voting_help = models.BooleanField(
         verbose_name="¿Necesitará ayuda con voto adelantado?",
-        default=False
+        default=False,
+        null=True,
+        blank=True
     )
 
     accepts_terms = models.BooleanField(
