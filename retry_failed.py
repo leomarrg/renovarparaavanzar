@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-Script para reintentar emails fallidos
-Uso: python retry_failed_emails.py
+Script para reintentar emails fallidos (SIN DUPLICADOS)
+Uso: python retry_failed_unique.py
 """
 
 import os
@@ -36,8 +36,8 @@ IMAGE_URL_3 = f"{BASE_URL}/static/landing/img/email/3transparencia.jpg"
 IMAGE_URL_4 = f"{BASE_URL}/static/landing/img/email/4transparencia.jpg"
 LOGO_URL = f"{BASE_URL}/static/landing/img/DR_x_RPA@4x.png"
 
-# Lista de emails que fallaron
-FAILED_EMAILS = [
+# Lista ÚNICA de emails que fallaron (sin duplicados)
+FAILED_EMAILS_UNIQUE = [
     "erikarentas@yahoo.com",
     "johndanet@yahoo.com",
     "eurifernandeznunez@gmail.com",
@@ -152,14 +152,13 @@ Visita: {BASE_URL}
 Pagado por el Comité Dr. Méndez Sexto
     """.strip()
 
-def send_email(registro, html_template):
-    """Envía un email a un registro específico"""
-    nombre_completo = f"{registro.name} {registro.last_name}"
+def send_email_direct(email, nombre_completo, html_template):
+    """Envía un email directamente a un destinatario"""
     
     # Reemplazar variables en el template
     html_content = html_template
     html_content = html_content.replace('{{ nombre_completo }}', nombre_completo)
-    html_content = html_content.replace('{{ email_destinatario }}', registro.email)
+    html_content = html_content.replace('{{ email_destinatario }}', email)
     html_content = html_content.replace('{{ url_imagen_1 }}', IMAGE_URL_1)
     html_content = html_content.replace('{{ url_imagen_2 }}', IMAGE_URL_2)
     html_content = html_content.replace('{{ url_imagen_3 }}', IMAGE_URL_3)
@@ -172,14 +171,14 @@ def send_email(registro, html_template):
     text_content = generate_text_version(nombre_completo)
     
     # Enviar email
-    email = EmailMultiAlternatives(
+    email_msg = EmailMultiAlternatives(
         subject=SUBJECT,
         body=text_content,
         from_email=FROM_EMAIL,
-        to=[registro.email]
+        to=[email]
     )
-    email.attach_alternative(html_content, "text/html")
-    email.send()
+    email_msg.attach_alternative(html_content, "text/html")
+    email_msg.send()
     
     return True
 
@@ -189,7 +188,7 @@ def send_email(registro, html_template):
 
 def main():
     print('=' * 70)
-    print('🔄 REINTENTO DE EMAILS FALLIDOS')
+    print('🔄 REINTENTO DE EMAILS FALLIDOS (ÚNICOS)')
     print('=' * 70)
     print()
     
@@ -201,12 +200,24 @@ def main():
         print(f'❌ ERROR: No se encontró el template: {e}')
         return
     
-    # Obtener registros fallidos
-    registros = Registration.objects.filter(email__in=FAILED_EMAILS)
+    print()
     
-    total = registros.count()
+    # Crear diccionario de emails únicos con su info
+    email_info = {}
     
-    print(f'📊 Total de emails a reintentar: {total}')
+    print('📋 Buscando información de los emails fallidos...')
+    for email in FAILED_EMAILS_UNIQUE:
+        # Buscar el primer registro con este email
+        registro = Registration.objects.filter(email=email).first()
+        if registro:
+            email_info[email] = f"{registro.name} {registro.last_name}"
+        else:
+            email_info[email] = "Estimado/a Usuario"
+    
+    total = len(email_info)
+    
+    print()
+    print(f'📊 Total de emails ÚNICOS a reintentar: {total}')
     print(f'⏱️  Pausa entre emails: 2 segundos (para evitar límites)')
     print()
     
@@ -224,11 +235,11 @@ def main():
     print('Iniciando reintento...')
     print()
     
-    for i, registro in enumerate(registros, 1):
+    for i, (email, nombre_completo) in enumerate(email_info.items(), 1):
         try:
-            send_email(registro, html_template)
+            send_email_direct(email, nombre_completo, html_template)
             enviados += 1
-            print(f'[{i}/{total}] ✅ Enviado a: {registro.email}')
+            print(f'[{i}/{total}] ✅ Enviado a: {email}')
             
             # Pausa más larga para evitar límites
             if i < total:
@@ -236,9 +247,9 @@ def main():
                 
         except Exception as e:
             fallidos += 1
-            error_msg = f'{registro.email}: {str(e)}'
+            error_msg = f'{email}: {str(e)}'
             errores.append(error_msg)
-            print(f'[{i}/{total}] ❌ Error en: {registro.email}')
+            print(f'[{i}/{total}] ❌ Error en: {email}')
             print(f'    Motivo: {str(e)}')
             
             # Si hay error de conexión, esperar más
