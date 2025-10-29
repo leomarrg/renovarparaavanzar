@@ -28,8 +28,14 @@ SUBJECT = 'URGE TRANSPARENCIA EN EL PROCESO ELECTORAL DEL COLEGIO DE MÉDICOS'
 FROM_EMAIL = settings.EMAIL_HOST_USER
 BASE_URL = settings.SITE_URL
 
+# Email de contacto para solicitudes de baja
+CONTACT_EMAIL = "info@drmendezsexto.com"  # Email donde recibirás las solicitudes de baja
+
 # URLs de las imágenes del email (desde landing/static/landing/img/email/)
-IMAGE_URL = f"{BASE_URL}/static/landing/img/email/transparencia.jpg"
+IMAGE_URL_1 = f"{BASE_URL}/static/landing/img/email/1transparencia.jpg"
+IMAGE_URL_2 = f"{BASE_URL}/static/landing/img/email/2transparencia.jpg"
+IMAGE_URL_3 = f"{BASE_URL}/static/landing/img/email/3transparencia.jpg"
+IMAGE_URL_4 = f"{BASE_URL}/static/landing/img/email/4transparencia.jpg"
 LOGO_URL = f"{BASE_URL}/static/landing/img/DR_x_RPA@4x.png"
 
 # ============================================
@@ -86,10 +92,14 @@ def send_email(registro, html_template, dry_run=False):
     # Reemplazar variables en el template
     html_content = html_template
     html_content = html_content.replace('{{ nombre_completo }}', nombre_completo)
-    html_content = html_content.replace('{{ url_imagen }}', IMAGE_URL)
+    html_content = html_content.replace('{{ email_destinatario }}', registro.email)
+    html_content = html_content.replace('{{ url_imagen_1 }}', IMAGE_URL_1)
+    html_content = html_content.replace('{{ url_imagen_2 }}', IMAGE_URL_2)
+    html_content = html_content.replace('{{ url_imagen_3 }}', IMAGE_URL_3)
+    html_content = html_content.replace('{{ url_imagen_4 }}', IMAGE_URL_4)
     html_content = html_content.replace('{{ url_logo }}', LOGO_URL)
     html_content = html_content.replace('{{ url_sitio_web }}', BASE_URL)
-    html_content = html_content.replace('{{ url_dar_de_baja }}', f"{BASE_URL}/unsubscribe/{registro.unique_id}")
+    html_content = html_content.replace('{{ email_contacto }}', CONTACT_EMAIL)
     
     # Generar versión texto
     text_content = generate_text_version(nombre_completo)
@@ -115,10 +125,14 @@ def send_test_email_direct(email_destino, html_template, nombre="Dr. Juan Pérez
     # Reemplazar variables en el template
     html_content = html_template
     html_content = html_content.replace('{{ nombre_completo }}', nombre)
-    html_content = html_content.replace('{{ url_imagen }}', IMAGE_URL)
+    html_content = html_content.replace('{{ url_imagen_1 }}', IMAGE_URL_1)
+    html_content = html_content.replace('{{ url_imagen_2 }}', IMAGE_URL_2)
+    html_content = html_content.replace('{{ url_imagen_3 }}', IMAGE_URL_3)
+    html_content = html_content.replace('{{ url_imagen_4 }}', IMAGE_URL_4)
     html_content = html_content.replace('{{ url_logo }}', LOGO_URL)
     html_content = html_content.replace('{{ url_sitio_web }}', BASE_URL)
-    html_content = html_content.replace('{{ url_dar_de_baja }}', f"{BASE_URL}/unsubscribe/test-preview")
+    html_content = html_content.replace('{{ email_contacto }}', CONTACT_EMAIL)
+    html_content = html_content.replace('{{ email_destinatario }}', email_destino)
     
     # Generar versión texto
     text_content = generate_text_version(nombre)
@@ -175,7 +189,10 @@ def main():
     print('📋 Configuración:')
     print(f'   Subject: {SUBJECT}')
     print(f'   From: {FROM_EMAIL}')
-    print(f'   Imagen: {IMAGE_URL}')
+    print(f'   Imagen 1: {IMAGE_URL_1}')
+    print(f'   Imagen 2: {IMAGE_URL_2}')
+    print(f'   Imagen 3: {IMAGE_URL_3}')
+    print(f'   Imagen 4: {IMAGE_URL_4}')
     print(f'   Logo: {LOGO_URL}')
     print()
     

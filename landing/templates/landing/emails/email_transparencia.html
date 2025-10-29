@@ -15,7 +15,7 @@
                 
                 <!-- Email wrapper -->
                 <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                                    
+                    
                     <!-- Contenido principal -->
                     <tr>
                         <td style="padding: 40px 30px;">
@@ -30,13 +30,30 @@
                                 ¡Nuestro colegio y nuestros médicos merecen más!
                             </h2>
                             
-                            <!-- Imagen principal -->
-                            <img src="{{ url_imagen }}" alt="Transparencia Electoral" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 30px 0; border-radius: 8px;">
+                            <!-- Imágenes principales en orden -->
+                            <img src="{{ url_imagen_1 }}" alt="Transparencia Electoral 1" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 0 20px 0; border-radius: 8px;">
+                            
+                            <img src="{{ url_imagen_2 }}" alt="Transparencia Electoral 2" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 0 20px 0; border-radius: 8px;">
+                            
+                            <img src="{{ url_imagen_3 }}" alt="Transparencia Electoral 3" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 0 20px 0; border-radius: 8px;">
+                            
+                            <img src="{{ url_imagen_4 }}" alt="Transparencia Electoral 4" style="width: 100%; max-width: 100%; height: auto; display: block; margin: 0 0 30px 0; border-radius: 8px;">
                             
                             <!-- Texto principal -->
                             <p style="margin: 0 0 20px 0; font-size: 16px; line-height: 1.8; color: #333333;">
                                 Hoy hacemos público nuestro reclamo de apertura y transparencia al proceso electoral dentro del Colegio de Médicos Cirujanos de Puerto Rico. Exigimos un proceso transparente, justo y que se aleje de los escándalos y exabruptos del Presidente saliente. #RenovarParaAvanzar
                             </p>
+                            
+                            <!-- Enlace a Facebook -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <a href="https://www.facebook.com/share/p/16U7w9YEz1/?mibextid=wwXIfr" style="display: inline-block; background-color: #4DB6AC; color: #ffffff; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">
+                                            Ver Publicación en Facebook
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                             
                             <!-- Firma con logo -->
                             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
@@ -99,7 +116,7 @@
                             <p style="margin: 20px 0 0 0; font-size: 12px; color: #ffffff;">
                                 Recibiste este correo porque te registraste en nuestra campaña.<br>
                                 Si deseas dejar de recibir estos correos, 
-                                <a href="mailto:{{ email_contacto }}?subject=Solicitud de Baja - Newsletter&body=Solicito ser dado de baja de la lista de correos.%0A%0AMi correo: {{ email_destinatario }}" style="color: #4DB6AC; text-decoration: none;">haz clic aquí</a>.
+                                <a href="mailto:{{ email_contacto }}?subject=NO deseo participar de notificaciones&body=Estimado equipo de campaña,%0A%0ANo deseo participar de notificaciones ni recibir más correos.%0A%0AMi correo electrónico es: {{ email_destinatario }}%0A%0AGracias." style="color: #4DB6AC; text-decoration: none;">haz clic aquí</a>.
                             </p>
                         </td>
                     </tr>
