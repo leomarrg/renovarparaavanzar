@@ -236,9 +236,7 @@ def generate_email_html(nombre_completo, email_destinatario):
 
             <div class="highlight">
                 <p>
-                    <strong>Tu opinión puede hacer la diferencia.</strong> Un aliado de nuestra campaña
-                    está realizando una encuesta independiente para conocer las opiniones de la
-                    comunidad médica sobre temas cruciales para el futuro del Colegio de Médicos.
+                    <strong>Tu opinión puede hacer la diferencia.</strong>
                 </p>
             </div>
 
