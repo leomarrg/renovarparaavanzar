@@ -302,7 +302,7 @@ class SendGridEmailSender:
 
             <div class="unsubscribe">
                 Si no deseas recibir más comunicaciones, puedes
-                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={to_email}">
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}">
                     darte de baja aquí
                 </a>
             </div>
