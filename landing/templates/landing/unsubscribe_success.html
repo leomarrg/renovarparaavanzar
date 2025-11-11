@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baja exitosa - Renovar para Avanzar</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4DB6AC, #00897B);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        .header svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .success-message {
+            margin: 30px 0;
+        }
+
+        .success-message h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: #377e7c;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: #666;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4DB6AC;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .info-box p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #4DB6AC, #00897B);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 30px;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(77, 182, 172, 0.3);
+        }
+
+        .footer {
+            background: #f5f5f5;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <svg fill="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+            </svg>
+            <h1>Baja exitosa</h1>
+            <p>Has sido dado de baja correctamente</p>
+        </div>
+
+        <div class="content">
+            <div class="success-message">
+                <h2>Ya no recibirás más emails</h2>
+                <p>Tu solicitud ha sido procesada exitosamente.</p>
+                <p>Lamentamos verte partir, pero respetamos tu decisión.</p>
+            </div>
+
+            <div class="info-box">
+                <p><strong>¿Qué significa esto?</strong></p>
+                <p>• No recibirás más comunicaciones de la campaña</p>
+                <p>• Tus datos permanecen en nuestro sistema por requisitos legales</p>
+                <p>• Puedes volver a suscribirte en cualquier momento contactándonos</p>
+            </div>
+
+            <a href="/" class="btn-home">Volver a la página principal</a>
+        </div>
+
+        <div class="footer">
+            <p>Renovar para Avanzar - Dr. Méndez Sexto</p>
+            <p style="font-size: 12px; margin-top: 10px; color: #999;">
+                Si esto fue un error, por favor contáctanos en support@renovarparaavanzar.com
+            </p>
+        </div>
+    </div>
+</body>
+</html>

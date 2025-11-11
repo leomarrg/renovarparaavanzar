@@ -65,7 +65,20 @@ class Registration(models.Model):
         blank=True,
         null=True
     )
-    
+
+    # Control de suscripción
+    unsubscribed = models.BooleanField(
+        default=False,
+        verbose_name="Dado de baja",
+        help_text="Usuario se ha dado de baja de comunicaciones"
+    )
+    unsubscribed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fecha de baja",
+        help_text="Fecha en que el usuario se dio de baja"
+    )
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = "Registro de Simpatizante"

@@ -782,9 +782,72 @@ class CountdownAPIView(View):
 class TermsView(TemplateView):
     """Vista para Términos y Condiciones"""
     template_name = 'landing/terms.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Términos y Condiciones'
         return context
-    
+
+
+class UnsubscribeView(View):
+    """Vista para procesar solicitudes de baja de emails"""
+
+    def get(self, request):
+        """Mostrar formulario de baja"""
+        email = request.GET.get('email', '')
+
+        context = {
+            'page_title': 'Darse de baja de comunicaciones',
+            'email': email
+        }
+        return render(request, 'landing/unsubscribe.html', context)
+
+    def post(self, request):
+        """Procesar la solicitud de baja"""
+        from .models import Registration
+
+        email = request.POST.get('email', '').strip().lower()
+
+        if not email:
+            messages.error(request, 'Por favor proporciona tu email.')
+            return redirect('landing:unsubscribe')
+
+        try:
+            # Buscar todos los registros con ese email
+            registrations = Registration.objects.filter(email__iexact=email)
+
+            if not registrations.exists():
+                messages.warning(request, f'No encontramos registros con el email {email}.')
+                return redirect('landing:unsubscribe')
+
+            # Marcar todos como no suscritos
+            count = registrations.update(
+                unsubscribed=True,
+                unsubscribed_at=timezone.now()
+            )
+
+            messages.success(
+                request,
+                f'Has sido dado de baja exitosamente. No recibirás más comunicaciones en {email}.'
+            )
+
+            print(f"✓ Unsubscribe exitoso: {email} ({count} registros actualizados)")
+
+            return redirect('landing:unsubscribe_success')
+
+        except Exception as e:
+            print(f"Error en unsubscribe: {e}")
+            traceback.print_exc()
+            messages.error(request, 'Ocurrió un error procesando tu solicitud. Por favor intenta de nuevo.')
+            return redirect('landing:unsubscribe')
+
+
+class UnsubscribeSuccessView(TemplateView):
+    """Vista de confirmación de baja exitosa"""
+    template_name = 'landing/unsubscribe_success.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'Baja exitosa'
+        return context
+

@@ -302,7 +302,7 @@ class SendGridEmailSender:
 
             <div class="unsubscribe">
                 Si no deseas recibir más comunicaciones, puedes
-                <a href="mailto:support@renovarparaavanzar.com?subject=Solicitud de baja">
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={to_email}">
                     darte de baja aquí
                 </a>
             </div>
@@ -456,9 +456,10 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
     # Inicializar SendGrid
     sender = SendGridEmailSender(email_type='frente_comun')
 
-    # Obtener registros
+    # Obtener registros (excluir usuarios que se dieron de baja)
     registrations = Registration.objects.filter(
-        email__isnull=False
+        email__isnull=False,
+        unsubscribed=False  # Solo enviar a usuarios suscritos
     ).exclude(
         email__exact=''
     ).order_by('id')

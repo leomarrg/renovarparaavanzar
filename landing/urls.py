@@ -27,6 +27,10 @@ urlpatterns = [
     # Términos
     path('terminos/', views.TermsView.as_view(), name='terms'),
 
+    # Unsubscribe
+    path('unsubscribe/', views.UnsubscribeView.as_view(), name='unsubscribe'),
+    path('unsubscribe/success/', views.UnsubscribeSuccessView.as_view(), name='unsubscribe_success'),
+
     # API endpoints
     path('api/countdown/', views.CountdownAPIView.as_view(), name='countdown-api'),
     path('api/register/', views.RegisterAPIView.as_view(), name='register-api'),
