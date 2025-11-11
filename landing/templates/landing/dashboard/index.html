@@ -263,13 +263,17 @@
                                 <label>¿Colegiado?</label>
                                 {{ filter.form.is_licensed }}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>¿Necesita Ayuda Voto?</label>
                                 {{ filter.form.needs_voting_help }}
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label>¿Acepta Promociones?</label>
                                 {{ filter.form.accepts_promotions }}
+                            </div>
+                            <div class="col-md-2">
+                                <label>Estado Email</label>
+                                {{ filter.form.unsubscribed }}
                             </div>
                             <div class="col-md-2 d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary w-100">
@@ -287,6 +291,12 @@
                     </button>
                     <button class="btn btn-primary btn-action" onclick="sendSMSToSelected()">
                         <i class="fas fa-sms"></i> Enviar SMS a Seleccionados
+                    </button>
+                    <button class="btn btn-danger btn-action" onclick="markAsUnsubscribed()">
+                        <i class="fas fa-user-times"></i> Marcar como Dados de Baja
+                    </button>
+                    <button class="btn btn-success btn-action" onclick="markAsSubscribed()">
+                        <i class="fas fa-user-check"></i> Re-suscribir
                     </button>
                     <button class="btn btn-info btn-action" onclick="selectAll()">
                         <i class="fas fa-check-double"></i> Seleccionar Todos
@@ -317,6 +327,7 @@
                                     <th>Médico</th>
                                     <th>Colegiado</th>
                                     <th>Promociones</th>
+                                    <th>Estado Email</th>
                                     <th>Fecha</th>
                                 </tr>
                             </thead>
@@ -351,11 +362,18 @@
                                             <span class="badge badge-custom bg-secondary">No</span>
                                         {% endif %}
                                     </td>
+                                    <td>
+                                        {% if reg.unsubscribed %}
+                                            <span class="badge badge-custom bg-danger">✗ Dado de baja</span>
+                                        {% else %}
+                                            <span class="badge badge-custom bg-success">✓ Suscrito</span>
+                                        {% endif %}
+                                    </td>
                                     <td>{{ reg.created_at|date:"d/m/Y H:i" }}</td>
                                 </tr>
                                 {% empty %}
                                 <tr>
-                                    <td colspan="9" class="text-center">No hay registros</td>
+                                    <td colspan="10" class="text-center">No hay registros</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -368,19 +386,35 @@
                         <ul class="pagination justify-content-center">
                             {% if registrations.has_previous %}
                                 <li class="page-item">
+                                    <a class="page-link" href="?page=1&{{ request.GET.urlencode }}">Primera</a>
+                                </li>
+                                <li class="page-item">
                                     <a class="page-link" href="?page={{ registrations.previous_page_number }}&{{ request.GET.urlencode }}">Anterior</a>
                                 </li>
                             {% endif %}
-                            
+
                             {% for num in registrations.paginator.page_range %}
-                                <li class="page-item {% if registrations.number == num %}active{% endif %}">
-                                    <a class="page-link" href="?page={{ num }}&{{ request.GET.urlencode }}">{{ num }}</a>
-                                </li>
+                                {% if num == 1 or num == registrations.paginator.num_pages or num >= registrations.number|add:"-2" and num <= registrations.number|add:"2" %}
+                                    <li class="page-item {% if registrations.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}&{{ request.GET.urlencode }}">{{ num }}</a>
+                                    </li>
+                                {% elif num == 2 and registrations.number > 4 %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% elif num == registrations.paginator.num_pages|add:"-1" and registrations.number < registrations.paginator.num_pages|add:"-3" %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
-                            
+
                             {% if registrations.has_next %}
                                 <li class="page-item">
                                     <a class="page-link" href="?page={{ registrations.next_page_number }}&{{ request.GET.urlencode }}">Siguiente</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ registrations.paginator.num_pages }}&{{ request.GET.urlencode }}">Última</a>
                                 </li>
                             {% endif %}
                         </ul>
@@ -631,6 +665,78 @@
         // Limpiar filtros
         function clearFilters() {
             window.location.href = "{% url 'landing:dashboard' %}";
+        }
+
+        // Marcar como dados de baja
+        function markAsUnsubscribed() {
+            const selectedIds = getSelectedIds();
+            if (selectedIds.length === 0) {
+                alert('Por favor selecciona al menos un registro');
+                return;
+            }
+
+            if (!confirm(`¿Marcar ${selectedIds.length} persona(s) como dadas de baja? No recibirán más emails.`)) {
+                return;
+            }
+
+            fetch("{% url 'landing:mark-unsubscribed' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    registration_ids: selectedIds
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error al marcar usuarios: ' + error);
+            });
+        }
+
+        // Re-suscribir usuarios
+        function markAsSubscribed() {
+            const selectedIds = getSelectedIds();
+            if (selectedIds.length === 0) {
+                alert('Por favor selecciona al menos un registro');
+                return;
+            }
+
+            if (!confirm(`¿Re-suscribir ${selectedIds.length} persona(s)? Volverán a recibir emails.`)) {
+                return;
+            }
+
+            fetch("{% url 'landing:mark-subscribed' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    registration_ids: selectedIds
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error al re-suscribir usuarios: ' + error);
+            });
         }
     </script>
 </body>

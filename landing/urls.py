@@ -5,7 +5,9 @@ from .dashboard_views import (
     DashboardChartDataView,
     SendEmailView,
     SendSMSView,
-    ExportCSVView
+    ExportCSVView,
+    MarkUnsubscribedView,
+    MarkSubscribedView
 )
 
 app_name = 'landing'
@@ -41,6 +43,8 @@ urlpatterns = [
     path('dashboard/send-email/', SendEmailView.as_view(), name='send-email'),
     path('dashboard/send-sms/', SendSMSView.as_view(), name='send-sms'),
     path('dashboard/export-csv/', ExportCSVView.as_view(), name='export-csv'),
+    path('dashboard/mark-unsubscribed/', MarkUnsubscribedView.as_view(), name='mark-unsubscribed'),
+    path('dashboard/mark-subscribed/', MarkSubscribedView.as_view(), name='mark-subscribed'),
 
     path('donation-test/', views.donation_test, name='donation_test'),
 ]

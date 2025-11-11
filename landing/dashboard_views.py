@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils import timezone
 import json
 import csv
 from datetime import datetime, timedelta
@@ -288,5 +289,75 @@ class ExportCSVView(LoginRequiredMixin, View):
                 'Sí' if reg.accepts_promotions else 'No',
                 reg.created_at.strftime('%Y-%m-%d %H:%M:%S')
             ])
-        
+
         return response
+
+
+class MarkUnsubscribedView(LoginRequiredMixin, View):
+    """Vista para marcar usuarios seleccionados como dados de baja"""
+    login_url = '/admin/login/'
+
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            registration_ids = data.get('registration_ids', [])
+
+            if not registration_ids:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'No se seleccionaron registros'
+                }, status=400)
+
+            # Marcar registros como dados de baja
+            updated = Registration.objects.filter(
+                id__in=registration_ids
+            ).update(
+                unsubscribed=True,
+                unsubscribed_at=timezone.now()
+            )
+
+            return JsonResponse({
+                'success': True,
+                'message': f'{updated} usuario(s) marcado(s) como dado(s) de baja. No recibirán más emails.'
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Error: {str(e)}'
+            }, status=500)
+
+
+class MarkSubscribedView(LoginRequiredMixin, View):
+    """Vista para re-suscribir usuarios seleccionados"""
+    login_url = '/admin/login/'
+
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            registration_ids = data.get('registration_ids', [])
+
+            if not registration_ids:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'No se seleccionaron registros'
+                }, status=400)
+
+            # Re-suscribir usuarios
+            updated = Registration.objects.filter(
+                id__in=registration_ids
+            ).update(
+                unsubscribed=False,
+                unsubscribed_at=None
+            )
+
+            return JsonResponse({
+                'success': True,
+                'message': f'{updated} usuario(s) re-suscrito(s). Volverán a recibir emails.'
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'message': f'Error: {str(e)}'
+            }, status=500)

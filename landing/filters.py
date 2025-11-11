@@ -64,16 +64,28 @@ class RegistrationFilter(django_filters.FilterSet):
             attrs={'class': 'form-control'}
         )
     )
-    
+
+    unsubscribed = django_filters.BooleanFilter(
+        label='Estado de Suscripción',
+        widget=forms.Select(
+            choices=[
+                ('', 'Todos'),
+                (False, '✓ Suscritos (Recibirán emails)'),
+                (True, '✗ Dados de baja (NO recibirán)')
+            ],
+            attrs={'class': 'form-control'}
+        )
+    )
+
     created_at = django_filters.DateFromToRangeFilter(
         widget=django_filters.widgets.RangeWidget(attrs={
             'class': 'form-control',
             'type': 'date'
         })
     )
-    
+
     class Meta:
         model = Registration
-        fields = ['name', 'last_name', 'email', 'phone_number', 
-                  'is_doctor', 'is_licensed', 'needs_voting_help', 
-                  'accepts_promotions', 'created_at']
+        fields = ['name', 'last_name', 'email', 'phone_number',
+                  'is_doctor', 'is_licensed', 'needs_voting_help',
+                  'accepts_promotions', 'unsubscribed', 'created_at']
