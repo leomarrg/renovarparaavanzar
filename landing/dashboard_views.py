@@ -36,7 +36,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['total_colegiados'] = registrations.filter(is_licensed=True).count()
         context['total_ayuda_voto'] = registrations.filter(needs_voting_help=True).count()
         context['total_acepto_promociones'] = registrations.filter(accepts_promotions=True).count()
-        
+
+        # Estadísticas de suscripción
+        context['total_con_email'] = registrations.filter(email__isnull=False).exclude(email='').count()
+        context['total_suscritos'] = registrations.filter(unsubscribed=False, email__isnull=False).exclude(email='').count()
+        context['total_dados_baja'] = registrations.filter(unsubscribed=True).count()
+
         # Registros recientes (últimos 7 días)
         seven_days_ago = datetime.now() - timedelta(days=7)
         context['registros_recientes'] = registrations.filter(created_at__gte=seven_days_ago).count()

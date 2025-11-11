@@ -10,22 +10,25 @@ class RegistrationAdmin(admin.ModelAdmin):
     
     list_display = (
         'unique_id',
-        'full_name', 
+        'full_name',
+        'email',
         'phone_number',
         'is_doctor_display',
         'is_licensed_display',
         'needs_voting_help_display',
         'accepts_terms_display',
         'accepts_promotions_display',
+        'unsubscribed_display',
         'created_at'
     )
-    
+
     list_filter = (
         'is_doctor',
-        'is_licensed', 
+        'is_licensed',
         'needs_voting_help',
         'accepts_terms',
         'accepts_promotions',
+        'unsubscribed',
         'created_at'
     )
     
@@ -38,8 +41,8 @@ class RegistrationAdmin(admin.ModelAdmin):
         'postal_address'
     )
     
-    readonly_fields = ('unique_id', 'created_at', 'updated_at')
-    
+    readonly_fields = ('unique_id', 'created_at', 'updated_at', 'unsubscribed_at')
+
     fieldsets = (
         ('Información Personal', {
             'fields': ('name', 'last_name', 'postal_address', 'phone_number', 'email')
@@ -54,13 +57,24 @@ class RegistrationAdmin(admin.ModelAdmin):
             'fields': ('accepts_terms', 'accepts_promotions'),
             'description': 'Consentimientos del usuario'
         }),
+        ('Estado de Suscripción', {
+            'fields': ('unsubscribed', 'unsubscribed_at'),
+            'description': 'Control de bajas de comunicaciones por email'
+        }),
         ('Información del Sistema', {
             'fields': ('unique_id', 'created_at', 'updated_at'),
             'classes': ('collapse',)
         })
     )
-    
-    actions = ['export_to_csv', 'export_doctors_only', 'export_voting_help', 'export_promotions']
+
+    actions = [
+        'export_to_csv',
+        'export_doctors_only',
+        'export_voting_help',
+        'export_promotions',
+        'mark_as_unsubscribed',
+        'mark_as_subscribed'
+    ]
     
     def full_name(self, obj):
         """Mostrar nombre completo"""
@@ -117,7 +131,30 @@ class RegistrationAdmin(admin.ModelAdmin):
         return format_html('<span style="color: gray;">No aceptó</span>')
     accepts_promotions_display.short_description = "Promociones"
     accepts_promotions_display.admin_order_field = 'accepts_promotions'
-    
+
+    def unsubscribed_display(self, obj):
+        """Mostrar estado de suscripción"""
+        if obj.unsubscribed:
+            return format_html(
+                '<span style="color: red; font-weight: bold;">✗ Dado de baja</span>'
+            )
+        return format_html('<span style="color: green;">✓ Suscrito</span>')
+    unsubscribed_display.short_description = "Estado Email"
+    unsubscribed_display.admin_order_field = 'unsubscribed'
+
+    def mark_as_unsubscribed(self, request, queryset):
+        """Marcar usuarios seleccionados como dados de baja"""
+        from django.utils import timezone
+        count = queryset.update(unsubscribed=True, unsubscribed_at=timezone.now())
+        self.message_user(request, f'{count} usuario(s) marcado(s) como dado(s) de baja.')
+    mark_as_unsubscribed.short_description = "Marcar como dados de baja (no recibirán emails)"
+
+    def mark_as_subscribed(self, request, queryset):
+        """Marcar usuarios seleccionados como suscritos nuevamente"""
+        count = queryset.update(unsubscribed=False, unsubscribed_at=None)
+        self.message_user(request, f'{count} usuario(s) re-suscrito(s) (recibirán emails).')
+    mark_as_subscribed.short_description = "Re-suscribir (recibirán emails nuevamente)"
+
     def export_to_csv(self, request, queryset):
         """Exportar registros seleccionados a CSV"""
         response = HttpResponse(content_type='text/csv')
@@ -229,7 +266,7 @@ class RegistrationAdmin(admin.ModelAdmin):
     def changelist_view(self, request, extra_context=None):
         """Vista personalizada del listado con estadísticas"""
         extra_context = extra_context or {}
-        
+
         # Estadísticas
         total_registros = Registration.objects.count()
         total_medicos = Registration.objects.filter(is_doctor=True).count()
@@ -237,7 +274,9 @@ class RegistrationAdmin(admin.ModelAdmin):
         total_necesitan_ayuda = Registration.objects.filter(needs_voting_help=True).count()
         total_acepto_terminos = Registration.objects.filter(accepts_terms=True).count()
         total_acepto_promociones = Registration.objects.filter(accepts_promotions=True).count()
-        
+        total_suscritos = Registration.objects.filter(unsubscribed=False, email__isnull=False).exclude(email='').count()
+        total_dados_baja = Registration.objects.filter(unsubscribed=True).count()
+
         extra_context.update({
             'total_registros': total_registros,
             'total_medicos': total_medicos,
@@ -245,11 +284,13 @@ class RegistrationAdmin(admin.ModelAdmin):
             'total_necesitan_ayuda': total_necesitan_ayuda,
             'total_acepto_terminos': total_acepto_terminos,
             'total_acepto_promociones': total_acepto_promociones,
+            'total_suscritos': total_suscritos,
+            'total_dados_baja': total_dados_baja,
             'porcentaje_medicos': round((total_medicos / total_registros * 100), 1) if total_registros > 0 else 0,
             'porcentaje_ayuda': round((total_necesitan_ayuda / total_registros * 100), 1) if total_registros > 0 else 0,
             'porcentaje_promociones': round((total_acepto_promociones / total_registros * 100), 1) if total_registros > 0 else 0,
         })
-        
+
         return super().changelist_view(request, extra_context=extra_context)
     
 @admin.register(PlanEstrategico)
