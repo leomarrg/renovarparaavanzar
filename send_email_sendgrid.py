@@ -9,6 +9,12 @@ import sys
 import django
 import time
 from datetime import datetime
+from pathlib import Path
+
+# Cargar variables de entorno desde .env
+from dotenv import load_dotenv
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # Configurar Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
