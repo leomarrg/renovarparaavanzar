@@ -521,7 +521,7 @@ class SendGridEmailSender:
             </div>
 
             <p class="message">
-                Te invito a votar por el Dr. Ramón Méndez Sexto para recuperar nuestra fuerza frente a los planes médicos.
+                Vota por el Dr. Ramón Méndez Sexto y recuperemos la fuerza frente a los planes médicos.
             </p>
 
             <p class="message">

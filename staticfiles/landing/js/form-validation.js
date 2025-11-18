@@ -20,10 +20,6 @@
         const licensedYes = document.getElementById('licensed_yes');
         const licensedNo = document.getElementById('licensed_no');
         
-        // ✅ AGREGAR: Referencias a los campos de voto adelantado
-        const votingHelpYes = document.querySelector('input[name="needs_voting_help"][value="True"]');
-        const votingHelpNo = document.querySelector('input[name="needs_voting_help"][value="False"]');
-        
         if (!doctorYes || !doctorNo) return;
         
         doctorNo.addEventListener('change', function() {
@@ -56,18 +52,6 @@
                     licensedNo.disabled = true;
                     licensedNo.removeAttribute('required');
                 }
-                
-                // ✅ AGREGAR: Limpiar y deshabilitar campos de voto adelantado
-                if (votingHelpYes) {
-                    votingHelpYes.checked = false;
-                    votingHelpYes.disabled = true;
-                    votingHelpYes.removeAttribute('required');
-                }
-                if (votingHelpNo) {
-                    votingHelpNo.checked = false;
-                    votingHelpNo.disabled = true;
-                    votingHelpNo.removeAttribute('required');
-                }
             }
         });
 
@@ -84,15 +68,6 @@
                     licensedYes.setAttribute('required', 'required');
                 }
                 if (licensedNo) licensedNo.disabled = false;
-                
-                // ✅ AGREGAR: Habilitar campos de voto adelantado
-                if (votingHelpYes) {
-                    votingHelpYes.disabled = false;
-                    votingHelpYes.setAttribute('required', 'required');
-                }
-                if (votingHelpNo) {
-                    votingHelpNo.disabled = false;
-                }
             }
         });
     }
