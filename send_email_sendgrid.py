@@ -39,6 +39,7 @@ FROM_EMAIL = os.environ.get('SENDGRID_FROM_EMAIL', 'registro@renovarparaavanzar.
 SITE_URL = settings.SITE_URL
 LOGO_URL = f"{SITE_URL}/static/landing/img/email/DR_x_RPA@4x.png"
 DOCTOR_PHOTO_URL = f"{SITE_URL}/static/landing/img/dr_cutout.png"
+DOCTOR_TUX_URL = f"{SITE_URL}/static/landing/img/dr_tux.jpg"
 
 # Configuración de envío
 BATCH_SIZE = 100  # SendGrid puede manejar más
@@ -128,6 +129,14 @@ class SendGridEmailSender:
             font-weight: 700;
             line-height: 1.3;
             font-family: 'Montserrat', sans-serif;
+        }}
+        .doctor-photo {{
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
         }}
         .content {{
             padding: 40px 30px;
@@ -260,6 +269,7 @@ class SendGridEmailSender:
         <div class="header">
             <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
             <h1>Un frente común por la clase médica</h1>
+            <img src="{DOCTOR_TUX_URL}" alt="Dr. Méndez Sexto" class="doctor-photo" />
         </div>
 
         <div class="content">
