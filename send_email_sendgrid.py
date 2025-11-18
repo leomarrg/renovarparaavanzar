@@ -134,12 +134,12 @@ class SendGridEmailSender:
             max-width: 300px;
             width: 100%;
             height: auto;
-            margin: 20px auto;
+            margin: 20px auto 5px auto;
             display: block;
             border-radius: 10px;
         }}
         .content {{
-            padding: 40px 30px;
+            padding: 5px 30px 40px 30px;
             background-color: #377e7c !important;
         }}
         .greeting {{
@@ -395,12 +395,12 @@ class SendGridEmailSender:
             max-width: 300px;
             width: 100%;
             height: auto;
-            margin: 20px auto;
+            margin: 20px auto 5px auto;
             display: block;
             border-radius: 10px;
         }}
         .content {{
-            padding: 40px 30px;
+            padding: 5px 30px 40px 30px;
             background-color: #377e7c !important;
         }}
         .greeting {{
@@ -492,43 +492,43 @@ class SendGridEmailSender:
         }}
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
+<body style="background-color: #377e7c !important; color: white !important;">
+    <div class="container" style="background-color: #377e7c !important;">
+        <div class="header" style="background-color: #377e7c !important;">
             <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
-            <h1>Los planes médicos no pueden seguir dictando nuestra práctica</h1>
+            <h1 style="color: white !important;">Los planes médicos no pueden seguir dictando nuestra práctica</h1>
             <img src="{DOCTOR_TUX_URL}" alt="Dr. Méndez Sexto" class="doctor-photo" />
         </div>
 
-        <div class="content">
-            <p class="greeting">Estimado colega:</p>
+        <div class="content" style="background-color: #377e7c !important;">
+            <p class="greeting" style="color: white !important;">Estimado colega:</p>
 
-            <p class="message">
+            <p class="message" style="color: white !important;">
                 Durante años, hemos trabajado bajo tarifas injustas, pagos tardíos y denegaciones arbitrarias.
                 El Colegio se ha limitado a quejarse sin lograr un solo cambio concreto.
             </p>
 
-            <p class="message">
+            <p class="message" style="color: white !important;">
                 La clase médica merece representación real, no comunicados vacíos.
             </p>
 
             <div class="highlight">
-                <p>
+                <p style="color: white !important;">
                     El Dr. Ramón Méndez Sexto entiende cómo se defienden los intereses de los médicos:
                     con seriedad, credibilidad y estrategia. Su liderazgo devolverá la voz del médico
                     a las mesas donde se decide nuestro valor profesional.
                 </p>
             </div>
 
-            <p class="message">
+            <p class="message" style="color: white !important;">
                 Vota por el Dr. Ramón Méndez Sexto y recuperemos la fuerza frente a los planes médicos.
             </p>
 
-            <p class="message">
-                Conoce más sobre la propuesta en <a href="https://www.renovarparaavanzar.com" class="simple-link">www.renovarparaavanzar.com</a>
+            <p class="message" style="color: white !important;">
+                Conoce más sobre la propuesta en <a href="https://www.renovarparaavanzar.com" class="simple-link" style="color: white !important; text-decoration: underline;">www.renovarparaavanzar.com</a>
             </p>
 
-            <p class="message">
+            <p class="message" style="color: white !important;">
                 Atentamente,<br>
                 Comité Dr. Méndez Sexto
             </p>
@@ -792,9 +792,43 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
     print(f"Tiempo: {elapsed:.1f} minutos")
     print()
 
-    # Guardar errores
+    # Guardar reporte completo
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    report_file = f"sendgrid_report_{timestamp}.txt"
+
+    with open(report_file, 'w', encoding='utf-8') as f:
+        f.write("=" * 60 + "\n")
+        f.write("REPORTE DE ENVÍO MASIVO - SENDGRID\n")
+        f.write("=" * 60 + "\n\n")
+        f.write(f"Fecha y hora: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Tipo de email: {email_type}\n")
+        f.write(f"Subject: {subject}\n")
+        f.write(f"Offset inicial: {offset}\n")
+        f.write(f"Límite de envío: {limit if limit else 'Sin límite'}\n")
+        f.write(f"Tamaño de lote: {batch_size}\n")
+        f.write(f"Pausa entre lotes: {pause} segundos\n")
+        f.write(f"Adjunto: {'Sí' if attachment_path else 'No'}\n")
+        f.write("\n" + "-" * 60 + "\n")
+        f.write("RESULTADOS\n")
+        f.write("-" * 60 + "\n\n")
+        f.write(f"Total procesados: {total_exitosos + total_fallidos}\n")
+        f.write(f"✓ Enviados exitosamente: {total_exitosos}\n")
+        f.write(f"✗ Fallidos: {total_fallidos}\n")
+        f.write(f"Tasa de éxito: {(total_exitosos / (total_exitosos + total_fallidos) * 100):.1f}%\n")
+        f.write(f"Tiempo total: {elapsed:.1f} minutos\n")
+        f.write(f"Velocidad: {(total_exitosos + total_fallidos) / elapsed:.1f} emails/minuto\n")
+
+        if all_errores:
+            f.write("\n" + "-" * 60 + "\n")
+            f.write("ERRORES DETALLADOS\n")
+            f.write("-" * 60 + "\n\n")
+            for error in all_errores:
+                f.write(f"{error['email']}\t→\t{error['error']}\n")
+
+    print(f"Reporte completo guardado en: {report_file}")
+
+    # Guardar errores por separado (por compatibilidad)
     if all_errores:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         error_file = f"sendgrid_failed_{timestamp}.txt"
         with open(error_file, 'w') as f:
             for error in all_errores:
