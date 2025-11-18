@@ -329,6 +329,233 @@ class SendGridEmailSender:
 """
         return html_content
 
+    def generate_planes_medicos_html(self, nombre_completo, email_destinatario):
+        """Genera HTML para email sobre Planes Médicos."""
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los planes médicos no pueden seguir dictando nuestra práctica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Forzar colores en dark mode */
+        @media (prefers-color-scheme: dark) {{
+            body {{
+                background-color: #377e7c !important;
+                color: white !important;
+            }}
+            .container {{
+                background-color: #377e7c !important;
+            }}
+            .header {{
+                background-color: #377e7c !important;
+            }}
+            .content {{
+                background-color: #377e7c !important;
+            }}
+            .footer {{
+                background-color: #2a615f !important;
+            }}
+        }}
+
+        body {{
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #377e7c !important;
+            color: white !important;
+            -webkit-text-size-adjust: 100%;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #377e7c !important;
+        }}
+        .header {{
+            background-color: #377e7c !important;
+            padding: 40px 30px;
+            text-align: center;
+        }}
+        .header img {{
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 20px;
+        }}
+        .header h1 {{
+            color: white !important;
+            font-size: 26px;
+            margin: 0;
+            font-weight: 700;
+            line-height: 1.3;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .doctor-photo {{
+            max-width: 300px;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+        }}
+        .content {{
+            padding: 40px 30px;
+            background-color: #377e7c !important;
+        }}
+        .greeting {{
+            font-size: 20px;
+            color: white !important;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .message {{
+            font-size: 16px;
+            line-height: 1.8;
+            color: white !important;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .message strong {{
+            font-weight: 700;
+            color: white !important;
+        }}
+        .highlight {{
+            margin: 25px 0;
+            padding-left: 15px;
+            border-left: 3px solid rgba(255, 255, 255, 0.4);
+        }}
+        .highlight p {{
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.7;
+            color: white !important;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .simple-link {{
+            color: white !important;
+            text-decoration: underline;
+            font-weight: 600;
+        }}
+        .footer {{
+            background-color: #2a615f !important;
+            padding: 30px;
+            text-align: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+        }}
+        .footer-title {{
+            color: white !important;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .footer-subtitle {{
+            color: rgba(255, 255, 255, 0.7) !important;
+            font-size: 14px;
+            margin: 5px 0;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .legal {{
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6) !important;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .unsubscribe {{
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7) !important;
+            margin-top: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .unsubscribe a {{
+            color: white !important;
+            text-decoration: underline;
+        }}
+
+        /* Gmail dark mode específico */
+        [data-ogsc] body {{
+            background-color: #377e7c !important;
+        }}
+        [data-ogsc] .container {{
+            background-color: #377e7c !important;
+        }}
+        [data-ogsc] .header {{
+            background-color: #377e7c !important;
+        }}
+        [data-ogsc] .content {{
+            background-color: #377e7c !important;
+        }}
+        [data-ogsc] .footer {{
+            background-color: #2a615f !important;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
+            <h1>Los planes médicos no pueden seguir dictando nuestra práctica</h1>
+            <img src="{DOCTOR_TUX_URL}" alt="Dr. Méndez Sexto" class="doctor-photo" />
+        </div>
+
+        <div class="content">
+            <p class="greeting">Estimado colega:</p>
+
+            <p class="message">
+                Durante años, hemos trabajado bajo tarifas injustas, pagos tardíos y denegaciones arbitrarias.
+                El Colegio se ha limitado a quejarse sin lograr un solo cambio concreto.
+            </p>
+
+            <p class="message">
+                La clase médica merece representación real, no comunicados vacíos.
+            </p>
+
+            <div class="highlight">
+                <p>
+                    El Dr. Ramón Méndez Sexto entiende cómo se defienden los intereses de los médicos:
+                    con seriedad, credibilidad y estrategia. Su liderazgo devolverá la voz del médico
+                    a las mesas donde se decide nuestro valor profesional.
+                </p>
+            </div>
+
+            <p class="message">
+                Te invito a votar por el Dr. Ramón Méndez Sexto para recuperar nuestra fuerza frente a los planes médicos.
+            </p>
+
+            <p class="message">
+                Conoce más sobre la propuesta en <a href="https://www.renovarparaavanzar.com" class="simple-link">www.renovarparaavanzar.com</a>
+            </p>
+
+            <p class="message">
+                Atentamente,<br>
+                Comité Dr. Méndez Sexto
+            </p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-title">Dr. Ramón Méndez Sexto</div>
+            <div class="footer-subtitle">Candidato a la Presidencia del Colegio de Médicos</div>
+            <div class="footer-subtitle">#RenovarParaAvanzar</div>
+
+            <div class="legal">
+                Pagado por el Comité Dr. Méndez Sexto
+            </div>
+
+            <div class="unsubscribe">
+                Si no deseas recibir más comunicaciones, puedes
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}">
+                    darte de baja aquí
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+        return html_content
+
     def send_email(self, to_email, subject, html_content, nombre_completo, attachment_path=None):
         """
         Envía un email usando SendGrid API con mejores prácticas anti-spam.
@@ -432,8 +659,11 @@ Si deseas dejar de recibir emails, responde con "BAJA" a support@renovarparaavan
 
             print(f"  [{i}/{len(registrations)}] {reg.email} ({nombre_completo})... ", end="", flush=True)
 
-            # Generar HTML
-            html_content = self.generate_frente_comun_html(nombre_completo, reg.email)
+            # Generar HTML según el tipo de email
+            if self.email_type == 'planes_medicos':
+                html_content = self.generate_planes_medicos_html(nombre_completo, reg.email)
+            else:
+                html_content = self.generate_frente_comun_html(nombre_completo, reg.email)
 
             # Enviar
             success, message = self.send_email(reg.email, subject, html_content, nombre_completo, attachment_path)
@@ -453,7 +683,7 @@ Si deseas dejar de recibir emails, responde con "BAJA" a support@renovarparaavan
         return exitosos, fallidos, errores
 
 
-def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, attachment_path=None):
+def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, attachment_path=None, email_type='frente_comun'):
     """
     Envía emails masivos usando SendGrid.
 
@@ -463,6 +693,7 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
         limit: Límite opcional de emails a enviar
         offset: Offset para empezar desde un registro específico
         attachment_path: Ruta opcional a un archivo PDF para adjuntar
+        email_type: Tipo de email ('frente_comun' o 'planes_medicos')
     """
     print("=" * 60)
     print("ENVÍO MASIVO CON SENDGRID")
@@ -470,7 +701,7 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
     print()
 
     # Inicializar SendGrid
-    sender = SendGridEmailSender(email_type='frente_comun')
+    sender = SendGridEmailSender(email_type=email_type)
 
     # Obtener registros (excluir usuarios que se dieron de baja)
     registrations = Registration.objects.filter(
@@ -523,9 +754,15 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
         print(f"\nLOTE {current_batch}/{total_batches} - Emails {batch_num + 1} a {batch_end}")
         print("-" * 40)
 
+        # Definir subject según el tipo de email
+        if email_type == 'planes_medicos':
+            subject = 'Los planes médicos no pueden seguir dictando nuestra práctica'
+        else:
+            subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
+
         exitosos, fallidos, errores = sender.send_batch(
             batch,
-            'Un frente común por la clase médica — ¡Renovar para avanzar!',
+            subject,
             attachment_path
         )
 
@@ -581,8 +818,11 @@ def send_test_email(test_email, attachment_path=None):
     print("=" * 60)
     print()
 
+    # Determinar tipo de email desde los argumentos
+    email_type = 'planes_medicos'  # Por defecto usamos planes_medicos para la prueba
+
     # Inicializar SendGrid
-    sender = SendGridEmailSender(email_type='frente_comun')
+    sender = SendGridEmailSender(email_type=email_type)
 
     # Crear un registro temporal para la prueba
     class TempRegistration:
@@ -594,14 +834,22 @@ def send_test_email(test_email, attachment_path=None):
     reg = TempRegistration(test_email)
 
     print(f"Enviando email de prueba a: {test_email}")
+    print(f"Tipo de email: {email_type}")
     print()
 
     nombre_completo = "Usuario Prueba"
-    html_content = sender.generate_frente_comun_html(nombre_completo, test_email)
+
+    # Generar HTML según el tipo
+    if email_type == 'planes_medicos':
+        html_content = sender.generate_planes_medicos_html(nombre_completo, test_email)
+        subject = 'Los planes médicos no pueden seguir dictando nuestra práctica'
+    else:
+        html_content = sender.generate_frente_comun_html(nombre_completo, test_email)
+        subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
 
     success, message = sender.send_email(
         test_email,
-        'Un frente común por la clase médica — ¡Renovar para avanzar!',
+        subject,
         html_content,
         nombre_completo,
         attachment_path
@@ -630,6 +878,9 @@ def main():
     parser.add_argument('--test', action='store_true', help='Enviar solo 5 emails de prueba')
     parser.add_argument('--to', type=str, help='Enviar a un email específico para prueba')
     parser.add_argument('--attachment', type=str, help='Ruta a un archivo PDF para adjuntar')
+    parser.add_argument('--email-type', type=str, default='frente_comun',
+                        choices=['frente_comun', 'planes_medicos'],
+                        help='Tipo de email a enviar (frente_comun o planes_medicos)')
 
     args = parser.parse_args()
 
@@ -638,14 +889,15 @@ def main():
         send_test_email(args.to, args.attachment)
     elif args.test:
         print("MODO PRUEBA: Enviando 5 emails")
-        send_mass_email_sendgrid(batch_size=5, pause=5, limit=5, attachment_path=args.attachment)
+        send_mass_email_sendgrid(batch_size=5, pause=5, limit=5, attachment_path=args.attachment, email_type=args.email_type)
     else:
         send_mass_email_sendgrid(
             batch_size=args.batch_size,
             pause=args.pause,
             limit=args.limit,
             offset=args.offset,
-            attachment_path=args.attachment
+            attachment_path=args.attachment,
+            email_type=args.email_type
         )
 
 
