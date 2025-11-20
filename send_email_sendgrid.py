@@ -716,11 +716,7 @@ class SendGridEmailSender:
 </head>
 <body style="background-color: transparent !important; padding: 20px;">
     <div class="container" style="background-color: transparent !important; border: 2px solid #21211f !important; border-radius: 8px;">
-        <div class="header" style="background-color: transparent !important;">
-            <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
-        </div>
-
-        <div class="content" style="background-color: transparent !important;">
+        <div class="content" style="background-color: transparent !important; padding-top: 40px;">
             <p class="message" style="color: #21211f !important;">
                 Es momento de reconocer lo evidente: la clase médica necesita liderazgo con resultados, no con permanencia.
             </p>
@@ -981,16 +977,21 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
 
     # Resumen
     elapsed = (time.time() - start_time) / 60
+    offset_final = offset + len(registrations_list)
 
     print()
     print("=" * 60)
     print("RESUMEN DE ENVÍO")
     print("=" * 60)
+    print(f"Offset inicial: {offset}")
+    print(f"Offset final: {offset_final}")
     print(f"Total procesados: {total_exitosos + total_fallidos}")
     print(f"Enviados: {total_exitosos}")
     print(f"Fallidos: {total_fallidos}")
     print(f"Tasa de éxito: {(total_exitosos / (total_exitosos + total_fallidos) * 100):.1f}%")
     print(f"Tiempo: {elapsed:.1f} minutos")
+    print()
+    print(f">>> PRÓXIMO COMANDO: python send_email_sendgrid.py --offset {offset_final} --limit 3000 --batch-size 500 --pause 600 --email-type {email_type}")
     print()
 
     # Guardar reporte completo
@@ -1005,6 +1006,7 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
         f.write(f"Tipo de email: {email_type}\n")
         f.write(f"Subject: {subject}\n")
         f.write(f"Offset inicial: {offset}\n")
+        f.write(f"Offset final: {offset_final}\n")
         f.write(f"Límite de envío: {limit if limit else 'Sin límite'}\n")
         f.write(f"Tamaño de lote: {batch_size}\n")
         f.write(f"Pausa entre lotes: {pause} segundos\n")
@@ -1018,6 +1020,10 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
         f.write(f"Tasa de éxito: {(total_exitosos / (total_exitosos + total_fallidos) * 100):.1f}%\n")
         f.write(f"Tiempo total: {elapsed:.1f} minutos\n")
         f.write(f"Velocidad: {(total_exitosos + total_fallidos) / elapsed:.1f} emails/minuto\n")
+        f.write("\n" + "-" * 60 + "\n")
+        f.write("PRÓXIMO COMANDO\n")
+        f.write("-" * 60 + "\n\n")
+        f.write(f"python send_email_sendgrid.py --offset {offset_final} --limit 3000 --batch-size 500 --pause 600 --email-type {email_type}\n")
 
         if all_errores:
             f.write("\n" + "-" * 60 + "\n")
