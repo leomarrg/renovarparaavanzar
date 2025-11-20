@@ -673,17 +673,42 @@ class SendGridEmailSender:
         }}
 
         @media only screen and (max-width: 600px) {{
+            body {{
+                background-color: transparent !important;
+            }}
+            .container {{
+                background-color: transparent !important;
+            }}
             .header {{
                 padding: 30px 20px 15px 20px;
+                background-color: transparent !important;
             }}
             .content {{
                 padding: 15px 20px 30px 20px;
+                background-color: transparent !important;
             }}
             .message {{
                 font-size: 16px;
+                color: #000000 !important;
             }}
             .footer {{
                 padding: 25px 20px;
+                background-color: transparent !important;
+            }}
+            .footer-title {{
+                color: #000000 !important;
+            }}
+            .footer-subtitle {{
+                color: #333333 !important;
+            }}
+            .legal {{
+                color: #666666 !important;
+            }}
+            .unsubscribe {{
+                color: #666666 !important;
+            }}
+            .unsubscribe a {{
+                color: #333333 !important;
             }}
         }}
     </style>
