@@ -592,18 +592,19 @@ class SendGridEmailSender:
         body {{
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #21211f !important;
-            color: white !important;
+            padding: 20px;
+            background-color: transparent !important;
             -webkit-text-size-adjust: 100%;
         }}
         .container {{
             max-width: 600px;
             margin: 0 auto;
-            background-color: #21211f !important;
+            background-color: transparent !important;
+            border: 2px solid #21211f !important;
+            border-radius: 8px;
         }}
         .header {{
-            background-color: #21211f !important;
+            background-color: transparent !important;
             padding: 40px 30px 20px 30px;
             text-align: center;
         }}
@@ -614,12 +615,12 @@ class SendGridEmailSender:
         }}
         .content {{
             padding: 20px 30px 40px 30px;
-            background-color: #21211f !important;
+            background-color: transparent !important;
         }}
         .message {{
             font-size: 18px;
             line-height: 1.6;
-            color: white !important;
+            color: #21211f !important;
             margin-bottom: 30px;
             font-family: 'Montserrat', sans-serif;
             text-align: center;
@@ -637,26 +638,26 @@ class SendGridEmailSender:
             border-radius: 5px;
         }}
         .footer {{
-            background-color: #1a1a18 !important;
+            background-color: transparent !important;
             padding: 30px;
             text-align: center;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #21211f;
         }}
         .footer-title {{
-            color: white !important;
+            color: #21211f !important;
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
             font-family: 'Montserrat', sans-serif;
         }}
         .footer-subtitle {{
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #333333 !important;
             font-size: 14px;
             margin-bottom: 5px;
             font-family: 'Montserrat', sans-serif;
         }}
         .legal {{
-            color: rgba(255, 255, 255, 0.7) !important;
+            color: #666666 !important;
             font-size: 11px;
             margin-top: 20px;
             font-family: 'Montserrat', sans-serif;
@@ -664,11 +665,11 @@ class SendGridEmailSender:
         .unsubscribe {{
             margin-top: 20px;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.7) !important;
+            color: #666666 !important;
             font-family: 'Montserrat', sans-serif;
         }}
         .unsubscribe a {{
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #333333 !important;
             text-decoration: underline;
         }}
 
@@ -713,10 +714,10 @@ class SendGridEmailSender:
         }}
     </style>
 </head>
-<body style="background-color: #21211f !important; color: white !important;">
-    <div class="container" style="background-color: #21211f !important;">
-        <div class="content" style="background-color: #21211f !important; padding-top: 40px;">
-            <p class="message" style="color: white !important;">
+<body style="background-color: transparent !important; padding: 20px;">
+    <div class="container" style="background-color: transparent !important; border: 2px solid #21211f !important; border-radius: 8px;">
+        <div class="content" style="background-color: transparent !important; padding-top: 40px;">
+            <p class="message" style="color: #21211f !important;">
                 Es momento de reconocer lo evidente: la clase médica necesita liderazgo con resultados, no con permanencia.
             </p>
 
@@ -726,18 +727,18 @@ class SendGridEmailSender:
             </div>
         </div>
 
-        <div class="footer" style="background-color: #2d2d2d !important;">
-            <div class="footer-title" style="color: white !important;">Dr. Ramón Méndez Sexto</div>
-            <div class="footer-subtitle" style="color: #e0e0e0 !important;">Candidato a la Presidencia del Colegio de Médicos</div>
-            <div class="footer-subtitle" style="color: #e0e0e0 !important;">#RenovarParaAvanzar</div>
+        <div class="footer" style="background-color: transparent !important; border-top: 2px solid #21211f;">
+            <div class="footer-title" style="color: #21211f !important;">Dr. Ramón Méndez Sexto</div>
+            <div class="footer-subtitle" style="color: #333333 !important;">Candidato a la Presidencia del Colegio de Médicos</div>
+            <div class="footer-subtitle" style="color: #333333 !important;">#RenovarParaAvanzar</div>
 
-            <div class="legal" style="color: #b0b0b0 !important;">
+            <div class="legal" style="color: #666666 !important;">
                 Pagado por el Comité Dr. Méndez Sexto
             </div>
 
-            <div class="unsubscribe" style="color: #b0b0b0 !important;">
+            <div class="unsubscribe" style="color: #666666 !important;">
                 Si no deseas recibir más comunicaciones, puedes
-                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}" style="color: #e0e0e0 !important; text-decoration: underline;">
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}" style="color: #333333 !important; text-decoration: underline;">
                     darte de baja aquí
                 </a>.
             </div>
