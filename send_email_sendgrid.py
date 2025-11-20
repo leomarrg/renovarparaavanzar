@@ -715,11 +715,7 @@ class SendGridEmailSender:
 </head>
 <body style="background-color: #21211f !important; color: white !important;">
     <div class="container" style="background-color: #21211f !important;">
-        <div class="header" style="background-color: #21211f !important;">
-            <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
-        </div>
-
-        <div class="content" style="background-color: #21211f !important;">
+        <div class="content" style="background-color: #21211f !important; padding-top: 40px;">
             <p class="message" style="color: white !important;">
                 Es momento de reconocer lo evidente: la clase médica necesita liderazgo con resultados, no con permanencia.
             </p>
@@ -730,18 +726,18 @@ class SendGridEmailSender:
             </div>
         </div>
 
-        <div class="footer">
-            <div class="footer-title">Dr. Ramón Méndez Sexto</div>
-            <div class="footer-subtitle">Candidato a la Presidencia del Colegio de Médicos</div>
-            <div class="footer-subtitle">#RenovarParaAvanzar</div>
+        <div class="footer" style="background-color: #2d2d2d !important;">
+            <div class="footer-title" style="color: white !important;">Dr. Ramón Méndez Sexto</div>
+            <div class="footer-subtitle" style="color: #e0e0e0 !important;">Candidato a la Presidencia del Colegio de Médicos</div>
+            <div class="footer-subtitle" style="color: #e0e0e0 !important;">#RenovarParaAvanzar</div>
 
-            <div class="legal">
+            <div class="legal" style="color: #b0b0b0 !important;">
                 Pagado por el Comité Dr. Méndez Sexto
             </div>
 
-            <div class="unsubscribe">
+            <div class="unsubscribe" style="color: #b0b0b0 !important;">
                 Si no deseas recibir más comunicaciones, puedes
-                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}">
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}" style="color: #e0e0e0 !important; text-decoration: underline;">
                     darte de baja aquí
                 </a>.
             </div>
