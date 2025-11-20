@@ -572,20 +572,20 @@ class SendGridEmailSender:
         /* Forzar colores en dark mode */
         @media (prefers-color-scheme: dark) {{
             body {{
-                background-color: #21211f !important;
+                background-color: #2d2d2d !important;
                 color: white !important;
             }}
             .container {{
-                background-color: #21211f !important;
+                background-color: #2d2d2d !important;
             }}
             .header {{
-                background-color: #21211f !important;
+                background-color: #2d2d2d !important;
             }}
             .content {{
-                background-color: #21211f !important;
+                background-color: #2d2d2d !important;
             }}
             .footer {{
-                background-color: #1a1a18 !important;
+                background-color: #252525 !important;
             }}
         }}
 
@@ -593,17 +593,17 @@ class SendGridEmailSender:
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #21211f !important;
+            background-color: #2d2d2d !important;
             color: white !important;
             -webkit-text-size-adjust: 100%;
         }}
         .container {{
             max-width: 600px;
             margin: 0 auto;
-            background-color: #21211f !important;
+            background-color: #2d2d2d !important;
         }}
         .header {{
-            background-color: #21211f !important;
+            background-color: #2d2d2d !important;
             padding: 40px 30px 20px 30px;
             text-align: center;
         }}
@@ -614,7 +614,7 @@ class SendGridEmailSender:
         }}
         .content {{
             padding: 20px 30px 40px 30px;
-            background-color: #21211f !important;
+            background-color: #2d2d2d !important;
         }}
         .message {{
             font-size: 18px;
@@ -637,7 +637,7 @@ class SendGridEmailSender:
             border-radius: 5px;
         }}
         .footer {{
-            background-color: #1a1a18 !important;
+            background-color: #252525 !important;
             padding: 30px;
             text-align: center;
             border-top: 2px solid rgba(255, 255, 255, 0.1);
@@ -688,13 +688,13 @@ class SendGridEmailSender:
         }}
     </style>
 </head>
-<body style="background-color: #21211f !important; color: white !important;">
-    <div class="container" style="background-color: #21211f !important;">
-        <div class="header" style="background-color: #21211f !important;">
+<body style="background-color: #2d2d2d !important; color: white !important;">
+    <div class="container" style="background-color: #2d2d2d !important;">
+        <div class="header" style="background-color: #2d2d2d !important;">
             <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
         </div>
 
-        <div class="content" style="background-color: #21211f !important;">
+        <div class="content" style="background-color: #2d2d2d !important;">
             <p class="message" style="color: white !important;">
                 Es momento de reconocer lo evidente: la clase médica necesita liderazgo con resultados, no con permanencia.
             </p>
