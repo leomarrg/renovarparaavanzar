@@ -716,7 +716,11 @@ class SendGridEmailSender:
 </head>
 <body style="background-color: transparent !important; padding: 20px;">
     <div class="container" style="background-color: transparent !important; border: 2px solid #21211f !important; border-radius: 8px;">
-        <div class="content" style="background-color: transparent !important; padding-top: 40px;">
+        <div class="header" style="background-color: transparent !important;">
+            <img src="{LOGO_URL}" alt="Renovar para Avanzar" />
+        </div>
+
+        <div class="content" style="background-color: transparent !important;">
             <p class="message" style="color: #21211f !important;">
                 Es momento de reconocer lo evidente: la clase médica necesita liderazgo con resultados, no con permanencia.
             </p>
