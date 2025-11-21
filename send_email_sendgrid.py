@@ -42,6 +42,7 @@ DOCTOR_PHOTO_URL = f"{SITE_URL}/static/landing/img/dr_cutout.png"
 DOCTOR_TUX_URL = f"{SITE_URL}/static/landing/img/dr_tux.jpg"
 BALA1_NUEVODIA_URL = f"{SITE_URL}/static/landing/img/email/balas/bala1_nuevodia.jpg"
 BALA1_NUEVODIA_PT2_URL = f"{SITE_URL}/static/landing/img/email/balas/bala_1_nuevodia_pt2.jpg"
+FECHAS_VOTACION_URL = f"{SITE_URL}/static/landing/img/email/fechas_votacion.jpg"
 
 # Configuración de envío
 BATCH_SIZE = 100  # SendGrid puede manejar más
@@ -749,6 +750,216 @@ class SendGridEmailSender:
 """
         return html_content
 
+    def generate_fechas_votacion_html(self, nombre_completo, email_destinatario):
+        """Genera HTML para email sobre fechas de votación."""
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vota #2 por nuestro equipo — Conoce las fechas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {{
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            -webkit-text-size-adjust: 100%;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: transparent;
+            border: 2px solid #377e7c;
+            border-radius: 8px;
+        }}
+        .content {{
+            padding: 40px 30px 40px 30px;
+            background-color: transparent;
+        }}
+        .greeting {{
+            font-size: 18px;
+            color: #333333;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }}
+        .message {{
+            font-size: 16px;
+            line-height: 1.7;
+            color: #333333;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .message strong {{
+            font-weight: 700;
+            color: #377e7c;
+        }}
+        .voting-dates {{
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(55, 126, 124, 0.05);
+            border: 1px solid #377e7c;
+            border-radius: 5px;
+        }}
+        .date-block {{
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(55, 126, 124, 0.3);
+        }}
+        .date-block:last-child {{
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }}
+        .date-title {{
+            font-size: 16px;
+            font-weight: 700;
+            color: #377e7c;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .date-detail {{
+            font-size: 14px;
+            color: #666666;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .image-container {{
+            margin: 30px 0;
+            text-align: center;
+        }}
+        .image-container img {{
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+        }}
+        .hashtag {{
+            font-size: 18px;
+            font-weight: 700;
+            color: #377e7c;
+            margin-top: 30px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .footer {{
+            background-color: rgba(55, 126, 124, 0.05);
+            padding: 30px;
+            text-align: center;
+            border-top: 2px solid #377e7c;
+        }}
+        .footer-title {{
+            color: #377e7c;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .footer-subtitle {{
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .legal {{
+            color: #999999;
+            font-size: 11px;
+            margin-top: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .unsubscribe {{
+            margin-top: 20px;
+            font-size: 11px;
+            color: #999999;
+            font-family: 'Montserrat', sans-serif;
+        }}
+        .unsubscribe a {{
+            color: #377e7c;
+            text-decoration: underline;
+        }}
+
+        @media only screen and (max-width: 600px) {{
+            body {{
+                padding: 10px;
+            }}
+            .content {{
+                padding: 30px 20px;
+            }}
+            .message {{
+                font-size: 15px;
+            }}
+            .footer {{
+                padding: 25px 20px;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <p class="greeting">Estimado colega:</p>
+
+            <p class="message">
+                Las elecciones para la presidencia del Colegio de Médicos Cirujanos de Puerto Rico ya están aquí.
+            </p>
+
+            <p class="message">
+                Tienes tres formas de ejercer tu voto:
+            </p>
+
+            <div class="voting-dates">
+                <div class="date-block">
+                    <div class="date-title">24 - 26 de noviembre</div>
+                    <div class="date-detail">En las oficinas del Colegio (voto en papeleta)</div>
+                </div>
+
+                <div class="date-block">
+                    <div class="date-title">27 de noviembre al 11 de diciembre</div>
+                    <div class="date-detail">Voto electrónico</div>
+                </div>
+
+                <div class="date-block">
+                    <div class="date-title">12 - 13 de diciembre</div>
+                    <div class="date-detail">En Convención (voto en papeleta)</div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="{FECHAS_VOTACION_URL}" alt="Fechas de votación" />
+            </div>
+
+            <p class="message">
+                Vota #2 por nuestro equipo para renovar el liderazgo del Colegio.
+            </p>
+
+            <p class="hashtag">#RenovarParaAvanzar</p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-title">Dr. Ramón Méndez Sexto</div>
+            <div class="footer-subtitle">Candidato a la Presidencia del Colegio de Médicos</div>
+            <div class="footer-subtitle">#RenovarParaAvanzar</div>
+
+            <div class="legal">
+                Pagado por el Comité Dr. Méndez Sexto
+            </div>
+
+            <div class="unsubscribe">
+                Si no deseas recibir más comunicaciones, puedes
+                <a href="https://www.renovarparaavanzar.com/unsubscribe/?email={email_destinatario}">
+                    darte de baja aquí
+                </a>.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+        return html_content
+
     def send_email(self, to_email, subject, html_content, nombre_completo, attachment_path=None):
         """
         Envía un email usando SendGrid API con mejores prácticas anti-spam.
@@ -857,6 +1068,8 @@ Si deseas dejar de recibir emails, responde con "BAJA" a support@renovarparaavan
                 html_content = self.generate_planes_medicos_html(nombre_completo, reg.email)
             elif self.email_type == 'liderazgo_resultados':
                 html_content = self.generate_liderazgo_resultados_html(nombre_completo, reg.email)
+            elif self.email_type == 'fechas_votacion':
+                html_content = self.generate_fechas_votacion_html(nombre_completo, reg.email)
             else:
                 html_content = self.generate_frente_comun_html(nombre_completo, reg.email)
 
@@ -954,6 +1167,8 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
             subject = 'Los planes médicos no pueden seguir dictando nuestra práctica'
         elif email_type == 'liderazgo_resultados':
             subject = 'La clase médica necesita liderazgo con resultados'
+        elif email_type == 'fechas_votacion':
+            subject = 'Vota #2 por nuestro equipo — Conoce las fechas'
         else:
             subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
 
@@ -1085,6 +1300,9 @@ def send_test_email(test_email, attachment_path=None, email_type='liderazgo_resu
     elif email_type == 'liderazgo_resultados':
         html_content = sender.generate_liderazgo_resultados_html(nombre_completo, test_email)
         subject = 'La clase médica necesita liderazgo con resultados'
+    elif email_type == 'fechas_votacion':
+        html_content = sender.generate_fechas_votacion_html(nombre_completo, test_email)
+        subject = 'Vota #2 por nuestro equipo — Conoce las fechas'
     else:
         html_content = sender.generate_frente_comun_html(nombre_completo, test_email)
         subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
@@ -1121,8 +1339,8 @@ def main():
     parser.add_argument('--to', type=str, help='Enviar a un email específico para prueba')
     parser.add_argument('--attachment', type=str, help='Ruta a un archivo PDF para adjuntar')
     parser.add_argument('--email-type', type=str, default='frente_comun',
-                        choices=['frente_comun', 'planes_medicos', 'liderazgo_resultados'],
-                        help='Tipo de email a enviar (frente_comun, planes_medicos o liderazgo_resultados)')
+                        choices=['frente_comun', 'planes_medicos', 'liderazgo_resultados', 'fechas_votacion'],
+                        help='Tipo de email a enviar (frente_comun, planes_medicos, liderazgo_resultados o fechas_votacion)')
 
     args = parser.parse_args()
 
