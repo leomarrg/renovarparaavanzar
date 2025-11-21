@@ -37,7 +37,7 @@ cat > $TEMP_SCRIPT << 'EOF'
 #!/bin/bash
 cd /home/ubuntu/renovarparaavanzar
 source venv/bin/activate 2>/dev/null || true
-python send_email_sendgrid.py --offset 2500 --limit 3000 --batch-size 500 --pause 600 --email-type liderazgo_resultados
+python send_email_sendgrid.py --offset 2500 --limit 4500 --batch-size 500 --pause 600 --email-type liderazgo_resultados
 EOF
 
 chmod +x $TEMP_SCRIPT
@@ -50,10 +50,10 @@ echo ""
 echo "✅ Envío programado exitosamente!"
 echo ""
 echo "Detalles:"
-echo "  - Fecha: Mañana"
+echo "  - Fecha: Viernes 21 de noviembre 2024"
 echo "  - Hora: 9:00 AM Puerto Rico (13:00 UTC)"
 echo "  - Offset: 2500"
-echo "  - Limit: 3000"
+echo "  - Limit: 4500 (enviará hasta registro 7000)"
 echo "  - Template: liderazgo_resultados"
 echo "  - Log: $LOG_FILE"
 echo ""
