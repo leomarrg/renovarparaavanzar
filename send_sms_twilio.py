@@ -404,9 +404,10 @@ Vota #2 por la renovación.
 
 Responde STOP para cancelar."""
 
-        # URLs de las imágenes para MMS (solo 1 imagen para mejor compatibilidad con iMessage)
+        # URLs de las imágenes para MMS (JPG optimizado para mejor compatibilidad)
         media_urls = [
-            f"{SITE_URL}/static/landing/img/email/Vota_num2.png"
+            f"{SITE_URL}/static/landing/img/email/Vota_num2.jpg",
+            f"{SITE_URL}/static/landing/img/email/fechas_votacion.jpg"
         ]
 
     elif args.message_type == 'fechas_votacion':

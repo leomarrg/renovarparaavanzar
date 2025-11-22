@@ -43,7 +43,7 @@ DOCTOR_TUX_URL = f"{SITE_URL}/static/landing/img/dr_tux.jpg"
 BALA1_NUEVODIA_URL = f"{SITE_URL}/static/landing/img/email/balas/bala1_nuevodia.jpg"
 BALA1_NUEVODIA_PT2_URL = f"{SITE_URL}/static/landing/img/email/balas/bala_1_nuevodia_pt2.jpg"
 FECHAS_VOTACION_URL = f"{SITE_URL}/static/landing/img/email/fechas_votacion.jpg"
-VOTA_2_URL = f"{SITE_URL}/static/landing/img/email/Vota_num2.png"
+VOTA_2_URL = f"{SITE_URL}/static/landing/img/email/Vota_num2.jpg"
 UNSUBSCRIBE_URL = f"{SITE_URL}/unsubscribe/"
 
 # Configuración de envío
