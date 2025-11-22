@@ -44,6 +44,7 @@ BALA1_NUEVODIA_URL = f"{SITE_URL}/static/landing/img/email/balas/bala1_nuevodia.
 BALA1_NUEVODIA_PT2_URL = f"{SITE_URL}/static/landing/img/email/balas/bala_1_nuevodia_pt2.jpg"
 FECHAS_VOTACION_URL = f"{SITE_URL}/static/landing/img/email/fechas_votacion.jpg"
 VOTA_2_URL = f"{SITE_URL}/static/landing/img/email/Vota_2.png"
+UNSUBSCRIBE_URL = f"{SITE_URL}/unsubscribe/"
 
 # Configuración de envío
 BATCH_SIZE = 100  # SendGrid puede manejar más
@@ -961,6 +962,105 @@ class SendGridEmailSender:
 """
         return html_content
 
+    def generate_renovacion_html(self, nombre_completo, email_destinatario):
+        """
+        Genera el HTML para el email de renovación con las 2 imágenes del equipo #2
+        """
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renovar para Avanzar - Dr. Méndez Sexto</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: transparent;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: transparent;">
+        <tr>
+            <td style="padding: 20px 0;">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto; background-color: #ffffff; border: 3px solid #008B8B; border-radius: 10px;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="padding: 40px 30px; text-align: center; background: linear-gradient(135deg, #008B8B 0%, #20B2AA 100%); border-radius: 7px 7px 0 0;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
+                                ¡Saludos!
+                            </h1>
+                        </td>
+                    </tr>
+
+                    <!-- Contenido Principal -->
+                    <tr>
+                        <td style="padding: 40px 30px; color: #000000;">
+                            <p style="font-size: 18px; line-height: 1.6; margin: 0 0 20px 0; color: #000000;">
+                                Soy el Dr. Ramón Méndez Sexto y juntos tenemos una cita para iniciar la renovación del Colegio de Médicos y Cirujanos.
+                            </p>
+
+                            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-weight: bold; color: #008B8B;">
+                                Es tiempo de lograr justicia verdadera frente a los planes médicos.
+                            </p>
+
+                            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-weight: bold; color: #008B8B;">
+                                Es tiempo de recuperar credibilidad frente a las instituciones y el Gobierno.
+                            </p>
+
+                            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-weight: bold; color: #008B8B;">
+                                Es tiempo de recuperar tú voz y adelantar tú agenda, la de todos los médicos.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Imagen Vota #2 -->
+                    <tr>
+                        <td style="padding: 20px 30px; text-align: center;">
+                            <img src="{VOTA_2_URL}" alt="Vota por el equipo #2" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+                        </td>
+                    </tr>
+
+                    <!-- Imagen Fechas de Votación -->
+                    <tr>
+                        <td style="padding: 20px 30px; text-align: center;">
+                            <img src="{FECHAS_VOTACION_URL}" alt="Fechas de Votación" style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+                        </td>
+                    </tr>
+
+                    <!-- Call to Action -->
+                    <tr>
+                        <td style="padding: 30px; text-align: center; background-color: #f8f8f8;">
+                            <p style="font-size: 22px; font-weight: bold; color: #008B8B; margin: 0 0 20px 0;">
+                                Vota por la renovación, por el equipo #2
+                            </p>
+                            <p style="font-size: 16px; color: #000000; margin: 10px 0;">
+                                #RenovarParaAvanzar
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 30px; text-align: center; background-color: #008B8B; border-radius: 0 0 7px 7px;">
+                            <p style="color: #ffffff; font-size: 14px; margin: 5px 0;">
+                                Dr. Ramón Méndez Sexto
+                            </p>
+                            <p style="color: #ffffff; font-size: 14px; margin: 5px 0;">
+                                Candidato a la Presidencia del Colegio de Médicos y Cirujanos
+                            </p>
+                            <p style="color: #ffffff; font-size: 12px; margin: 15px 0 5px 0;">
+                                Pagado por el Comité Dr. Méndez Sexto
+                            </p>
+                            <p style="color: #ffffff; font-size: 11px; margin: 15px 0 0 0;">
+                                Para dejar de recibir emails, haz <a href="{UNSUBSCRIBE_URL}?email={email_destinatario}" style="color: #ffffff; text-decoration: underline;">clic aquí</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+"""
+        return html_content
+
     def send_email(self, to_email, subject, html_content, nombre_completo, attachment_path=None):
         """
         Envía un email usando SendGrid API con mejores prácticas anti-spam.
@@ -1071,6 +1171,8 @@ Si deseas dejar de recibir emails, responde con "BAJA" a support@renovarparaavan
                 html_content = self.generate_liderazgo_resultados_html(nombre_completo, reg.email)
             elif self.email_type == 'fechas_votacion':
                 html_content = self.generate_fechas_votacion_html(nombre_completo, reg.email)
+            elif self.email_type == 'renovacion':
+                html_content = self.generate_renovacion_html(nombre_completo, reg.email)
             else:
                 html_content = self.generate_frente_comun_html(nombre_completo, reg.email)
 
@@ -1170,6 +1272,8 @@ def send_mass_email_sendgrid(batch_size=100, pause=30, limit=None, offset=0, att
             subject = 'La clase médica necesita liderazgo con resultados'
         elif email_type == 'fechas_votacion':
             subject = 'Vota #2 por nuestro equipo — Conoce las fechas'
+        elif email_type == 'renovacion':
+            subject = 'Es tiempo de renovar el Colegio de Médicos — Vota #2'
         else:
             subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
 
@@ -1304,6 +1408,9 @@ def send_test_email(test_email, attachment_path=None, email_type='liderazgo_resu
     elif email_type == 'fechas_votacion':
         html_content = sender.generate_fechas_votacion_html(nombre_completo, test_email)
         subject = 'Vota #2 por nuestro equipo — Conoce las fechas'
+    elif email_type == 'renovacion':
+        html_content = sender.generate_renovacion_html(nombre_completo, test_email)
+        subject = 'Es tiempo de renovar el Colegio de Médicos — Vota #2'
     else:
         html_content = sender.generate_frente_comun_html(nombre_completo, test_email)
         subject = 'Un frente común por la clase médica — ¡Renovar para avanzar!'
@@ -1340,8 +1447,8 @@ def main():
     parser.add_argument('--to', type=str, help='Enviar a un email específico para prueba')
     parser.add_argument('--attachment', type=str, help='Ruta a un archivo PDF para adjuntar')
     parser.add_argument('--email-type', type=str, default='frente_comun',
-                        choices=['frente_comun', 'planes_medicos', 'liderazgo_resultados', 'fechas_votacion'],
-                        help='Tipo de email a enviar (frente_comun, planes_medicos, liderazgo_resultados o fechas_votacion)')
+                        choices=['frente_comun', 'planes_medicos', 'liderazgo_resultados', 'fechas_votacion', 'renovacion'],
+                        help='Tipo de email a enviar (frente_comun, planes_medicos, liderazgo_resultados, fechas_votacion o renovacion)')
 
     args = parser.parse_args()
 
