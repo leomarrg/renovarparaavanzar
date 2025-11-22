@@ -406,7 +406,7 @@ Responde STOP para cancelar."""
 
         # URLs de las imágenes para MMS
         media_urls = [
-            f"{SITE_URL}/static/landing/img/email/Vota_#2.png",
+            f"{SITE_URL}/static/landing/img/email/Vota_2.png",
             f"{SITE_URL}/static/landing/img/email/fechas_votacion.jpg"
         ]
 
